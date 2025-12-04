@@ -17,19 +17,13 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      
-      /* Using your PNG.jpeg background */
-      background: 
-        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-        url('./PNG.jpeg') no-repeat center center fixed;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('./PNG.jpeg') no-repeat center center fixed;
       background-size: cover;
       background-color: #000;
-      
       font-family: 'Arial', sans-serif;
       color: white;
       text-shadow: 0 0 10px rgba(0,0,0,0.8);
       overflow-x: hidden;
-      -webkit-tap-highlight-color: transparent;
     }
 
     .overlay {
@@ -42,7 +36,6 @@
       z-index: -1;
     }
 
-    /* MAIN CONTENT CONTAINER */
     .main-content {
       width: 100%;
       max-width: 1200px;
@@ -54,7 +47,6 @@
       text-align: center;
     }
 
-    /* IMPROVED LETTER ANIMATIONS - RESPONSIVE */
     .rainbow-text {
       font-size: clamp(2.5rem, 8vw, 4.5rem);
       margin: 0;
@@ -67,11 +59,9 @@
       text-shadow: 0 0 20px rgba(255,255,255,0.3);
       margin-bottom: 20px;
       line-height: 1.2;
-      word-wrap: break-word;
       width: 100%;
     }
 
-    /* Individual letter animation */
     .rainbow-text span {
       display: inline-block;
       position: relative;
@@ -79,7 +69,6 @@
       animation-delay: calc(var(--i) * 0.1s);
     }
 
-    /* Floating letter animation */
     @keyframes letterFloat {
       0%, 100% { 
         transform: translateY(0) rotate(0deg);
@@ -103,7 +92,6 @@
       }
     }
 
-    /* Letter bounce effect */
     @keyframes letterBounce {
       0%, 100% { 
         transform: scale(1) translateY(0);
@@ -113,7 +101,6 @@
       }
     }
 
-    /* Letter glow pulse */
     @keyframes letterGlow {
       0%, 100% { 
         filter: drop-shadow(0 0 5px currentColor);
@@ -123,7 +110,6 @@
       }
     }
 
-    /* Background letter shadow */
     .rainbow-text::before {
       content: 'RAYBET TEAM';
       position: absolute;
@@ -143,7 +129,6 @@
       }
     }
 
-    /* World Link - RESPONSIVE */
     .world-box {
       background: rgba(0, 0, 0, 0.8);
       padding: 15px 25px;
@@ -167,13 +152,11 @@
 
     @keyframes pulse-world {
       0%, 100% { 
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7),
-                   0 0 20px rgba(255, 69, 0, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 69, 0, 0.3);
         transform: scale(1);
       }
       50% { 
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7),
-                   0 0 40px rgba(255, 69, 0, 0.6);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 40px rgba(255, 69, 0, 0.6);
         transform: scale(1.02);
       }
     }
@@ -187,7 +170,6 @@
       word-break: break-word;
     }
 
-    /* Social Links Containers */
     .social-links-top {
       display: flex;
       flex-direction: column;
@@ -208,7 +190,6 @@
       margin-top: 20px;
     }
 
-    /* BUTTONS - RESPONSIVE */
     .btn {
       padding: 14px 25px;
       border-radius: 12px;
@@ -237,7 +218,6 @@
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
-    /* Instagram button */
     .btn.instagram {
       background: linear-gradient(45deg, 
         rgba(64, 93, 230, 0.9), 
@@ -256,7 +236,6 @@
       );
     }
 
-    /* WhatsApp button */
     .btn.whatsapp {
       background: linear-gradient(135deg, rgba(37, 211, 102, 0.9), rgba(37, 211, 102, 0.9));
     }
@@ -265,7 +244,6 @@
       background: linear-gradient(135deg, rgb(47, 221, 112), rgb(47, 221, 112));
     }
 
-    /* Discord button */
     .btn.discord {
       background: linear-gradient(135deg, #5865F2, #7289DA);
       max-width: 300px;
@@ -275,7 +253,6 @@
       background: linear-gradient(135deg, #6a75f5, #8398e0);
     }
 
-    /* Button Icons */
     .instagram-logo, .whatsapp-logo, .discord-logo {
       width: 24px;
       height: 24px;
@@ -288,7 +265,6 @@
       height: 100%;
     }
 
-    /* Rules Button - RESPONSIVE */
     .rules-btn {
       position: fixed;
       top: 15px;
@@ -308,7 +284,6 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(10px);
       z-index: 100;
-      white-space: nowrap;
     }
 
     .rules-btn:hover, .rules-btn:active {
@@ -321,7 +296,6 @@
       font-size: 1.2rem;
     }
 
-    /* Admin Panel Styles - RESPONSIVE */
     .admin-panel {
       display: none;
       position: fixed;
@@ -418,7 +392,6 @@
       display: none;
     }
     
-    /* Admin access button */
     .admin-access {
       position: fixed;
       bottom: 10px;
@@ -437,89 +410,19 @@
       color: #999;
     }
 
-    /* RESPONSIVE MEDIA QUERIES */
     @media (min-width: 768px) {
-      body {
-        padding: 20px;
-      }
-      
       .social-links-top {
         flex-direction: row;
         gap: 30px;
       }
-      
-      .btn {
-        max-width: 280px;
-      }
-      
-      .rules-btn {
-        top: 20px;
-        right: 20px;
-        padding: 12px 25px;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .social-links-top {
-        gap: 60px;
-      }
-      
-      .btn {
-        max-width: 300px;
-      }
-      
-      .world-box {
-        padding: 20px 40px;
-      }
     }
 
     @media (max-width: 480px) {
-      .rainbow-text {
-        letter-spacing: 0.5px;
-      }
-      
       .world-box {
         padding: 12px 20px;
         border-radius: 20px;
         width: 95%;
       }
-      
-      .btn {
-        min-height: 55px;
-      }
-      
-      .rules-btn {
-        top: 10px;
-        right: 10px;
-        padding: 8px 15px;
-      }
-    }
-
-    /* Touch device optimizations */
-    @media (hover: none) and (pointer: coarse) {
-      .btn:hover {
-        transform: none;
-      }
-      
-      .btn:active {
-        transform: translateY(-2px) scale(1.03);
-      }
-      
-      .rules-btn:hover {
-        transform: none;
-      }
-      
-      .rules-btn:active {
-        transform: translateY(-2px);
-      }
-    }
-
-    /* Prevent text selection on buttons */
-    .btn, .rules-btn, .admin-btn {
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
     }
   </style>
 </head>
@@ -561,17 +464,17 @@
 
   <!-- Centered Content Container -->
   <div class="main-content">
-    <!-- Professional Title with IMPROVED LETTER ANIMATIONS -->
+    <!-- Professional Title -->
     <div class="main-title">
       <h1 class="rainbow-text" id="rainbowTitle"></h1>
     </div>
 
-    <!-- World Link - IN THE MIDDLE OF SCREEN -->
+    <!-- World Link -->
     <div class="world-box">NEWLINK: <span id="worldName">RAYBET</span></div>
 
-    <!-- Instagram & WhatsApp - Below World Link -->
+    <!-- Instagram & WhatsApp -->
     <div class="social-links-top">
-      <!-- Instagram (Left) -->
+      <!-- Instagram -->
       <a href="https://www.instagram.com/raybet.gt" target="_blank" class="btn instagram">
         <span class="instagram-logo">
           <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
@@ -581,7 +484,7 @@
         Instagram
       </a>
       
-      <!-- WhatsApp (Right) -->
+      <!-- WhatsApp -->
       <a href="https://wa.me/96181050883?text=Hello%20Raybet%20Team!%20I%20want%20to%20Buy/Sell%20BGLs" 
          target="_blank" 
          class="btn whatsapp">
@@ -594,11 +497,10 @@
       </a>
     </div>
 
-    <!-- Discord - Below Instagram/WhatsApp -->
+    <!-- Discord -->
     <div class="social-links-bottom">
       <a href="https://discord.gg/5BkyZkZm" target="_blank" class="btn discord">
         <span class="discord-logo">
-          <!-- Discord Logo SVG -->
           <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
             <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515a.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0a12.64 12.64 0 00-.617-1.25a.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057a19.9 19.9 0 005.993 3.03a.078.078 0 00.084-.028a14.09 14.09 0 001.226-1.994a.076.076 0 00-.041-.106a13.107 13.107 0 01-1.872-.892a.077.077 0 01-.008-.128a10.2 10.2 0 00.372-.292a.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127a12.3 12.3 0 01-1.873.892a.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028a19.839 19.839 0 006.002-3.03a.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
           </svg>
@@ -608,10 +510,9 @@
     </div>
   </div>
 
-  <!-- SECURE ADMIN SYSTEM with IMPROVED LETTER ANIMATIONS -->
   <script>
-    // CONFIGURATION - CHANGE THESE SETTINGS
-    const ADMIN_PASSWORD = "mado81418093lss"; // UPDATED PASSWORD
+    // SIMPLE WORKING VERSION
+    const ADMIN_PASSWORD = "mado81418093lss";
     const DEFAULT_WORLD = "RAYBET";
     
     // DOM Elements
@@ -623,65 +524,36 @@
     const updateSuccess = document.getElementById('updateSuccess');
     const rainbowTitle = document.getElementById('rainbowTitle');
     
-    // Create IMPROVED letter animations
+    // Create rainbow text
     function createRainbowText() {
       const text = "RAYBET TEAM";
       let html = '';
       
       for (let i = 0; i < text.length; i++) {
         if (text[i] === ' ') {
-          html += `<span class="space" style="--i: ${i}">&nbsp;</span>`;
+          html += '<span class="space">&nbsp;</span>';
         } else {
-          html += `<span style="--i: ${i}" 
-                   onmouseover="bounceLetter(this)" 
-                   onmouseout="resetLetter(this)"
-                   ontouchstart="bounceLetter(this)"
-                   ontouchend="resetLetter(this)">${text[i]}</span>`;
+          html += `<span style="--i: ${i}">${text[i]}</span>`;
         }
       }
       
       rainbowTitle.innerHTML = html;
-      
-      setTimeout(() => {
-        const letters = rainbowTitle.querySelectorAll('span:not(.space)');
-        letters.forEach((letter, index) => {
-          const randomDelay = Math.random() * 0.5;
-          letter.style.animationDelay = `calc(var(--i) * 0.1s + ${randomDelay}s)`;
-          letter.style.animation += ', letterGlow 2s ease-in-out infinite';
-        });
-      }, 100);
     }
     
-    // Interactive letter effects
-    function bounceLetter(element) {
-      element.style.animation = 'letterBounce 0.5s ease';
-      element.style.color = '#ffffff';
-      element.style.textShadow = '0 0 25px #ffffff';
-      setTimeout(() => {
-        element.style.animation = '';
-      }, 500);
-    }
-    
-    function resetLetter(element) {
-      element.style.animation = 'letterFloat 3s ease-in-out infinite, letterGlow 2s ease-in-out infinite';
-    }
-    
-    // Check if user is already logged in (using session)
-    let isAdmin = sessionStorage.getItem('raybetAdmin') === 'true';
-    
-    // Load world name from localStorage or use default
+    // Load world name
     function loadWorldName() {
       const savedWorld = localStorage.getItem('raybetWorldName');
       if (savedWorld) {
         worldNameElement.textContent = savedWorld;
       } else {
         worldNameElement.textContent = DEFAULT_WORLD;
-        localStorage.setItem('raybetWorldName', DEFAULT_WORLD);
       }
     }
     
     // Admin Functions
     function openAdminPanel() {
+      const isAdmin = sessionStorage.getItem('raybetAdmin') === 'true';
+      
       if (isAdmin) {
         adminLogin.style.display = 'none';
         adminControls.style.display = 'block';
@@ -693,34 +565,25 @@
         loginError.style.display = 'none';
       }
       adminPanel.style.display = 'flex';
-      document.getElementById('adminPassword').focus();
     }
     
     function closeAdminPanel() {
       adminPanel.style.display = 'none';
-      updateSuccess.style.display = 'none';
+      if (updateSuccess) updateSuccess.style.display = 'none';
     }
     
     function checkPassword() {
       const password = document.getElementById('adminPassword').value;
       
       if (password === ADMIN_PASSWORD) {
-        isAdmin = true;
         sessionStorage.setItem('raybetAdmin', 'true');
         adminLogin.style.display = 'none';
         adminControls.style.display = 'block';
         document.getElementById('newWorldName').value = worldNameElement.textContent;
-        document.getElementById('newWorldName').focus();
-        loginError.style.display = 'none';
+        if (loginError) loginError.style.display = 'none';
       } else {
-        loginError.style.display = 'block';
+        if (loginError) loginError.style.display = 'block';
         document.getElementById('adminPassword').value = '';
-        document.getElementById('adminPassword').focus();
-        
-        document.getElementById('adminPassword').style.animation = 'shake 0.5s';
-        setTimeout(() => {
-          document.getElementById('adminPassword').style.animation = '';
-        }, 500);
       }
     }
     
@@ -728,29 +591,42 @@
       const newWorld = document.getElementById('newWorldName').value.trim();
       
       if (newWorld && newWorld.length >= 3) {
+        // Show instructions for updating for ALL users
+        alert(`TO UPDATE FOR ALL USERS (not just you):
+
+1. Go to: https://github.com/RAYBETGT/RAYBET
+2. Click 'index.html'
+3. Click pencil icon (Edit)
+4. Find: <span id="worldName">RAYBET</span>
+5. Change RAYBET to: ${newWorld}
+6. Click "Commit changes"
+7. Wait 1 minute
+
+This change will show for EVERYONE!`);
+        
+        // Update locally for you
         worldNameElement.textContent = newWorld;
         localStorage.setItem('raybetWorldName', newWorld);
         
-        updateSuccess.textContent = `✅ World updated to: ${newWorld}`;
-        updateSuccess.style.display = 'block';
-        
-        document.getElementById('newWorldName').value = '';
-        
-        setTimeout(() => {
-          updateSuccess.style.display = 'none';
-        }, 3000);
+        if (updateSuccess) {
+          updateSuccess.textContent = '✅ Updated locally. Follow instructions above to update for all users.';
+          updateSuccess.style.display = 'block';
+          
+          setTimeout(() => {
+            updateSuccess.style.display = 'none';
+          }, 5000);
+        }
       } else {
         alert('Please enter a valid world name (at least 3 characters)');
       }
     }
     
     function logoutAdmin() {
-      isAdmin = false;
       sessionStorage.removeItem('raybetAdmin');
       closeAdminPanel();
     }
     
-    // Keyboard Shortcuts
+    // Keyboard shortcuts
     document.addEventListener('keydown', function(e) {
       if (e.ctrlKey && e.altKey && e.key === 'a') {
         e.preventDefault();
@@ -760,60 +636,22 @@
       if (e.key === 'Escape') {
         closeAdminPanel();
       }
-      
-      if (e.key === 'Enter') {
-        if (adminPanel.style.display === 'flex') {
-          if (adminLogin.style.display !== 'none') {
-            checkPassword();
-          } else if (adminControls.style.display !== 'none') {
-            updateWorldName();
-          }
-        }
-      }
     });
     
-    // Touch device support
-    adminPanel.addEventListener('touchstart', function(e) {
-      if (e.target === this) {
-        closeAdminPanel();
-      }
-    });
-    
+    // Close panel when clicking outside
     adminPanel.addEventListener('click', function(e) {
       if (e.target === this) {
         closeAdminPanel();
       }
     });
     
+    // Initialize
     window.addEventListener('DOMContentLoaded', function() {
       createRainbowText();
       loadWorldName();
       
-      const style = document.createElement('style');
-      style.textContent = `
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-          20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-      `;
-      document.head.appendChild(style);
-      
       console.log('Raybet Casino Website Loaded');
-      console.log('Discord: https://discord.gg/5BkyZkZm');
-      console.log('WhatsApp: +961 81 050 883');
-      console.log('Admin access: Ctrl+Alt+A or click Admin button');
     });
-    
-    // Mobile viewport height fix
-    function setViewportHeight() {
-      let vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    }
-    
-    window.addEventListener('resize', setViewportHeight);
-    window.addEventListener('orientationchange', setViewportHeight);
-    setViewportHeight();
   </script>
 </body>
 </html>
