@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Raybet Casino</title>
   <style>
     * {
@@ -11,7 +11,7 @@
     
     body {
       margin: 0;
-      padding: 0;
+      padding: 10px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -29,6 +29,7 @@
       color: white;
       text-shadow: 0 0 10px rgba(0,0,0,0.8);
       overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .overlay {
@@ -41,18 +42,33 @@
       z-index: -1;
     }
 
-    /* IMPROVED LETTER ANIMATIONS */
+    /* MAIN CONTENT CONTAINER */
+    .main-content {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* IMPROVED LETTER ANIMATIONS - RESPONSIVE */
     .rainbow-text {
-      font-size: 4.5rem;
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
       margin: 0;
-      padding: 0;
+      padding: 0 10px;
       font-weight: 800;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       text-transform: uppercase;
       position: relative;
       display: inline-block;
       text-shadow: 0 0 20px rgba(255,255,255,0.3);
-      margin-bottom: 40px;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      word-wrap: break-word;
+      width: 100%;
     }
 
     /* Individual letter animation */
@@ -71,7 +87,7 @@
         text-shadow: 0 0 15px #ff0000;
       }
       25% { 
-        transform: translateY(-15px) rotate(2deg);
+        transform: translateY(-10px) rotate(2deg);
         color: #00ff00;
         text-shadow: 0 0 15px #00ff00;
       }
@@ -81,7 +97,7 @@
         text-shadow: 0 0 15px #0000ff;
       }
       75% { 
-        transform: translateY(10px) rotate(-2deg);
+        transform: translateY(8px) rotate(-2deg);
         color: #ffff00;
         text-shadow: 0 0 15px #ffff00;
       }
@@ -93,7 +109,7 @@
         transform: scale(1) translateY(0);
       }
       50% { 
-        transform: scale(1.1) translateY(-5px);
+        transform: scale(1.1) translateY(-3px);
       }
     }
 
@@ -107,23 +123,12 @@
       }
     }
 
-    /* Space animation */
-    .rainbow-text span.space {
-      margin: 0 15px;
-      animation: spacePulse 2s ease-in-out infinite;
-    }
-
-    @keyframes spacePulse {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
-    }
-
     /* Background letter shadow */
     .rainbow-text::before {
       content: 'RAYBET TEAM';
       position: absolute;
-      top: 5px;
-      left: 5px;
+      top: 3px;
+      left: 3px;
       color: rgba(255, 255, 255, 0.05);
       z-index: -1;
       animation: shadowMove 4s ease-in-out infinite;
@@ -134,74 +139,30 @@
         transform: translate(0, 0);
       }
       50% { 
-        transform: translate(10px, 10px);
+        transform: translate(5px, 5px);
       }
     }
 
-    @media (max-width: 1024px) {
-      .rainbow-text {
-        font-size: 4rem;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .rainbow-text {
-        font-size: 3rem;
-      }
-      .world-box {
-        font-size: 1.8rem;
-        padding: 15px 25px;
-      }
-      .btn {
-        padding: 15px 30px;
-        font-size: 1.2rem;
-      }
-      .social-links-top {
-        margin-top: 30px;
-        gap: 20px;
-      }
-      .social-links-bottom {
-        margin-top: 30px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .rainbow-text {
-        font-size: 2.2rem;
-        letter-spacing: 0.5px;
-      }
-      .world-box {
-        font-size: 1.5rem;
-        padding: 12px 20px;
-      }
-      .social-links-top, .social-links-bottom {
-        flex-direction: column;
-        gap: 15px;
-        align-items: center;
-      }
-      .btn {
-        min-width: 250px;
-        font-size: 1.3rem;
-      }
-    }
-
-    /* World Link - PERFECT MIDDLE CENTER */
+    /* World Link - RESPONSIVE */
     .world-box {
       background: rgba(0, 0, 0, 0.8);
-      padding: 25px 50px;
-      border-radius: 50px;
-      font-size: 3rem;
+      padding: 15px 25px;
+      border-radius: 25px;
+      font-size: clamp(1.8rem, 5vw, 3rem);
       font-weight: 700;
       border: 3px solid rgba(255, 69, 0, 0.7);
       z-index: 1;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(15px);
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       text-align: center;
-      min-width: 350px;
+      width: 90%;
+      max-width: 600px;
       animation: pulse-world 2s infinite;
-      white-space: nowrap;
-      margin: 30px 0;
+      margin: 20px 0;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.3;
     }
 
     @keyframes pulse-world {
@@ -221,68 +182,39 @@
       color: #ff4500;
       font-weight: 800;
       text-shadow: 0 0 15px rgba(255, 69, 0, 0.7);
-      font-size: 3.2rem;
+      font-size: clamp(2rem, 5.5vw, 3.2rem);
+      display: inline-block;
+      word-break: break-word;
     }
 
-    /* Instagram & WhatsApp - Below World Link */
+    /* Social Links Containers */
     .social-links-top {
       display: flex;
-      gap: 60px;
+      flex-direction: column;
+      gap: 20px;
       z-index: 1;
       justify-content: center;
+      align-items: center;
       width: 100%;
-      margin-top: 30px;
+      max-width: 600px;
+      margin-top: 20px;
     }
 
-    /* Discord - Below Instagram/WhatsApp */
     .social-links-bottom {
       display: flex;
-      gap: 30px;
-      z-index: 1;
       justify-content: center;
       width: 100%;
-      margin-top: 30px;
+      max-width: 600px;
+      margin-top: 20px;
     }
 
-    /* Instagram and WhatsApp - BIGGER SIZE */
-    .btn.instagram, .btn.whatsapp {
-      min-width: 280px;
-      padding: 18px 35px;
-      font-size: 1.5rem;
-    }
-
-    /* Discord - Normal size */
-    .btn.discord {
-      min-width: 220px;
-      background: linear-gradient(135deg, #5865F2, #7289DA);
-    }
-
-    .btn.discord:hover {
-      background: linear-gradient(135deg, #6a75f5, #8398e0);
-      transform: translateY(-3px) scale(1.05);
-    }
-
-    /* Instagram button - BIGGER */
-    .btn.instagram {
-      background: linear-gradient(45deg, 
-        rgba(64, 93, 230, 0.9), 
-        rgba(131, 58, 180, 0.9), 
-        rgba(225, 48, 108, 0.9), 
-        rgba(253, 29, 29, 0.9)
-      );
-    }
-
-    /* WhatsApp button - BIGGER */
-    .btn.whatsapp {
-      background: linear-gradient(135deg, rgba(37, 211, 102, 0.9), rgba(37, 211, 102, 0.9));
-    }
-
+    /* BUTTONS - RESPONSIVE */
     .btn {
-      padding: 15px 30px;
+      padding: 14px 25px;
       border-radius: 12px;
       color: white;
       text-decoration: none;
-      font-size: 1.3rem;
+      font-size: clamp(1.1rem, 4vw, 1.5rem);
       font-weight: 600;
       border: none;
       transition: all 0.3s ease;
@@ -293,15 +225,29 @@
       justify-content: center;
       backdrop-filter: blur(5px);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+      max-width: 350px;
+      min-height: 60px;
+      text-align: center;
     }
 
-    .btn:hover {
+    .btn:hover, .btn:active {
       transform: translateY(-3px) scale(1.05);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
-    .btn.instagram:hover {
+    /* Instagram button */
+    .btn.instagram {
+      background: linear-gradient(45deg, 
+        rgba(64, 93, 230, 0.9), 
+        rgba(131, 58, 180, 0.9), 
+        rgba(225, 48, 108, 0.9), 
+        rgba(253, 29, 29, 0.9)
+      );
+    }
+
+    .btn.instagram:hover, .btn.instagram:active {
       background: linear-gradient(45deg, 
         rgba(80, 109, 240, 1), 
         rgba(147, 74, 196, 1), 
@@ -310,21 +256,31 @@
       );
     }
 
-    .btn.whatsapp:hover {
+    /* WhatsApp button */
+    .btn.whatsapp {
+      background: linear-gradient(135deg, rgba(37, 211, 102, 0.9), rgba(37, 211, 102, 0.9));
+    }
+
+    .btn.whatsapp:hover, .btn.whatsapp:active {
       background: linear-gradient(135deg, rgb(47, 221, 112), rgb(47, 221, 112));
     }
 
-    .instagram-logo, .whatsapp-logo, .discord-logo {
-      width: 28px;
-      height: 28px;
-      margin-right: 15px;
-      filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+    /* Discord button */
+    .btn.discord {
+      background: linear-gradient(135deg, #5865F2, #7289DA);
+      max-width: 300px;
     }
 
-    /* BIGGER Instagram/WhatsApp icons */
-    .instagram-logo, .whatsapp-logo {
-      width: 30px;
-      height: 30px;
+    .btn.discord:hover, .btn.discord:active {
+      background: linear-gradient(135deg, #6a75f5, #8398e0);
+    }
+
+    /* Button Icons */
+    .instagram-logo, .whatsapp-logo, .discord-logo {
+      width: 24px;
+      height: 24px;
+      margin-right: 12px;
+      flex-shrink: 0;
     }
 
     .instagram-logo svg, .whatsapp-logo svg, .discord-logo svg {
@@ -332,39 +288,40 @@
       height: 100%;
     }
 
-    /* Rules Button */
+    /* Rules Button - RESPONSIVE */
     .rules-btn {
       position: fixed;
-      top: 20px;
-      right: 20px;
+      top: 15px;
+      right: 15px;
       background: rgba(0, 0, 0, 0.7);
       color: white;
-      padding: 10px 25px;
-      border-radius: 50px;
-      font-size: 1.2rem;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
       font-weight: 600;
       text-decoration: none;
       border: 2px solid rgba(255, 69, 0, 0.5);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       transition: all 0.3s ease;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(10px);
       z-index: 100;
+      white-space: nowrap;
     }
 
-    .rules-btn:hover {
+    .rules-btn:hover, .rules-btn:active {
       background: rgba(255, 69, 0, 0.8);
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(255, 69, 0, 0.4);
     }
 
     .rules-btn-icon {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
     }
 
-    /* Admin Panel Styles */
+    /* Admin Panel Styles - RESPONSIVE */
     .admin-panel {
       display: none;
       position: fixed;
@@ -372,33 +329,35 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.9);
+      background: rgba(0,0,0,0.95);
       z-index: 1000;
       align-items: center;
       justify-content: center;
+      padding: 20px;
     }
     
     .admin-content {
       background: rgba(20,20,20,0.95);
-      padding: 40px;
+      padding: 25px;
       border-radius: 15px;
       border: 2px solid #ff4500;
       text-align: center;
-      min-width: 350px;
+      width: 100%;
+      max-width: 400px;
       box-shadow: 0 0 50px rgba(255,69,0,0.3);
     }
     
     .admin-content h3 {
       color: #ff4500;
-      margin-bottom: 30px;
-      font-size: 24px;
+      margin-bottom: 20px;
+      font-size: clamp(1.3rem, 5vw, 24px);
     }
     
     .admin-input {
       padding: 12px;
-      font-size: 18px;
+      font-size: 16px;
       width: 100%;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       border-radius: 8px;
       border: 2px solid #444;
       background: rgba(255,255,255,0.1);
@@ -412,19 +371,20 @@
     }
     
     .admin-btn {
-      padding: 12px 24px;
+      padding: 12px 20px;
       background: #ff4500;
       color: white;
       border: none;
       border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
-      margin: 5px;
+      margin: 5px 0;
       width: 100%;
       font-weight: bold;
+      transition: all 0.3s ease;
     }
     
-    .admin-btn:hover {
+    .admin-btn:hover, .admin-btn:active {
       background: #ff5500;
     }
     
@@ -432,7 +392,7 @@
       background: #444;
     }
     
-    .admin-btn.secondary:hover {
+    .admin-btn.secondary:hover, .admin-btn.secondary:active {
       background: #555;
     }
     
@@ -458,7 +418,7 @@
       display: none;
     }
     
-    /* Admin access button (hidden but accessible) */
+    /* Admin access button */
     .admin-access {
       position: fixed;
       bottom: 10px;
@@ -473,8 +433,93 @@
       z-index: 999;
     }
     
-    .admin-access:hover {
+    .admin-access:hover, .admin-access:active {
       color: #999;
+    }
+
+    /* RESPONSIVE MEDIA QUERIES */
+    @media (min-width: 768px) {
+      body {
+        padding: 20px;
+      }
+      
+      .social-links-top {
+        flex-direction: row;
+        gap: 30px;
+      }
+      
+      .btn {
+        max-width: 280px;
+      }
+      
+      .rules-btn {
+        top: 20px;
+        right: 20px;
+        padding: 12px 25px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .social-links-top {
+        gap: 60px;
+      }
+      
+      .btn {
+        max-width: 300px;
+      }
+      
+      .world-box {
+        padding: 20px 40px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .rainbow-text {
+        letter-spacing: 0.5px;
+      }
+      
+      .world-box {
+        padding: 12px 20px;
+        border-radius: 20px;
+        width: 95%;
+      }
+      
+      .btn {
+        min-height: 55px;
+      }
+      
+      .rules-btn {
+        top: 10px;
+        right: 10px;
+        padding: 8px 15px;
+      }
+    }
+
+    /* Touch device optimizations */
+    @media (hover: none) and (pointer: coarse) {
+      .btn:hover {
+        transform: none;
+      }
+      
+      .btn:active {
+        transform: translateY(-2px) scale(1.03);
+      }
+      
+      .rules-btn:hover {
+        transform: none;
+      }
+      
+      .rules-btn:active {
+        transform: translateY(-2px);
+      }
+    }
+
+    /* Prevent text selection on buttons */
+    .btn, .rules-btn, .admin-btn {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
   </style>
 </head>
@@ -589,7 +634,9 @@
         } else {
           html += `<span style="--i: ${i}" 
                    onmouseover="bounceLetter(this)" 
-                   onmouseout="resetLetter(this)">${text[i]}</span>`;
+                   onmouseout="resetLetter(this)"
+                   ontouchstart="bounceLetter(this)"
+                   ontouchend="resetLetter(this)">${text[i]}</span>`;
         }
       }
       
@@ -725,6 +772,13 @@
       }
     });
     
+    // Touch device support
+    adminPanel.addEventListener('touchstart', function(e) {
+      if (e.target === this) {
+        closeAdminPanel();
+      }
+    });
+    
     adminPanel.addEventListener('click', function(e) {
       if (e.target === this) {
         closeAdminPanel();
@@ -749,8 +803,17 @@
       console.log('Discord: https://discord.gg/5BkyZkZm');
       console.log('WhatsApp: +961 81 050 883');
       console.log('Admin access: Ctrl+Alt+A or click Admin button');
-      console.log('✨ Hover over letters for special effects!');
     });
+    
+    // Mobile viewport height fix
+    function setViewportHeight() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    
+    window.addEventListener('resize', setViewportHeight);
+    window.addEventListener('orientationchange', setViewportHeight);
+    setViewportHeight();
   </script>
 </body>
 </html>
