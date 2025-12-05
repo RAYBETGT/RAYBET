@@ -4,177 +4,269 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raybet Casino</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js"></script>
+    
     <style>
-        /* ===== BASE STYLES ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            min-height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                        url('./PNG.jpeg') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
-        }
-
-        .overlay {
+        /* ===== SUPER ENTRANCE ANIMATION ===== */
+        .entrance-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeOut 1s ease 2.5s forwards;
         }
 
-        /* ===== MAIN CONTENT ===== */
-        .main-content {
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        .entrance-logo {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #ff4500;
             position: relative;
-            z-index: 2;
+        }
+
+        .entrance-logo span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: letterDrop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        .entrance-logo span:nth-child(1) { animation-delay: 0.1s; }
+        .entrance-logo span:nth-child(2) { animation-delay: 0.2s; }
+        .entrance-logo span:nth-child(3) { animation-delay: 0.3s; }
+        .entrance-logo span:nth-child(4) { animation-delay: 0.4s; }
+        .entrance-logo span:nth-child(5) { animation-delay: 0.5s; }
+        .entrance-logo span:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes letterDrop {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) rotate(10deg);
+                text-shadow: 0 0 0 rgba(255,69,0,0);
+            }
+            70% {
+                transform: translateY(-10px) rotate(-5deg);
+                text-shadow: 0 0 20px rgba(255,69,0,0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotate(0);
+                text-shadow: 0 0 10px rgba(255,69,0,0.5);
+            }
+        }
+
+        /* ===== BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), 
+                        url('./PNG.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            animation: contentFadeIn 1s ease 2.6s forwards;
+        }
+
+        @keyframes contentFadeIn {
+            to { opacity: 1; }
+        }
+
+        /* ===== ANNOUNCEMENT BAR WITH ANIMATION ===== */
+        .announcement-bar {
             width: 100%;
             max-width: 800px;
+            background: linear-gradient(90deg, #ff4500, #ff5500);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
             text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 20px rgba(255,69,0,0.4);
+            animation: slideDown 0.8s ease 2.8s both, pulseAnnouncement 2s infinite 3.5s;
+            transform: translateY(-50px);
+            opacity: 0;
         }
 
-        /* ===== TITLE ===== */
-        .title {
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            font-weight: 900;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+        @keyframes slideDown {
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .title span {
-            display: inline-block;
-            animation: rainbow 3s infinite;
-            animation-delay: calc(var(--i) * 0.1s);
+        @keyframes pulseAnnouncement {
+            0%, 100% { box-shadow: 0 5px 20px rgba(255,69,0,0.4); }
+            50% { box-shadow: 0 5px 30px rgba(255,69,0,0.7); }
         }
 
-        @keyframes rainbow {
-            0% { color: #ff0000; transform: translateY(0); }
-            25% { color: #00ff00; transform: translateY(-10px); }
-            50% { color: #0000ff; transform: translateY(0); }
-            75% { color: #ffff00; transform: translateY(5px); }
-            100% { color: #ff0000; transform: translateY(0); }
-        }
-
-        /* ===== WORLD BOX ===== */
+        /* ===== WORLD BOX WITH ANIMATION ===== */
         .world-box {
             background: rgba(0,0,0,0.85);
             border: 3px solid #ff4500;
-            border-radius: 20px;
+            border-radius: 15px;
             padding: 20px 30px;
-            margin: 30px 0;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5),
-                        0 0 30px rgba(255,69,0,0.3);
-            animation: pulse 2s infinite;
-            width: 90%;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 20px 0;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: worldPulse 2s infinite 3s, scaleIn 0.8s ease 3s both;
+            transform: scale(0.9);
+            opacity: 0;
         }
 
-        @keyframes pulse {
-            0%, 100% { 
-                box-shadow: 0 10px 30px rgba(0,0,0,0.5),
-                            0 0 30px rgba(255,69,0,0.3);
-                transform: scale(1);
-            }
-            50% { 
-                box-shadow: 0 10px 30px rgba(0,0,0,0.5),
-                            0 0 50px rgba(255,69,0,0.6);
-                transform: scale(1.02);
-            }
+        @keyframes worldPulse {
+            0%, 100% { box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(255,69,0,0.3); }
+            50% { box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 40px rgba(255,69,0,0.6); }
+        }
+
+        @keyframes scaleIn {
+            to { transform: scale(1); opacity: 1; }
         }
 
         .world-text {
-            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-size: 1.5rem;
             font-weight: 600;
-            margin: 0;
         }
 
         .world-name {
             color: #ff4500;
-            font-size: clamp(1.8rem, 6vw, 2.5rem);
+            font-size: 1.8rem;
             font-weight: 900;
-            text-shadow: 0 0 15px rgba(255,69,0,0.7);
-            display: inline-block;
-            margin-left: 10px;
+            text-shadow: 0 0 10px rgba(255,69,0,0.7);
+            animation: textGlow 2s infinite;
         }
 
-        /* ===== BUTTONS ===== */
-        .buttons-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255,69,0,0.7); }
+            50% { text-shadow: 0 0 20px rgba(255,69,0,1); }
+        }
+
+        /* ===== VIDEO REWARD SECTION WITH ANIMATION ===== */
+        .video-reward {
+            background: linear-gradient(135deg, #8B0000, #B22222);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
             width: 100%;
             max-width: 600px;
-            margin: 20px auto 0;
+            border: 2px solid #ff0000;
+            text-align: center;
+            animation: slideUp 0.8s ease 3.2s both, warningPulse 2s infinite 3.5s;
+            transform: translateY(50px);
+            opacity: 0;
         }
 
-        .social-row {
+        @keyframes slideUp {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes warningPulse {
+            0%, 100% { box-shadow: 0 5px 20px rgba(255,0,0,0.3); }
+            50% { box-shadow: 0 5px 30px rgba(255,0,0,0.6); }
+        }
+
+        .reward-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255,0,0,0.7);
+        }
+
+        .warning-note {
+            color: #ffcccc;
+            font-weight: 700;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,0,0,0.2);
+            border-radius: 8px;
+            border: 1px solid #ff0000;
+            animation: blinkWarning 1.5s infinite;
+        }
+
+        @keyframes blinkWarning {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* ===== BUTTONS WITH HOVER ANIMATION ===== */
+        .buttons-container {
             display: flex;
             flex-direction: column;
             gap: 15px;
             width: 100%;
+            max-width: 600px;
+            margin: 20px 0;
+            animation: fadeIn 1s ease 3.4s both;
+            opacity: 0;
         }
 
-        @media (min-width: 768px) {
-            .social-row {
-                flex-direction: row;
-                justify-content: center;
-            }
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
 
         .btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 16px 25px;
-            border-radius: 15px;
+            padding: 15px 20px;
+            border-radius: 10px;
             text-decoration: none;
-            font-size: clamp(1rem, 4vw, 1.2rem);
             font-weight: 700;
+            font-size: 1rem;
             border: none;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             width: 100%;
-            min-height: 60px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
         .btn:active {
-            transform: translateY(-1px);
-        }
-
-        .btn-icon {
-            width: 24px;
-            height: 24px;
-            margin-right: 12px;
-        }
-
-        .btn-icon svg {
-            width: 100%;
-            height: 100%;
+            transform: translateY(-2px) scale(1.02);
         }
 
         .btn-instagram {
@@ -190,34 +282,16 @@
         .btn-discord {
             background: linear-gradient(135deg, #5865F2, #7289DA);
             color: white;
-            max-width: 300px;
-            align-self: center;
         }
 
-        /* ===== RULES BUTTON ===== */
-        .rules-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1rem;
-            border: 2px solid #ff4500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 100;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+        .btn-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            transition: transform 0.3s;
         }
 
-        .rules-btn:hover {
-            background: rgba(255,69,0,0.8);
-            transform: translateY(-2px);
+        .btn:hover .btn-icon {
+            transform: scale(1.2) rotate(5deg);
         }
 
         /* ===== ADMIN PANEL ===== */
@@ -236,395 +310,575 @@
         }
 
         .admin-content {
-            background: rgba(30,30,30,0.95);
+            background: #1a1a1a;
             padding: 30px;
-            border-radius: 20px;
+            border-radius: 15px;
             width: 100%;
-            max-width: 400px;
+            max-width: 500px;
             border: 2px solid #ff4500;
             box-shadow: 0 0 50px rgba(255,69,0,0.3);
+            animation: adminSlideIn 0.5s ease;
+        }
+
+        @keyframes adminSlideIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         .admin-title {
             color: #ff4500;
-            font-size: 1.5rem;
             margin-bottom: 20px;
             text-align: center;
         }
 
         .admin-input {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             margin-bottom: 15px;
-            background: rgba(255,255,255,0.1);
+            background: #333;
             border: 2px solid #444;
-            border-radius: 10px;
+            border-radius: 8px;
             color: white;
             font-size: 1rem;
-            text-align: center;
         }
 
         .admin-input:focus {
-            outline: none;
             border-color: #ff4500;
-        }
-
-        .admin-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            outline: none;
         }
 
         .admin-btn {
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .admin-btn-primary {
+            width: 100%;
+            padding: 12px;
             background: #ff4500;
             color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
         }
 
-        .admin-btn-primary:hover {
+        .admin-btn:hover {
             background: #ff5500;
-        }
-
-        .admin-btn-secondary {
-            background: #444;
-            color: white;
-        }
-
-        .admin-btn-secondary:hover {
-            background: #555;
+            transform: translateY(-2px);
         }
 
         .message {
-            margin-top: 15px;
             padding: 10px;
             border-radius: 5px;
+            margin-top: 10px;
             text-align: center;
-            font-weight: 600;
             display: none;
+            animation: messagePop 0.3s ease;
         }
 
-        .error-message {
-            background: rgba(255,0,0,0.1);
-            color: #ff4444;
-            border: 1px solid #ff4444;
+        @keyframes messagePop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
-        .success-message {
+        .success {
             background: rgba(0,255,0,0.1);
-            color: #44ff44;
-            border: 1px solid #44ff44;
+            color: #0f0;
+            border: 1px solid #0f0;
+        }
+
+        .error {
+            background: rgba(255,0,0,0.1);
+            color: #f00;
+            border: 1px solid #f00;
+        }
+
+        .loading {
+            color: #ff9900;
+            text-align: center;
+            margin: 10px 0;
+            display: none;
         }
 
         .admin-access-btn {
             position: fixed;
-            bottom: 15px;
-            right: 15px;
-            background: rgba(0,0,0,0.5);
-            color: #888;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-size: 0.8rem;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255,69,0,0.2);
+            color: #ff4500;
+            border: 2px solid #ff4500;
+            padding: 10px 15px;
+            border-radius: 50px;
             cursor: pointer;
-            z-index: 99;
-            opacity: 0.3;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            animation: adminButtonFloat 3s ease-in-out infinite 4s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes adminButtonFloat {
+            0%, 100% { transform: translateY(0); box-shadow: 0 5px 15px rgba(255,69,0,0.3); }
+            50% { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(255,69,0,0.5); }
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         .admin-access-btn:hover {
-            opacity: 1;
+            background: rgba(255,69,0,0.4);
+            transform: scale(1.1);
         }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .world-box {
-                padding: 15px 20px;
-                width: 95%;
-            }
+            .entrance-logo { font-size: 3rem; }
+            .world-text { font-size: 1.3rem; }
+            .world-name { font-size: 1.5rem; }
+            .reward-title { font-size: 1.3rem; }
+            .btn { padding: 12px 15px; }
             
-            .btn {
-                padding: 14px 20px;
-            }
-            
-            .rules-btn {
-                top: 15px;
-                right: 15px;
-                padding: 10px 20px;
+            /* Reduce animations on mobile */
+            @media (prefers-reduced-motion: reduce) {
+                * {
+                    animation: none !important;
+                    transition: none !important;
+                }
             }
         }
 
-        @media (max-width: 480px) {
-            .title {
-                font-size: clamp(2rem, 7vw, 3rem);
-            }
-            
-            .world-name {
-                font-size: clamp(1.5rem, 5vw, 2rem);
-            }
+        /* ===== FLOATING BACKGROUND ELEMENTS ===== */
+        .floating-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .floating-element {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.1;
+            animation: floatElement 20s infinite linear;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 10%; left: 5%;
+            animation-delay: 0s;
+            animation-duration: 25s;
+        }
+        .floating-element:nth-child(2) {
+            top: 20%; right: 10%;
+            animation-delay: -5s;
+            animation-duration: 30s;
+        }
+        .floating-element:nth-child(3) {
+            bottom: 30%; left: 15%;
+            animation-delay: -10s;
+            animation-duration: 35s;
+        }
+
+        @keyframes floatElement {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, -20px) rotate(90deg); }
+            50% { transform: translate(0, -40px) rotate(180deg); }
+            75% { transform: translate(-20px, -20px) rotate(270deg); }
         }
     </style>
 </head>
 <body>
-    <!-- Dark Overlay -->
-    <div class="overlay"></div>
-
-    <!-- Rules Button -->
-    <a href="rules.html" class="rules-btn">
-        📜 Rules
-    </a>
-
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Animated Title -->
-        <h1 class="title" id="title"></h1>
-
-        <!-- World Link Box -->
-        <div class="world-box">
-            <p class="world-text">
-                NEWLINK: 
-                <span class="world-name" id="worldName"></span>
-            </p>
-        </div>
-
-        <!-- Social Media Buttons -->
-        <div class="buttons-container">
-            <!-- Instagram & WhatsApp Row -->
-            <div class="social-row">
-                <!-- Instagram -->
-                <a href="https://www.instagram.com/raybet.gt" target="_blank" class="btn btn-instagram">
-                    <span class="btn-icon">
-                        <svg viewBox="0 0 24 24" fill="white">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                        </svg>
-                    </span>
-                    Instagram
-                </a>
-
-                <!-- WhatsApp -->
-                <a href="https://wa.me/96181050883?text=Hello%20Raybet%20Team!%20I%20want%20to%20Buy/Sell%20BGLs" 
-                   target="_blank" 
-                   class="btn btn-whatsapp">
-                    <span class="btn-icon">
-                        <svg viewBox="0 0 24 24" fill="white">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411"/>
-                        </svg>
-                    </span>
-                    Buy / Sell BGLs
-                </a>
-            </div>
-
-            <!-- Discord Button -->
-            <a href="https://discord.gg/5BkyZkZm" target="_blank" class="btn btn-discord">
-                <span class="btn-icon">
-                    <svg viewBox="0 0 24 24" fill="white">
-                        <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515a.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0a12.64 12.64 0 00-.617-1.25a.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057a19.9 19.9 0 005.993 3.03a.078.078 0 00.084-.028a14.09 14.09 0 001.226-1.994a.076.076 0 00-.041-.106a13.107 13.107 0 01-1.872-.892a.077.077 0 01-.008-.128a10.2 10.2 0 00.372-.292a.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127a12.3 12.3 0 01-1.873.892a.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028a19.839 19.839 0 006.002-3.03a.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
-                    </svg>
-                </span>
-                Discord
-            </a>
+    <!-- ===== SUPER ENTRANCE ANIMATION ===== -->
+    <div class="entrance-overlay" id="entranceOverlay">
+        <div class="entrance-logo">
+            <span>R</span>
+            <span>A</span>
+            <span>Y</span>
+            <span>B</span>
+            <span>E</span>
+            <span>T</span>
         </div>
     </div>
 
-    <!-- Admin Panel -->
+    <!-- ===== FLOATING BACKGROUND ===== -->
+    <div class="floating-bg">
+        <div class="floating-element">♠</div>
+        <div class="floating-element">♥</div>
+        <div class="floating-element">♦</div>
+    </div>
+
+    <!-- ===== ANNOUNCEMENT BAR ===== -->
+    <div class="announcement-bar" id="announcementBar">
+        <span id="announcementText">🎉 WELCOME TO RAYBET CASINO! 🎉</span>
+    </div>
+
+    <!-- ===== WORLD BOX ===== -->
+    <div class="world-box">
+        <p class="world-text">
+            🌍 JOIN WORLD: <span class="world-name" id="worldName">RAYBET</span>
+        </p>
+    </div>
+
+    <!-- ===== VIDEO REWARD SECTION ===== -->
+    <div class="video-reward">
+        <div class="reward-title">🎬 UPLOAD VIDEO ABOUT OUR TEAM</div>
+        <p>Get 10 DOLLARS for each 1,000 views</p>
+        <div class="warning-note">🚫 DONT TRY USE FAKE - WE CAN DETECT!</div>
+    </div>
+
+    <!-- ===== SOCIAL BUTTONS ===== -->
+    <div class="buttons-container">
+        <a href="https://www.instagram.com/raybet.gt" target="_blank" class="btn btn-instagram">
+            <span class="btn-icon">📷</span>
+            Instagram
+        </a>
+        <a href="https://wa.me/96181050883?text=Hello%20Raybet%20Team!" target="_blank" class="btn btn-whatsapp">
+            <span class="btn-icon">💬</span>
+            WhatsApp
+        </a>
+        <a href="https://discord.gg/5BkyZkZm" target="_blank" class="btn btn-discord">
+            <span class="btn-icon">🎮</span>
+            Discord
+        </a>
+    </div>
+
+    <!-- ===== ADMIN PANEL ===== -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-content">
-            <h2 class="admin-title" id="adminTitle">🔒 Admin Login</h2>
+            <h2 class="admin-title">🔒 ADMIN LOGIN</h2>
             
             <div id="loginScreen">
                 <input type="password" 
                        id="adminPassword" 
                        class="admin-input" 
-                       placeholder="Enter Admin Password"
+                       placeholder="Owner Password"
                        autocomplete="off">
                 
-                <div class="admin-buttons">
-                    <button class="admin-btn admin-btn-primary" onclick="checkPassword()">
-                        Login
-                    </button>
-                    <button class="admin-btn admin-btn-secondary" onclick="closeAdminPanel()">
-                        Cancel
-                    </button>
+                <button class="admin-btn" onclick="adminLogin()">Login</button>
+                
+                <div class="message error" id="loginError">
+                    ❌ Wrong password!
                 </div>
                 
-                <div class="message error-message" id="loginError">
-                    ❌ Wrong password!
+                <div class="loading" id="loginLoading" style="display: none;">
+                    🔄 Connecting to database...
                 </div>
             </div>
             
             <div id="controlScreen" style="display: none;">
-                <input type="text" 
-                       id="newWorldName" 
-                       class="admin-input" 
-                       placeholder="New World Name"
-                       maxlength="20">
+                <h3 class="admin-title">⚙️ UPDATE FOR ALL USERS</h3>
                 
-                <div class="admin-buttons">
-                    <button class="admin-btn admin-btn-primary" onclick="showUpdateInstructions()">
-                        Update World Name
-                    </button>
-                    <button class="admin-btn admin-btn-secondary" onclick="logoutAdmin()">
-                        Logout
-                    </button>
+                <input type="text" 
+                       id="announcementInput" 
+                       class="admin-input" 
+                       placeholder="New Announcement">
+                
+                <input type="text" 
+                       id="worldNameInput" 
+                       class="admin-input" 
+                       placeholder="New World Name">
+                
+                <button class="admin-btn" onclick="updateWebsite()">
+                    ✅ Update for ALL Users
+                </button>
+                
+                <button class="admin-btn" onclick="logoutAdmin()" style="background: #444; margin-top: 10px;">
+                    🔓 Logout
+                </button>
+                
+                <div class="message success" id="updateSuccess">
+                    ✅ Updated for ALL users!
                 </div>
                 
-                <div class="message success-message" id="updateSuccess">
-                    ✅ Check instructions above
+                <div class="message error" id="updateError">
+                    ❌ Update failed!
+                </div>
+                
+                <div class="loading" id="updateLoading" style="display: none;">
+                    🔄 Saving to database...
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Admin Access Button -->
-    <button class="admin-access-btn" onclick="openAdminPanel()">Admin</button>
+    <!-- ADMIN ACCESS BUTTON -->
+    <button class="admin-access-btn" onclick="openAdminPanel()">🔧 Owner</button>
 
     <script>
         // ============================================
-        // ==== CHANGE THIS ONE VALUE ONLY! ===========
+        // ==== FIREBASE CONFIG =======================
         // ============================================
-        const WORLD_NAME = "RAYBET"; // <-- CHANGE ONLY THIS LINE!
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6c82EcBedDn78KUmHUCUhMwt5w7lpKjQ",
+            authDomain: "raybet-82ea0.firebaseapp.com",
+            projectId: "raybet-82ea0",
+            storageBucket: "raybet-82ea0.firebasestorage.app",
+            messagingSenderId: "851971186704",
+            appId: "1:851971186704:web:e20e3581ee97a3a7aeaa95"
+        };
+
         // ============================================
-        // ==== CHANGE THIS ONE VALUE ONLY! ===========
+        // ==== ADMIN PASSWORD ========================
         // ============================================
-        
         const ADMIN_PASSWORD = "mado81418093lss";
-        
-        // DOM Elements
-        const adminPanel = document.getElementById('adminPanel');
-        const loginScreen = document.getElementById('loginScreen');
-        const controlScreen = document.getElementById('controlScreen');
-        const worldNameElement = document.getElementById('worldName');
-        const titleElement = document.getElementById('title');
-        const loginError = document.getElementById('loginError');
-        const updateSuccess = document.getElementById('updateSuccess');
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set world name
-            worldNameElement.textContent = WORLD_NAME;
-            
-            // Create animated title
-            createAnimatedTitle();
-            
-            // Add keyboard shortcut
-            document.addEventListener('keydown', function(e) {
-                if (e.ctrlKey && e.altKey && e.key === 'a') {
-                    e.preventDefault();
-                    openAdminPanel();
-                }
-                if (e.key === 'Escape') {
-                    closeAdminPanel();
-                }
-            });
-            
-            console.log('✅ Website loaded with world name:', WORLD_NAME);
+
+        // ============================================
+        // ==== INITIALIZE ===========================
+        // ============================================
+        let db = null;
+        let isAdmin = false;
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Initialize Firebase
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                console.log("✅ Firebase connected!");
+
+                // Load data from Firebase
+                await loadWebsiteData();
+
+                // Listen for real-time updates
+                setupRealtimeUpdates();
+
+                // Remove entrance overlay after animation
+                setTimeout(() => {
+                    const overlay = document.getElementById('entranceOverlay');
+                    if (overlay) overlay.remove();
+                }, 3500);
+
+            } catch (error) {
+                console.error("Firebase error:", error);
+                loadLocalData();
+            }
         });
-        
-        // Create animated title
-        function createAnimatedTitle() {
-            const text = "RAYBET TEAM";
-            let html = '';
-            
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i];
-                if (char === ' ') {
-                    html += '<span>&nbsp;</span>';
+
+        // ============================================
+        // ==== LOAD DATA FROM FIREBASE ==============
+        // ============================================
+        async function loadWebsiteData() {
+            try {
+                const doc = await db.collection('website').doc('config').get();
+                
+                if (doc.exists) {
+                    const data = doc.data();
+                    
+                    // Update UI with Firebase data
+                    document.getElementById('announcementText').textContent = 
+                        data.announcement || "🎉 WELCOME TO RAYBET CASINO!";
+                    
+                    document.getElementById('worldName').textContent = 
+                        data.worldName || "RAYBET";
+                    
+                    console.log("✅ Data loaded from Firebase");
                 } else {
-                    html += `<span style="--i: ${i}">${char}</span>`;
+                    // Create default data
+                    await db.collection('website').doc('config').set({
+                        announcement: "🎉 WELCOME TO RAYBET CASINO!",
+                        worldName: "RAYBET",
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    console.log("✅ Default data created");
                 }
+            } catch (error) {
+                console.error("Error loading data:", error);
+                loadLocalData();
             }
-            
-            titleElement.innerHTML = html;
         }
-        
-        // Admin Functions
+
+        // ============================================
+        // ==== REALTIME UPDATES =====================
+        // ============================================
+        function setupRealtimeUpdates() {
+            db.collection('website').doc('config')
+                .onSnapshot((doc) => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        
+                        // Update UI in real-time
+                        document.getElementById('announcementText').textContent = 
+                            data.announcement || "🎉 WELCOME TO RAYBET CASINO!";
+                        
+                        document.getElementById('worldName').textContent = 
+                            data.worldName || "RAYBET";
+                        
+                        console.log("🔄 Real-time update received");
+                    }
+                }, (error) => {
+                    console.error("Realtime error:", error);
+                });
+        }
+
+        // ============================================
+        // ==== ADMIN FUNCTIONS ======================
+        // ============================================
         function openAdminPanel() {
-            const isLoggedIn = sessionStorage.getItem('raybetAdmin') === 'true';
-            
-            if (isLoggedIn) {
-                loginScreen.style.display = 'none';
-                controlScreen.style.display = 'block';
-                document.getElementById('adminTitle').textContent = '⚙️ Admin Controls';
-                document.getElementById('newWorldName').value = WORLD_NAME;
-                updateSuccess.style.display = 'none';
-            } else {
-                loginScreen.style.display = 'block';
-                controlScreen.style.display = 'none';
-                document.getElementById('adminTitle').textContent = '🔒 Admin Login';
-                document.getElementById('adminPassword').value = '';
-                loginError.style.display = 'none';
+            // SECURITY FIX: Check if user is logged in
+            if (!isAdmin) {
+                showLoginScreen();
             }
-            
-            adminPanel.style.display = 'flex';
+            document.getElementById('adminPanel').style.display = 'flex';
         }
-        
+
         function closeAdminPanel() {
-            adminPanel.style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            hideAllMessages();
         }
-        
-        function checkPassword() {
+
+        function showLoginScreen() {
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('controlScreen').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+            hideAllMessages();
+        }
+
+        function showControlScreen() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('controlScreen').style.display = 'block';
+            
+            // Load current values into inputs
+            document.getElementById('announcementInput').value = 
+                document.getElementById('announcementText').textContent;
+            
+            document.getElementById('worldNameInput').value = 
+                document.getElementById('worldName').textContent;
+            
+            hideAllMessages();
+        }
+
+        async function adminLogin() {
             const password = document.getElementById('adminPassword').value;
             
             if (password === ADMIN_PASSWORD) {
-                sessionStorage.setItem('raybetAdmin', 'true');
-                openAdminPanel();
+                document.getElementById('loginLoading').style.display = 'block';
+                
+                try {
+                    if (db) {
+                        isAdmin = true;
+                        showControlScreen();
+                        console.log("✅ Admin logged in");
+                    } else {
+                        alert("⚠️ Database not connected");
+                        isAdmin = true;
+                        showControlScreen();
+                    }
+                } catch (error) {
+                    console.error("Login error:", error);
+                    showMessage('loginError');
+                } finally {
+                    document.getElementById('loginLoading').style.display = 'none';
+                }
             } else {
-                loginError.style.display = 'block';
-                document.getElementById('adminPassword').value = '';
-                document.getElementById('adminPassword').focus();
+                showMessage('loginError');
             }
         }
-        
-        function showUpdateInstructions() {
-            const newName = document.getElementById('newWorldName').value.trim();
+
+        async function updateWebsite() {
+            const announcement = document.getElementById('announcementInput').value.trim();
+            const worldName = document.getElementById('worldNameInput').value.trim();
             
-            if (!newName || newName.length < 3) {
-                alert('Please enter a valid name (at least 3 characters)');
+            if (!announcement || !worldName) {
+                alert("Please fill all fields");
                 return;
             }
             
-            const instructions = `
-🔧 TO CHANGE WORLD NAME FOR ALL USERS:
-
-1. Go to: https://github.com/RAYBETGT/RAYBET
-2. Click "index.html"
-3. Click pencil icon (Edit)
-4. FIND LINE ~358 (search for: "RAYBET")
-5. Change "${WORLD_NAME}" to "${newName}"
-6. Click "Commit changes"
-7. Wait 1 minute
-
-📱 All users will see "${newName}" immediately!
-            `;
+            // SECURITY: Double check admin is logged in
+            if (!isAdmin) {
+                alert("❌ Please login first!");
+                showLoginScreen();
+                return;
+            }
             
-            alert(instructions);
+            document.getElementById('updateLoading').style.display = 'block';
+            hideAllMessages();
             
-            updateSuccess.textContent = `Follow the instructions above to update for everyone`;
-            updateSuccess.style.display = 'block';
-            
-            setTimeout(() => {
-                updateSuccess.style.display = 'none';
-            }, 5000);
+            try {
+                // Update Firebase
+                await db.collection('website').doc('config').set({
+                    announcement: announcement,
+                    worldName: worldName,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedBy: "admin",
+                    timestamp: Date.now()
+                }, { merge: true });
+                
+                showMessage('updateSuccess');
+                console.log("✅ Data saved to Firebase");
+                
+                // Close panel after 2 seconds
+                setTimeout(() => {
+                    closeAdminPanel();
+                }, 2000);
+                
+            } catch (error) {
+                console.error("Update error:", error);
+                showMessage('updateError');
+            } finally {
+                document.getElementById('updateLoading').style.display = 'none';
+            }
         }
-        
+
         function logoutAdmin() {
-            sessionStorage.removeItem('raybetAdmin');
+            isAdmin = false;
             closeAdminPanel();
+            console.log("🔓 Admin logged out");
         }
-        
+
+        // ============================================
+        // ==== HELPER FUNCTIONS =====================
+        // ============================================
+        function loadLocalData() {
+            document.getElementById('announcementText').textContent = 
+                localStorage.getItem('raybetAnnouncement') || "🎉 WELCOME TO RAYBET CASINO!";
+            
+            document.getElementById('worldName').textContent = 
+                localStorage.getItem('raybetWorldName') || "RAYBET";
+            
+            console.log("📱 Using local data");
+        }
+
+        function showMessage(elementId) {
+            hideAllMessages();
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 3000);
+        }
+
+        function hideAllMessages() {
+            document.querySelectorAll('.message, .loading').forEach(msg => {
+                msg.style.display = 'none';
+            });
+        }
+
         // Close panel when clicking outside
-        adminPanel.addEventListener('click', function(e) {
-            if (e.target === adminPanel) {
+        document.getElementById('adminPanel').addEventListener('click', function(e) {
+            if (e.target === this) {
                 closeAdminPanel();
             }
         });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.altKey && e.key === 'a') {
+                e.preventDefault();
+                openAdminPanel();
+            }
+            if (e.key === 'Escape') {
+                closeAdminPanel();
+            }
+        });
+
+        // Check if Firebase is working
+        setTimeout(() => {
+            if (!db) {
+                console.warn("⚠️ Firebase not connected - using local storage");
+                document.getElementById('announcementText').textContent = 
+                    "⚠️ Database offline - Using local data";
+            }
+        }, 5000);
     </script>
 </body>
 </html>
