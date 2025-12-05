@@ -5,68 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raybet Casino</title>
     
-    <!-- Use Firebase 8.10.0 - More stable -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js"></script>
     
     <style>
-        /* ===== SUPER ENTRANCE ANIMATION ===== */
-        .entrance-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: fadeOut 1s ease 2.5s forwards;
-        }
-
-        @keyframes fadeOut {
-            to { opacity: 0; visibility: hidden; }
-        }
-
-        .entrance-logo {
-            font-size: 4rem;
-            font-weight: 900;
-            color: #ff4500;
-            position: relative;
-        }
-
-        .entrance-logo span {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(50px);
-            animation: letterDrop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-        }
-
-        .entrance-logo span:nth-child(1) { animation-delay: 0.1s; }
-        .entrance-logo span:nth-child(2) { animation-delay: 0.2s; }
-        .entrance-logo span:nth-child(3) { animation-delay: 0.3s; }
-        .entrance-logo span:nth-child(4) { animation-delay: 0.4s; }
-        .entrance-logo span:nth-child(5) { animation-delay: 0.5s; }
-        .entrance-logo span:nth-child(6) { animation-delay: 0.6s; }
-
-        @keyframes letterDrop {
-            0% {
-                opacity: 0;
-                transform: translateY(50px) rotate(10deg);
-                text-shadow: 0 0 0 rgba(255,69,0,0);
-            }
-            70% {
-                transform: translateY(-10px) rotate(-5deg);
-                text-shadow: 0 0 20px rgba(255,69,0,0.8);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) rotate(0);
-                text-shadow: 0 0 10px rgba(255,69,0,0.5);
-            }
-        }
-
         /* ===== BASE STYLES ===== */
         * {
             margin: 0;
@@ -81,68 +24,274 @@
                         url('./PNG.jpeg') no-repeat center center fixed;
             background-size: cover;
             color: white;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Reduced motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+            .intro-screen {
+                display: none !important;
+            }
+            .main-content {
+                opacity: 1 !important;
+                display: block !important;
+            }
+            .letter {
+                animation: none !important;
+            }
+        }
+
+        /* ===== ENHANCED TEAM NAME WITH INDIVIDUAL LETTERS ===== */
+        .team-name {
+            position: fixed;
+            top: 10px;
+            left: 20px;
+            z-index: 100;
+            pointer-events: none;
+            animation: teamNameEntrance 1s ease-out 4s forwards;
+            opacity: 0;
+            display: flex;
+            gap: 2px;
+            flex-wrap: nowrap;
+        }
+
+        .letter-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .letter {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            position: relative;
+            display: inline-block;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
+            margin-right: 2px;
+        }
+
+        /* Individual moving rainbow inside each letter */
+        .letter::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                #ff0000,
+                #ff8800,
+                #ffff00,
+                #00ff00,
+                #0088ff,
+                #8800ff,
+                #ff0000
+            );
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbowMove 3s linear infinite;
+            z-index: -1;
+        }
+
+        .letter::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: transparent;
+            text-shadow: 
+                0 0 10px rgba(255,255,255,0.3),
+                0 0 20px rgba(255,255,255,0.2),
+                0 0 30px rgba(255,255,255,0.1);
+            z-index: -2;
+        }
+
+        /* Different animation delays for each letter for wave effect */
+        .letter:nth-child(1)::before { animation-delay: 0s; } /* R */
+        .letter:nth-child(2)::before { animation-delay: 0.2s; } /* A */
+        .letter:nth-child(3)::before { animation-delay: 0.4s; } /* Y */
+        .letter:nth-child(4)::before { animation-delay: 0.6s; } /* B */
+        .letter:nth-child(5)::before { animation-delay: 0.8s; } /* E */
+        .letter:nth-child(6)::before { animation-delay: 1.0s; } /* T */
+        .letter:nth-child(7)::before { animation-delay: 1.2s; } /*   */
+        .letter:nth-child(8)::before { animation-delay: 1.4s; } /* T */
+        .letter:nth-child(9)::before { animation-delay: 1.6s; } /* E */
+        .letter:nth-child(10)::before { animation-delay: 1.8s; } /* A */
+        .letter:nth-child(11)::before { animation-delay: 2.0s; } /* M */
+
+        /* Letter bounce effect */
+        .letter {
+            animation: letterBounce 4s ease-in-out infinite;
+        }
+
+        .letter:nth-child(1) { animation-delay: 0s; }
+        .letter:nth-child(2) { animation-delay: 0.1s; }
+        .letter:nth-child(3) { animation-delay: 0.2s; }
+        .letter:nth-child(4) { animation-delay: 0.3s; }
+        .letter:nth-child(5) { animation-delay: 0.4s; }
+        .letter:nth-child(6) { animation-delay: 0.5s; }
+        .letter:nth-child(7) { animation-delay: 0.6s; }
+        .letter:nth-child(8) { animation-delay: 0.7s; }
+        .letter:nth-child(9) { animation-delay: 0.8s; }
+        .letter:nth-child(10) { animation-delay: 0.9s; }
+        .letter:nth-child(11) { animation-delay: 1.0s; }
+
+        /* ===== INTRO SCREEN ===== */
+        .intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000000, #1a0000, #330000);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: introBackground 4s ease-out forwards;
+        }
+
+        .intro-logo {
+            position: relative;
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: transparent;
+            background: linear-gradient(45deg, #ff4500, #ff9900, #ff4500);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: introText 3s ease-out forwards;
+            text-shadow: 0 0 50px rgba(255, 69, 0, 0.5);
+            font-family: 'Impact', 'Arial Black', sans-serif;
+        }
+
+        /* ===== MAIN CONTENT CONTAINER ===== */
+        .main-content {
+            opacity: 0;
+            animation: fadeInMain 1s ease-out 4s forwards;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-            opacity: 0;
-            animation: contentFadeIn 1s ease 2.6s forwards;
+            justify-content: center;
+            min-height: 100vh;
+            padding-top: 120px;
         }
 
-        @keyframes contentFadeIn {
-            to { opacity: 1; }
+        /* Content wrapper for centering */
+        .content-wrapper {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
         }
 
-        /* ===== ANNOUNCEMENT BAR WITH ANIMATION ===== */
+        /* ===== ANNOUNCEMENT BAR ===== */
         .announcement-bar {
             width: 100%;
-            max-width: 800px;
             background: linear-gradient(90deg, #ff4500, #ff5500);
             color: white;
             padding: 15px;
             border-radius: 10px;
-            margin-bottom: 20px;
             text-align: center;
             font-weight: 700;
             font-size: 1.1rem;
             box-shadow: 0 5px 20px rgba(255,69,0,0.4);
-            animation: slideDown 0.8s ease 2.8s both, pulseAnnouncement 2s infinite 3.5s;
-            transform: translateY(-50px);
-            opacity: 0;
+            animation: slideDown 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
         }
 
-        @keyframes slideDown {
-            to { transform: translateY(0); opacity: 1; }
+        /* ===== EVENT TIMER SECTION ===== */
+        .event-timer {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.9), rgba(178, 34, 34, 0.9));
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            border: 2px solid #ff9900;
+            text-align: center;
+            animation: fadeInUp 1s ease-out 0.3s both;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        @keyframes pulseAnnouncement {
-            0%, 100% { box-shadow: 0 5px 20px rgba(255,69,0,0.4); }
-            50% { box-shadow: 0 5px 30px rgba(255,69,0,0.7); }
+        .timer-title {
+            color: #ffcc00;
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255,204,0,0.5);
         }
 
-        /* ===== WORLD BOX WITH ANIMATION ===== */
+        .timer-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .timer-unit {
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            padding: 15px 10px;
+            min-width: 80px;
+            border: 2px solid #ff4500;
+        }
+
+        .timer-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #ff4500;
+            text-shadow: 0 0 10px rgba(255,69,0,0.7);
+        }
+
+        .timer-label {
+            font-size: 0.9rem;
+            color: #ffcc00;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .event-name {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255,69,0,0.2);
+            border-radius: 8px;
+            border: 1px solid #ff9900;
+        }
+
+        /* ===== WORLD BOX ===== */
         .world-box {
             background: rgba(0,0,0,0.85);
             border: 3px solid #ff4500;
             border-radius: 15px;
             padding: 20px 30px;
-            margin: 20px 0;
             width: 100%;
-            max-width: 600px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: worldPulse 2s infinite 3s, scaleIn 0.8s ease 3s both;
-            transform: scale(0.9);
-            opacity: 0;
-        }
-
-        @keyframes worldPulse {
-            0%, 100% { box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(255,69,0,0.3); }
-            50% { box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 40px rgba(255,69,0,0.6); }
-        }
-
-        @keyframes scaleIn {
-            to { transform: scale(1); opacity: 1; }
+            animation: fadeInUp 1s ease-out 0.2s both;
         }
 
         .world-text {
@@ -155,36 +304,17 @@
             font-size: 1.8rem;
             font-weight: 900;
             text-shadow: 0 0 10px rgba(255,69,0,0.7);
-            animation: textGlow 2s infinite;
         }
 
-        @keyframes textGlow {
-            0%, 100% { text-shadow: 0 0 10px rgba(255,69,0,0.7); }
-            50% { text-shadow: 0 0 20px rgba(255,69,0,1); }
-        }
-
-        /* ===== VIDEO REWARD SECTION WITH ANIMATION ===== */
+        /* ===== VIDEO REWARD SECTION - UPDATED TEXT ===== */
         .video-reward {
             background: linear-gradient(135deg, #8B0000, #B22222);
             border-radius: 15px;
             padding: 20px;
-            margin: 20px 0;
             width: 100%;
-            max-width: 600px;
             border: 2px solid #ff0000;
             text-align: center;
-            animation: slideUp 0.8s ease 3.2s both, warningPulse 2s infinite 3.5s;
-            transform: translateY(50px);
-            opacity: 0;
-        }
-
-        @keyframes slideUp {
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes warningPulse {
-            0%, 100% { box-shadow: 0 5px 20px rgba(255,0,0,0.3); }
-            50% { box-shadow: 0 5px 30px rgba(255,0,0,0.6); }
+            animation: fadeInUp 1s ease-out 0.4s both;
         }
 
         .reward-title {
@@ -203,28 +333,77 @@
             background: rgba(255,0,0,0.2);
             border-radius: 8px;
             border: 1px solid #ff0000;
-            animation: blinkWarning 1.5s infinite;
         }
 
-        @keyframes blinkWarning {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+        /* ===== SPECIAL SECTIONS CONTAINER ===== */
+        .special-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
         }
 
-        /* ===== BUTTONS WITH HOVER ANIMATION ===== */
+        /* PROBLEMS NUMBER Section - ONLY THIS REMAINS */
+        .problems-section {
+            background: linear-gradient(135deg, #4B0082, #8A2BE2);
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            border: 2px solid #9370DB;
+            text-align: center;
+            animation: fadeInUp 1s ease-out 0.5s both;
+            box-shadow: 0 5px 15px rgba(147,112,219,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .problems-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(147,112,219,0.4);
+        }
+
+        .problems-title {
+            color: #d8bfd8;
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(216,191,216,0.7);
+        }
+
+        .phone-number {
+            color: #00ff00;
+            font-size: 1.3rem;
+            font-weight: 900;
+            padding: 12px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            border: 2px solid #00ff00;
+            margin: 15px 0;
+            display: inline-block;
+            text-shadow: 0 0 10px rgba(0,255,0,0.5);
+            animation: phonePulse 2s infinite;
+        }
+
+        .support-click-note {
+            color: #9370DB;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 15px;
+            padding: 8px;
+            background: rgba(147,112,219,0.1);
+            border-radius: 8px;
+            border: 1px dashed #9370DB;
+        }
+
+        /* ===== BUTTONS ===== */
         .buttons-container {
             display: flex;
             flex-direction: column;
             gap: 15px;
             width: 100%;
-            max-width: 600px;
-            margin: 20px 0;
-            animation: fadeIn 1s ease 3.4s both;
-            opacity: 0;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
+            animation: fadeInUp 1s ease-out 0.6s both;
         }
 
         .btn {
@@ -238,35 +417,15 @@
             font-size: 1rem;
             border: none;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             width: 100%;
             position: relative;
             overflow: hidden;
-            transform-style: preserve-3d;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.6s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
         }
 
         .btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
-
-        .btn:active {
-            transform: translateY(-2px) scale(1.02);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
 
         .btn-instagram {
@@ -287,34 +446,6 @@
         .btn-icon {
             margin-right: 10px;
             font-size: 1.2rem;
-            transition: transform 0.3s;
-        }
-
-        .btn:hover .btn-icon {
-            transform: scale(1.2) rotate(5deg);
-        }
-
-        /* ===== DATABASE STATUS INDICATOR ===== */
-        .db-status {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.7);
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            z-index: 100;
-            backdrop-filter: blur(5px);
-        }
-
-        .db-online {
-            color: #0f0;
-            border: 1px solid #0f0;
-        }
-
-        .db-offline {
-            color: #ff9900;
-            border: 1px solid #ff9900;
         }
 
         /* ===== ADMIN PANEL ===== */
@@ -330,6 +461,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            animation: fadeIn 0.3s ease-out;
         }
 
         .admin-content {
@@ -339,13 +471,7 @@
             width: 100%;
             max-width: 500px;
             border: 2px solid #ff4500;
-            box-shadow: 0 0 50px rgba(255,69,0,0.3);
-            animation: adminSlideIn 0.5s ease;
-        }
-
-        @keyframes adminSlideIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            box-shadow: 0 0 30px rgba(255,69,0,0.3);
         }
 
         .admin-title {
@@ -354,15 +480,30 @@
             text-align: center;
         }
 
+        .admin-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,69,0,0.1);
+            border-radius: 10px;
+            border-left: 4px solid #ff4500;
+        }
+
+        .admin-section-title {
+            color: #ffcc00;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
         .admin-input {
             width: 100%;
             padding: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             background: #333;
             border: 2px solid #444;
             border-radius: 8px;
             color: white;
             font-size: 1rem;
+            transition: border-color 0.3s;
         }
 
         .admin-input:focus {
@@ -394,12 +535,6 @@
             margin-top: 10px;
             text-align: center;
             display: none;
-            animation: messagePop 0.3s ease;
-        }
-
-        @keyframes messagePop {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
         }
 
         .success {
@@ -421,6 +556,7 @@
             display: none;
         }
 
+        /* ===== ADMIN ACCESS BUTTON ===== */
         .admin-access-btn {
             position: fixed;
             bottom: 20px;
@@ -428,93 +564,317 @@
             background: rgba(255,69,0,0.2);
             color: #ff4500;
             border: 2px solid #ff4500;
-            padding: 10px 15px;
+            padding: 12px 16px;
             border-radius: 50px;
             cursor: pointer;
             z-index: 100;
-            backdrop-filter: blur(10px);
+            font-weight: bold;
             transition: all 0.3s;
-            animation: adminButtonFloat 3s ease-in-out infinite 4s;
-            opacity: 0;
-            animation-fill-mode: forwards;
-        }
-
-        @keyframes adminButtonFloat {
-            0%, 100% { transform: translateY(0); box-shadow: 0 5px 15px rgba(255,69,0,0.3); }
-            50% { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(255,69,0,0.5); }
-            0% { opacity: 0; }
-            100% { opacity: 1; }
         }
 
         .admin-access-btn:hover {
-            background: rgba(255,69,0,0.4);
+            background: rgba(255,69,0,0.3);
             transform: scale(1.1);
+        }
+
+        /* ===== ANIMATION KEYFRAMES ===== */
+        @keyframes teamNameEntrance {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes rainbowMove {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 400% 50%;
+            }
+        }
+
+        @keyframes letterBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes phonePulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(0,255,0,0.5);
+            }
+            50% {
+                transform: scale(1.03);
+                box-shadow: 0 0 20px rgba(0,255,0,0.8);
+            }
+        }
+
+        @keyframes introBackground {
+            0% {
+                background: linear-gradient(135deg, #000000, #000000, #000000);
+                opacity: 1;
+            }
+            70% {
+                background: linear-gradient(135deg, #660000, #330000, #990000);
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                display: none;
+            }
+        }
+
+        @keyframes introText {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            40% {
+                transform: scale(1);
+                text-shadow: 0 0 30px rgba(255, 69, 0, 0.8);
+            }
+            80% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes fadeInMain {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .entrance-logo { font-size: 3rem; }
+            .team-name {
+                top: 15px;
+                left: 15px;
+            }
+            
+            .letter {
+                font-size: 2.5rem;
+            }
+            
+            .intro-logo {
+                font-size: 3.5rem;
+                letter-spacing: 3px;
+            }
+            
+            .main-content {
+                padding-top: 100px;
+            }
+            
             .world-text { font-size: 1.3rem; }
             .world-name { font-size: 1.5rem; }
             .reward-title { font-size: 1.3rem; }
+            .problems-title { font-size: 1.3rem; }
             .btn { padding: 12px 15px; }
+            .timer-display { gap: 10px; }
+            .timer-unit { min-width: 70px; padding: 12px 8px; }
+            .timer-value { font-size: 1.7rem; }
+            .timer-title { font-size: 1.3rem; }
+            .admin-content { padding: 20px; }
+            .content-wrapper {
+                padding: 0 15px;
+            }
+            .phone-number {
+                font-size: 1.1rem;
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .team-name {
+                top: 10px;
+                left: 10px;
+            }
+            
+            .letter {
+                font-size: 2rem;
+                margin-right: 1px;
+            }
+            
+            .intro-logo {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+            
+            .timer-display {
+                gap: 8px;
+            }
+            .timer-unit {
+                min-width: 60px;
+                padding: 10px 5px;
+            }
+            .timer-value {
+                font-size: 1.5rem;
+            }
+            .content-wrapper {
+                padding: 0 10px;
+            }
+            .phone-number {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .letter {
+                font-size: 1.6rem;
+            }
+            .team-name {
+                gap: 1px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- ===== SUPER ENTRANCE ANIMATION ===== -->
-    <div class="entrance-overlay" id="entranceOverlay">
-        <div class="entrance-logo">
-            <span>R</span>
-            <span>A</span>
-            <span>Y</span>
-            <span>B</span>
-            <span>E</span>
-            <span>T</span>
+    <!-- ENHANCED RAINBOW TEAM NAME -->
+    <div class="team-name">
+        <span class="letter" data-text="R">R</span>
+        <span class="letter" data-text="A">A</span>
+        <span class="letter" data-text="Y">Y</span>
+        <span class="letter" data-text="B">B</span>
+        <span class="letter" data-text="E">E</span>
+        <span class="letter" data-text="T">T</span>
+        <span class="letter" data-text=" "> </span>
+        <span class="letter" data-text="T">T</span>
+        <span class="letter" data-text="E">E</span>
+        <span class="letter" data-text="A">A</span>
+        <span class="letter" data-text="M">M</span>
+    </div>
+
+    <!-- INTRO SCREEN -->
+    <div class="intro-screen" id="introScreen">
+        <div class="intro-logo" id="introLogo">RAYBET</div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content" id="mainContent">
+        <div class="content-wrapper">
+            <!-- ANNOUNCEMENT BAR -->
+            <div class="announcement-bar" id="announcementBar">
+                <span id="announcementText">Loading announcement...</span>
+            </div>
+
+            <!-- WORLD BOX -->
+            <div class="world-box">
+                <p class="world-text">
+                    🌍 JOIN WORLD: <span class="world-name" id="worldName">Loading...</span>
+                </p>
+            </div>
+
+            <!-- EVENT TIMER SECTION -->
+            <div class="event-timer" id="eventTimer">
+                <div class="timer-title" id="timerTitle">🎯 NEXT BIG EVENT</div>
+                <div class="timer-display">
+                    <div class="timer-unit">
+                        <div class="timer-value" id="days">00</div>
+                        <div class="timer-label">Days</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-value" id="hours">00</div>
+                        <div class="timer-label">Hours</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-value" id="minutes">00</div>
+                        <div class="timer-label">Minutes</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-value" id="seconds">00</div>
+                        <div class="timer-label">Seconds</div>
+                    </div>
+                </div>
+                <div class="event-name" id="eventName">Loading event...</div>
+            </div>
+
+            <!-- VIDEO REWARD SECTION - UPDATED TEXT -->
+            <div class="video-reward">
+                <div class="reward-title">🎬 UPLOAD VIDEO ABOUT OUR TEAM</div>
+                <p>Get 10 DLS for each 1,000 views</p>
+                <div class="warning-note">🚫 DONT TRY USE FAKE - WE CAN DETECT!</div>
+            </div>
+
+            <!-- SPECIAL SECTIONS - ONLY PROBLEMS SECTION REMAINS -->
+            <div class="special-sections">
+                <!-- PROBLEMS NUMBER SECTION -->
+                <div class="problems-section" onclick="openSupportWhatsApp()">
+                    <div class="problems-title">📞 PROBLEMS / SUPPORT</div>
+                    <p>Contact us for any issues or questions</p>
+                    <div class="phone-number">+961 81 050 883</div>
+                    <p>24/7 Support Available</p>
+                    <div class="support-click-note">
+                        📱 CLICK HERE TO CONTACT SUPPORT ON WHATSAPP
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOCIAL BUTTONS -->
+            <div class="buttons-container">
+                <a href="https://www.instagram.com/raybet.gt" target="_blank" class="btn btn-instagram">
+                    <span class="btn-icon">📷</span>
+                    Instagram
+                </a>
+                <a href="https://wa.me/96181050883?text=Hello%20Raybet%20Team!" target="_blank" class="btn btn-whatsapp">
+                    <span class="btn-icon">💬</span>
+                    WhatsApp
+                </a>
+                <a href="https://discord.gg/5BkyZkZm" target="_blank" class="btn btn-discord">
+                    <span class="btn-icon">🎮</span>
+                    Discord
+                </a>
+            </div>
         </div>
     </div>
 
-    <!-- ===== DATABASE STATUS ===== -->
-    <div class="db-status" id="dbStatus">
-        🔄 Connecting...
-    </div>
-
-    <!-- ===== ANNOUNCEMENT BAR ===== -->
-    <div class="announcement-bar" id="announcementBar">
-        <span id="announcementText">🎉 WELCOME TO RAYBET CASINO! 🎉</span>
-    </div>
-
-    <!-- ===== WORLD BOX ===== -->
-    <div class="world-box">
-        <p class="world-text">
-            🌍 JOIN WORLD: <span class="world-name" id="worldName">RAYBET</span>
-        </p>
-    </div>
-
-    <!-- ===== VIDEO REWARD SECTION ===== -->
-    <div class="video-reward">
-        <div class="reward-title">🎬 UPLOAD VIDEO ABOUT OUR TEAM</div>
-        <p>Get 10 DOLLARS for each 1,000 views</p>
-        <div class="warning-note">🚫 DONT TRY USE FAKE - WE CAN DETECT!</div>
-    </div>
-
-    <!-- ===== SOCIAL BUTTONS ===== -->
-    <div class="buttons-container">
-        <a href="https://www.instagram.com/raybet.gt" target="_blank" class="btn btn-instagram">
-            <span class="btn-icon">📷</span>
-            Instagram
-        </a>
-        <a href="https://wa.me/96181050883?text=Hello%20Raybet%20Team!" target="_blank" class="btn btn-whatsapp">
-            <span class="btn-icon">💬</span>
-            WhatsApp
-        </a>
-        <a href="https://discord.gg/5BkyZkZm" target="_blank" class="btn btn-discord">
-            <span class="btn-icon">🎮</span>
-            Discord
-        </a>
-    </div>
-
-    <!-- ===== ADMIN PANEL ===== -->
+    <!-- ADMIN PANEL -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-content">
             <h2 class="admin-title">🔒 ADMIN LOGIN</h2>
@@ -532,41 +892,67 @@
                     ❌ Wrong password!
                 </div>
                 
-                <div class="loading" id="loginLoading" style="display: none;">
+                <div class="loading" id="loginLoading">
                     🔄 Connecting to database...
                 </div>
             </div>
             
             <div id="controlScreen" style="display: none;">
-                <h3 class="admin-title">⚙️ UPDATE FOR ALL USERS</h3>
+                <h3 class="admin-title">⚙️ ADMIN CONTROL PANEL</h3>
                 
-                <input type="text" 
-                       id="announcementInput" 
-                       class="admin-input" 
-                       placeholder="New Announcement">
+                <!-- Website Content Section -->
+                <div class="admin-section">
+                    <div class="admin-section-title">📢 WEBSITE CONTENT</div>
+                    
+                    <input type="text" 
+                           id="announcementInput" 
+                           class="admin-input" 
+                           placeholder="New Announcement">
+                    
+                    <input type="text" 
+                           id="worldNameInput" 
+                           class="admin-input" 
+                           placeholder="New World Name">
+                </div>
                 
-                <input type="text" 
-                       id="worldNameInput" 
-                       class="admin-input" 
-                       placeholder="New World Name">
+                <!-- Event Timer Section -->
+                <div class="admin-section">
+                    <div class="admin-section-title">⏰ EVENT TIMER SETTINGS</div>
+                    
+                    <input type="text" 
+                           id="eventNameInput" 
+                           class="admin-input" 
+                           placeholder="Event Name (e.g., 'Tournament Final')">
+                    
+                    <input type="datetime-local" 
+                           id="eventDateInput" 
+                           class="admin-input" 
+                           placeholder="Event Date & Time">
+                    
+                    <small style="color: #ff9900; display: block; margin-bottom: 10px;">
+                        Set future date & time for the event countdown
+                    </small>
+                </div>
                 
+                <!-- Action Buttons -->
                 <button class="admin-btn" onclick="updateWebsite()">
-                    ✅ Update for ALL Users
+                    ✅ Update ALL Settings
                 </button>
                 
                 <button class="admin-btn" onclick="logoutAdmin()" style="background: #444; margin-top: 10px;">
                     🔓 Logout
                 </button>
                 
+                <!-- Messages -->
                 <div class="message success" id="updateSuccess">
-                    ✅ Updated for ALL users!
+                    ✅ Website updated successfully for ALL users!
                 </div>
                 
                 <div class="message error" id="updateError">
-                    ❌ Update failed!
+                    ❌ Update failed! Check console for details.
                 </div>
                 
-                <div class="loading" id="updateLoading" style="display: none;">
+                <div class="loading" id="updateLoading">
                     🔄 Saving to database...
                 </div>
             </div>
@@ -595,63 +981,64 @@
         const ADMIN_PASSWORD = "mado81418093lss";
 
         // ============================================
-        // ==== INITIALIZE ===========================
+        // ==== GLOBAL VARIABLES ======================
         // ============================================
         let db = null;
         let isAdmin = false;
-        let firebaseInitialized = false;
+        let timerInterval = null;
+        let currentEventEndDate = null;
 
+        // ============================================
+        // ==== WHATSAPP AUTO-OPEN FUNCTIONS ==========
+        // ============================================
+        function openSupportWhatsApp() {
+            const phoneNumber = "96181050883";
+            const message = "Hello Raybet Support! I have a problem/issue that needs assistance.";
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            window.open(whatsappUrl, '_blank');
+            console.log("📱 Opening WhatsApp for Support");
+        }
+
+        // ============================================
+        // ==== INITIALIZATION ========================
+        // ============================================
         document.addEventListener('DOMContentLoaded', async function() {
-            try {
-                // Initialize Firebase
-                firebase.initializeApp(firebaseConfig);
-                db = firebase.firestore();
-                firebaseInitialized = true;
-                
-                console.log("✅ Firebase connected!");
-                updateDbStatus("✅ Database Online", "db-online");
-                
-                // Enable Firestore persistence
-                db.enablePersistence()
-                    .catch((err) => {
-                        console.log("Persistence failed:", err);
-                    });
+            // Start intro animation
+            startIntroAnimation();
+            
+            // After intro animation completes, load everything else
+            setTimeout(async () => {
+                try {
+                    // Initialize Firebase
+                    firebase.initializeApp(firebaseConfig);
+                    db = firebase.firestore();
+                    console.log("✅ Firebase connected!");
 
-                // Load data from Firebase
-                await loadWebsiteData();
+                    // Load data from Firebase
+                    await loadWebsiteData();
 
-                // Listen for real-time updates
-                setupRealtimeUpdates();
+                    // Listen for real-time updates
+                    setupRealtimeUpdates();
 
-                // Remove entrance overlay after animation
-                setTimeout(() => {
-                    const overlay = document.getElementById('entranceOverlay');
-                    if (overlay) overlay.remove();
-                }, 3500);
-
-            } catch (error) {
-                console.error("Firebase error:", error);
-                updateDbStatus("⚠️ Database Offline", "db-offline");
-                loadLocalData();
-                showDbError();
-            }
+                } catch (error) {
+                    console.error("Firebase error:", error);
+                    loadLocalData();
+                    startDefaultTimer();
+                }
+            }, 3500); // Wait for intro to finish
         });
 
         // ============================================
-        // ==== UPDATE DATABASE STATUS ===============
+        // ==== INTRO ANIMATION FUNCTIONS =============
         // ============================================
-        function updateDbStatus(message, className) {
-            const statusEl = document.getElementById('dbStatus');
-            statusEl.textContent = message;
-            statusEl.className = `db-status ${className}`;
-        }
-
-        function showDbError() {
-            // Show error in announcement bar
-            const announcement = document.getElementById('announcementText');
-            if (announcement.textContent.includes("WELCOME")) {
-                announcement.textContent = "⚠️ Database Offline - Using Local Data";
-            }
+        function startIntroAnimation() {
+            const introScreen = document.getElementById('introScreen');
+            
+            // Remove intro screen after animation completes
+            setTimeout(() => {
+                introScreen.style.display = 'none';
+            }, 4000);
         }
 
         // ============================================
@@ -659,37 +1046,112 @@
         // ============================================
         async function loadWebsiteData() {
             try {
-                if (!firebaseInitialized) {
-                    throw new Error("Firebase not initialized");
-                }
-
                 const doc = await db.collection('website').doc('config').get();
                 
                 if (doc.exists) {
                     const data = doc.data();
                     
                     // Update UI with Firebase data
-                    document.getElementById('announcementText').textContent = 
-                        data.announcement || "🎉 WELCOME TO RAYBET CASINO!";
-                    
-                    document.getElementById('worldName').textContent = 
-                        data.worldName || "RAYBET";
-                    
+                    updateUIFromData(data);
                     console.log("✅ Data loaded from Firebase");
-                    updateDbStatus("✅ Database Synced", "db-online");
+                    
+                    // Start timer if event date exists
+                    if (data.eventEndDate) {
+                        currentEventEndDate = new Date(data.eventEndDate);
+                        startTimer();
+                    } else {
+                        startDefaultTimer();
+                    }
                 } else {
                     // Create default data
-                    await db.collection('website').doc('config').set({
+                    const defaultData = {
                         announcement: "🎉 WELCOME TO RAYBET CASINO!",
                         worldName: "RAYBET",
+                        eventName: "NEXT TOURNAMENT",
+                        eventEndDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
                         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+                    };
+                    
+                    await db.collection('website').doc('config').set(defaultData);
+                    updateUIFromData(defaultData);
+                    currentEventEndDate = new Date(defaultData.eventEndDate);
+                    startTimer();
                     console.log("✅ Default data created");
                 }
             } catch (error) {
                 console.error("Error loading data:", error);
-                updateDbStatus("⚠️ Connection Failed", "db-offline");
                 loadLocalData();
+                startDefaultTimer();
+            }
+        }
+
+        function updateUIFromData(data) {
+            document.getElementById('announcementText').textContent = 
+                data.announcement || "🎉 WELCOME TO RAYBET CASINO!";
+            
+            document.getElementById('worldName').textContent = 
+                data.worldName || "RAYBET";
+            
+            document.getElementById('timerTitle').textContent = 
+                data.eventName ? `🎯 ${data.eventName}` : "🎯 NEXT BIG EVENT";
+            
+            document.getElementById('eventName').textContent = 
+                data.eventName || "Tournament Countdown";
+        }
+
+        // ============================================
+        // ==== EVENT TIMER FUNCTIONS ================
+        // ============================================
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                updateTimerDisplay();
+            }, 1000);
+            
+            // Initial update
+            updateTimerDisplay();
+        }
+
+        function startDefaultTimer() {
+            // Set default to 7 days from now
+            currentEventEndDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+            startTimer();
+        }
+
+        function updateTimerDisplay() {
+            if (!currentEventEndDate) return;
+            
+            const now = new Date();
+            const timeRemaining = currentEventEndDate - now;
+            
+            if (timeRemaining <= 0) {
+                // Event has ended
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                document.getElementById('eventName').textContent = 'EVENT STARTED! 🎉';
+                clearInterval(timerInterval);
+                return;
+            }
+            
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            
+            // Update display
+            updateWithAnimation('days', days.toString().padStart(2, '0'));
+            updateWithAnimation('hours', hours.toString().padStart(2, '0'));
+            updateWithAnimation('minutes', minutes.toString().padStart(2, '0'));
+            updateWithAnimation('seconds', seconds.toString().padStart(2, '0'));
+        }
+
+        function updateWithAnimation(elementId, newValue) {
+            const element = document.getElementById(elementId);
+            if (element.textContent !== newValue) {
+                element.textContent = newValue;
             }
         }
 
@@ -697,26 +1159,27 @@
         // ==== REALTIME UPDATES =====================
         // ============================================
         function setupRealtimeUpdates() {
-            if (!firebaseInitialized) return;
-            
             db.collection('website').doc('config')
                 .onSnapshot((doc) => {
                     if (doc.exists) {
                         const data = doc.data();
                         
                         // Update UI in real-time
-                        document.getElementById('announcementText').textContent = 
-                            data.announcement || "🎉 WELCOME TO RAYBET CASINO!";
+                        updateUIFromData(data);
                         
-                        document.getElementById('worldName').textContent = 
-                            data.worldName || "RAYBET";
+                        // Update timer if date changed
+                        if (data.eventEndDate) {
+                            const newDate = new Date(data.eventEndDate);
+                            if (!currentEventEndDate || newDate.getTime() !== currentEventEndDate.getTime()) {
+                                currentEventEndDate = newDate;
+                                startTimer();
+                            }
+                        }
                         
                         console.log("🔄 Real-time update received");
-                        updateDbStatus("✅ Live Updates", "db-online");
                     }
                 }, (error) => {
                     console.error("Realtime error:", error);
-                    updateDbStatus("⚠️ Updates Paused", "db-offline");
                 });
         }
 
@@ -724,11 +1187,13 @@
         // ==== ADMIN FUNCTIONS ======================
         // ============================================
         function openAdminPanel() {
-            // SECURITY FIX: Check if user is logged in
-            if (!isAdmin) {
+            document.getElementById('adminPanel').style.display = 'flex';
+            
+            if (isAdmin) {
+                showControlScreen();
+            } else {
                 showLoginScreen();
             }
-            document.getElementById('adminPanel').style.display = 'flex';
         }
 
         function closeAdminPanel() {
@@ -754,6 +1219,16 @@
             document.getElementById('worldNameInput').value = 
                 document.getElementById('worldName').textContent;
             
+            // Load timer settings
+            document.getElementById('eventNameInput').value = 
+                document.getElementById('timerTitle').textContent.replace('🎯 ', '');
+            
+            if (currentEventEndDate) {
+                const dateInput = new Date(currentEventEndDate);
+                const localDateTime = dateInput.toISOString().slice(0, 16);
+                document.getElementById('eventDateInput').value = localDateTime;
+            }
+            
             hideAllMessages();
         }
 
@@ -764,12 +1239,12 @@
                 document.getElementById('loginLoading').style.display = 'block';
                 
                 try {
-                    if (firebaseInitialized) {
+                    if (db) {
                         isAdmin = true;
                         showControlScreen();
                         console.log("✅ Admin logged in");
                     } else {
-                        alert("⚠️ Database not connected. Changes will be local only.");
+                        alert("⚠️ Database not connected");
                         isAdmin = true;
                         showControlScreen();
                     }
@@ -787,16 +1262,18 @@
         async function updateWebsite() {
             const announcement = document.getElementById('announcementInput').value.trim();
             const worldName = document.getElementById('worldNameInput').value.trim();
+            const eventName = document.getElementById('eventNameInput').value.trim();
+            const eventDate = document.getElementById('eventDateInput').value;
             
-            if (!announcement || !worldName) {
+            // Validation
+            if (!announcement || !worldName || !eventName || !eventDate) {
                 alert("Please fill all fields");
                 return;
             }
             
-            // SECURITY: Double check admin is logged in
-            if (!isAdmin) {
-                alert("❌ Please login first!");
-                showLoginScreen();
+            const eventDateObj = new Date(eventDate);
+            if (eventDateObj <= new Date()) {
+                alert("Event date must be in the future!");
                 return;
             }
             
@@ -804,33 +1281,23 @@
             hideAllMessages();
             
             try {
-                if (firebaseInitialized && db) {
-                    // Update Firebase
-                    await db.collection('website').doc('config').set({
-                        announcement: announcement,
-                        worldName: worldName,
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        updatedBy: "admin",
-                        timestamp: Date.now()
-                    }, { merge: true });
-                    
-                    showMessage('updateSuccess');
-                    console.log("✅ Data saved to Firebase");
-                    updateDbStatus("✅ Update Sent", "db-online");
-                    
-                } else {
-                    // Fallback to localStorage
-                    localStorage.setItem('raybetAnnouncement', announcement);
-                    localStorage.setItem('raybetWorldName', worldName);
-                    
-                    // Update UI immediately
-                    document.getElementById('announcementText').textContent = announcement;
-                    document.getElementById('worldName').textContent = worldName;
-                    
-                    showMessage('updateSuccess');
-                    console.log("📱 Saved locally (Firebase offline)");
-                    updateDbStatus("📱 Saved Locally", "db-offline");
-                }
+                // Update Firebase
+                await db.collection('website').doc('config').set({
+                    announcement: announcement,
+                    worldName: worldName,
+                    eventName: eventName,
+                    eventEndDate: eventDateObj.toISOString(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedBy: "admin",
+                    timestamp: Date.now()
+                }, { merge: true });
+                
+                showMessage('updateSuccess');
+                console.log("✅ Data saved to Firebase");
+                
+                // Update local variables
+                currentEventEndDate = eventDateObj;
+                startTimer();
                 
                 // Close panel after 2 seconds
                 setTimeout(() => {
@@ -840,7 +1307,6 @@
             } catch (error) {
                 console.error("Update error:", error);
                 showMessage('updateError');
-                updateDbStatus("❌ Update Failed", "db-offline");
             } finally {
                 document.getElementById('updateLoading').style.display = 'none';
             }
@@ -856,22 +1322,34 @@
         // ==== HELPER FUNCTIONS =====================
         // ============================================
         function loadLocalData() {
-            document.getElementById('announcementText').textContent = 
-                localStorage.getItem('raybetAnnouncement') || "🎉 WELCOME TO RAYBET CASINO!";
+            const localAnnouncement = localStorage.getItem('raybetAnnouncement');
+            const localWorldName = localStorage.getItem('raybetWorldName');
+            const localEventName = localStorage.getItem('raybetEventName');
+            const localEventDate = localStorage.getItem('raybetEventDate');
             
-            document.getElementById('worldName').textContent = 
-                localStorage.getItem('raybetWorldName') || "RAYBET";
+            if (localAnnouncement) {
+                document.getElementById('announcementText').textContent = localAnnouncement;
+            }
+            
+            if (localWorldName) {
+                document.getElementById('worldName').textContent = localWorldName;
+            }
+            
+            if (localEventName) {
+                document.getElementById('timerTitle').textContent = `🎯 ${localEventName}`;
+                document.getElementById('eventName').textContent = localEventName;
+            }
+            
+            if (localEventDate) {
+                currentEventEndDate = new Date(localEventDate);
+            }
             
             console.log("📱 Using local data");
         }
 
         function showMessage(elementId) {
             hideAllMessages();
-            const element = document.getElementById(elementId);
-            element.style.display = 'block';
-            setTimeout(() => {
-                element.style.display = 'none';
-            }, 3000);
+            document.getElementById(elementId).style.display = 'block';
         }
 
         function hideAllMessages() {
@@ -897,6 +1375,15 @@
                 closeAdminPanel();
             }
         });
+
+        // Check if Firebase is working
+        setTimeout(() => {
+            if (!db) {
+                console.warn("⚠️ Firebase not connected - using local storage");
+                document.getElementById('announcementText').textContent = 
+                    "⚠️ Database offline - Using local data";
+            }
+        }, 8000);
     </script>
 </body>
 </html>
