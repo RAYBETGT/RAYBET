@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raybet Casino</title>
     <style>
-        /* ===== RESET & BASE STYLES ===== */
+        /* ===== BASE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
@@ -13,17 +13,11 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html {
-            font-size: 16px;
-            height: 100%;
-        }
-
         body {
             font-family: 'Arial', sans-serif;
             min-height: 100vh;
-            background: 
-                linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
-                url('./PNG.jpeg') no-repeat center center fixed;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('./PNG.jpeg') no-repeat center center fixed;
             background-size: cover;
             color: white;
             display: flex;
@@ -31,136 +25,111 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            position: relative;
             overflow-x: hidden;
         }
 
-        /* ===== OVERLAY ===== */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0,0,0,0.5);
             z-index: 1;
         }
 
-        /* ===== MAIN CONTENT CONTAINER ===== */
+        /* ===== MAIN CONTENT ===== */
         .main-content {
             position: relative;
             z-index: 2;
             width: 100%;
             max-width: 800px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             text-align: center;
-            padding: 20px;
         }
 
-        /* ===== TITLE ANIMATION ===== */
-        .main-title {
-            margin-bottom: 30px;
-            width: 100%;
-        }
-
-        .rainbow-text {
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
+        /* ===== TITLE ===== */
+        .title {
+            font-size: clamp(2.5rem, 8vw, 4rem);
             font-weight: 900;
+            margin-bottom: 30px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin: 0;
-            padding: 0;
-            line-height: 1.2;
             text-shadow: 0 0 20px rgba(255,255,255,0.3);
         }
 
-        .rainbow-text span {
+        .title span {
             display: inline-block;
-            animation: rainbow 3s ease-in-out infinite;
+            animation: rainbow 3s infinite;
             animation-delay: calc(var(--i) * 0.1s);
         }
 
         @keyframes rainbow {
-            0%, 100% { 
-                color: #ff0000;
-                transform: translateY(0);
-                text-shadow: 0 0 15px #ff0000;
-            }
-            25% { 
-                color: #00ff00;
-                transform: translateY(-10px);
-                text-shadow: 0 0 15px #00ff00;
-            }
-            50% { 
-                color: #0000ff;
-                transform: translateY(0);
-                text-shadow: 0 0 15px #0000ff;
-            }
-            75% { 
-                color: #ffff00;
-                transform: translateY(5px);
-                text-shadow: 0 0 15px #ffff00;
-            }
+            0% { color: #ff0000; transform: translateY(0); }
+            25% { color: #00ff00; transform: translateY(-10px); }
+            50% { color: #0000ff; transform: translateY(0); }
+            75% { color: #ffff00; transform: translateY(5px); }
+            100% { color: #ff0000; transform: translateY(0); }
         }
 
-        /* ===== WORLD LINK BOX ===== */
+        /* ===== WORLD BOX ===== */
         .world-box {
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0,0,0,0.85);
             border: 3px solid #ff4500;
             border-radius: 20px;
             padding: 20px 30px;
-            margin: 20px 0;
-            width: 90%;
-            max-width: 500px;
+            margin: 30px 0;
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5),
                         0 0 30px rgba(255,69,0,0.3);
             animation: pulse 2s infinite;
+            width: 90%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         @keyframes pulse {
             0%, 100% { 
                 box-shadow: 0 10px 30px rgba(0,0,0,0.5),
                             0 0 30px rgba(255,69,0,0.3);
+                transform: scale(1);
             }
             50% { 
                 box-shadow: 0 10px 30px rgba(0,0,0,0.5),
                             0 0 50px rgba(255,69,0,0.6);
+                transform: scale(1.02);
             }
         }
 
-        .world-box-text {
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
-            font-weight: 700;
-            color: white;
+        .world-text {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-weight: 600;
             margin: 0;
         }
 
         .world-name {
             color: #ff4500;
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
             font-weight: 900;
-            font-size: clamp(1.8rem, 6vw, 3rem);
             text-shadow: 0 0 15px rgba(255,69,0,0.7);
             display: inline-block;
             margin-left: 10px;
         }
 
-        /* ===== BUTTONS CONTAINER ===== */
+        /* ===== BUTTONS ===== */
         .buttons-container {
             display: flex;
             flex-direction: column;
             gap: 20px;
             width: 100%;
             max-width: 600px;
-            margin-top: 20px;
+            margin: 20px auto 0;
         }
 
         .social-row {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
             width: 100%;
         }
 
@@ -169,50 +138,23 @@
                 flex-direction: row;
                 justify-content: center;
             }
-            
-            .social-row .btn {
-                flex: 1;
-                max-width: 280px;
-            }
         }
 
-        /* ===== BUTTON STYLES ===== */
         .btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 18px 25px;
+            padding: 16px 25px;
             border-radius: 15px;
             text-decoration: none;
-            font-size: clamp(1.1rem, 4vw, 1.4rem);
+            font-size: clamp(1rem, 4vw, 1.2rem);
             font-weight: 700;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
-            min-height: 65px;
+            min-height: 60px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.1);
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .btn:hover::before,
-        .btn:active::before {
-            opacity: 1;
         }
 
         .btn:hover {
@@ -225,12 +167,9 @@
         }
 
         .btn-icon {
-            width: 28px;
-            height: 28px;
-            margin-right: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
         }
 
         .btn-icon svg {
@@ -238,19 +177,16 @@
             height: 100%;
         }
 
-        /* Instagram Button */
         .btn-instagram {
-            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+            background: linear-gradient(45deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D);
             color: white;
         }
 
-        /* WhatsApp Button */
         .btn-whatsapp {
             background: linear-gradient(135deg, #25D366, #25D366);
             color: white;
         }
 
-        /* Discord Button */
         .btn-discord {
             background: linear-gradient(135deg, #5865F2, #7289DA);
             color: white;
@@ -269,7 +205,7 @@
             border-radius: 50px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem;
             border: 2px solid #ff4500;
             display: flex;
             align-items: center;
@@ -282,10 +218,6 @@
         .rules-btn:hover {
             background: rgba(255,69,0,0.8);
             transform: translateY(-2px);
-        }
-
-        .rules-icon {
-            font-size: 1.3rem;
         }
 
         /* ===== ADMIN PANEL ===== */
@@ -315,15 +247,15 @@
 
         .admin-title {
             color: #ff4500;
-            font-size: 1.8rem;
-            margin-bottom: 25px;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
             text-align: center;
         }
 
         .admin-input {
             width: 100%;
             padding: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             background: rgba(255,255,255,0.1);
             border: 2px solid #444;
             border-radius: 10px;
@@ -381,18 +313,17 @@
         }
 
         .error-message {
-            background: rgba(255, 0, 0, 0.1);
+            background: rgba(255,0,0,0.1);
             color: #ff4444;
             border: 1px solid #ff4444;
         }
 
         .success-message {
-            background: rgba(0, 255, 0, 0.1);
+            background: rgba(0,255,0,0.1);
             color: #44ff44;
             border: 1px solid #44ff44;
         }
 
-        /* ===== ADMIN ACCESS BUTTON ===== */
         .admin-access-btn {
             position: fixed;
             bottom: 15px;
@@ -406,94 +337,37 @@
             cursor: pointer;
             z-index: 99;
             opacity: 0.3;
-            transition: opacity 0.3s ease;
         }
 
         .admin-access-btn:hover {
             opacity: 1;
         }
 
-        /* ===== RESPONSIVE ADJUSTMENTS ===== */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .rainbow-text {
-                font-size: clamp(2rem, 7vw, 3.5rem);
-            }
-            
             .world-box {
                 padding: 15px 20px;
                 width: 95%;
             }
             
             .btn {
-                padding: 16px 20px;
-                min-height: 60px;
+                padding: 14px 20px;
             }
             
             .rules-btn {
                 top: 15px;
                 right: 15px;
                 padding: 10px 20px;
-                font-size: 1rem;
-            }
-            
-            .admin-content {
-                padding: 25px;
             }
         }
 
         @media (max-width: 480px) {
-            body {
-                padding: 15px;
-            }
-            
-            .rainbow-text {
-                font-size: clamp(1.8rem, 6vw, 2.8rem);
-                letter-spacing: 1px;
-            }
-            
-            .world-box-text {
-                font-size: clamp(1.3rem, 4vw, 2rem);
+            .title {
+                font-size: clamp(2rem, 7vw, 3rem);
             }
             
             .world-name {
-                font-size: clamp(1.5rem, 5vw, 2.5rem);
-            }
-            
-            .btn {
-                padding: 14px 18px;
-                font-size: 1rem;
-            }
-            
-            .btn-icon {
-                width: 24px;
-                height: 24px;
-                margin-right: 12px;
-            }
-            
-            .rules-btn {
-                top: 10px;
-                right: 10px;
-                padding: 8px 15px;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
-        @media (hover: none) and (pointer: coarse) {
-            .btn:hover {
-                transform: none;
-            }
-            
-            .btn:active {
-                transform: translateY(-2px);
-            }
-            
-            .rules-btn:hover {
-                transform: none;
-            }
-            
-            .rules-btn:active {
-                transform: translateY(-2px);
+                font-size: clamp(1.5rem, 5vw, 2rem);
             }
         }
     </style>
@@ -504,22 +378,19 @@
 
     <!-- Rules Button -->
     <a href="rules.html" class="rules-btn">
-        <span class="rules-icon">📜</span>
-        Rules
+        📜 Rules
     </a>
 
     <!-- Main Content -->
     <div class="main-content">
         <!-- Animated Title -->
-        <div class="main-title">
-            <h1 class="rainbow-text" id="rainbowTitle"></h1>
-        </div>
+        <h1 class="title" id="title"></h1>
 
         <!-- World Link Box -->
         <div class="world-box">
-            <p class="world-box-text">
+            <p class="world-text">
                 NEWLINK: 
-                <span class="world-name" id="worldName">ABEDRAHMAN</span>
+                <span class="world-name" id="worldName"></span>
             </p>
         </div>
 
@@ -550,7 +421,7 @@
                 </a>
             </div>
 
-            <!-- Discord Button (Single) -->
+            <!-- Discord Button -->
             <a href="https://discord.gg/5BkyZkZm" target="_blank" class="btn btn-discord">
                 <span class="btn-icon">
                     <svg viewBox="0 0 24 24" fill="white">
@@ -562,7 +433,7 @@
         </div>
     </div>
 
-    <!-- Admin Panel (Hidden) -->
+    <!-- Admin Panel -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-content">
             <h2 class="admin-title" id="adminTitle">🔒 Admin Login</h2>
@@ -596,7 +467,7 @@
                        maxlength="20">
                 
                 <div class="admin-buttons">
-                    <button class="admin-btn admin-btn-primary" onclick="updateWorldName()">
+                    <button class="admin-btn admin-btn-primary" onclick="showUpdateInstructions()">
                         Update World Name
                     </button>
                     <button class="admin-btn admin-btn-secondary" onclick="logoutAdmin()">
@@ -605,47 +476,59 @@
                 </div>
                 
                 <div class="message success-message" id="updateSuccess">
-                    ✅ World name updated!
+                    ✅ Check instructions above
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Hidden Admin Access Button -->
+    <!-- Admin Access Button -->
     <button class="admin-access-btn" onclick="openAdminPanel()">Admin</button>
 
     <script>
-        // ===== CONFIGURATION =====
-        const ADMIN_PASSWORD = "mado81418093lss";
-        const DEFAULT_WORLD_NAME = "RAYBET";
+        // ============================================
+        // ==== CHANGE THIS ONE VALUE ONLY! ===========
+        // ============================================
+        const WORLD_NAME = "RAYBET"; // <-- CHANGE ONLY THIS LINE!
+        // ============================================
+        // ==== CHANGE THIS ONE VALUE ONLY! ===========
+        // ============================================
         
-        // ===== DOM ELEMENTS =====
+        const ADMIN_PASSWORD = "mado81418093lss";
+        
+        // DOM Elements
         const adminPanel = document.getElementById('adminPanel');
         const loginScreen = document.getElementById('loginScreen');
         const controlScreen = document.getElementById('controlScreen');
-        const adminTitle = document.getElementById('adminTitle');
         const worldNameElement = document.getElementById('worldName');
-        const rainbowTitle = document.getElementById('rainbowTitle');
+        const titleElement = document.getElementById('title');
         const loginError = document.getElementById('loginError');
         const updateSuccess = document.getElementById('updateSuccess');
         
-        // ===== INITIALIZATION =====
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Create animated title
-            createRainbowTitle();
+            // Set world name
+            worldNameElement.textContent = WORLD_NAME;
             
-            // Load world name
-            loadWorldName();
+            // Create animated title
+            createAnimatedTitle();
             
             // Add keyboard shortcut
-            document.addEventListener('keydown', handleKeyboardShortcuts);
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.altKey && e.key === 'a') {
+                    e.preventDefault();
+                    openAdminPanel();
+                }
+                if (e.key === 'Escape') {
+                    closeAdminPanel();
+                }
+            });
             
-            console.log('✅ Raybet Casino Website Loaded Successfully');
-            console.log('🔑 Admin Access: Press Ctrl+Alt+A or click Admin button');
+            console.log('✅ Website loaded with world name:', WORLD_NAME);
         });
         
-        // ===== RAINBOW TITLE =====
-        function createRainbowTitle() {
+        // Create animated title
+        function createAnimatedTitle() {
             const text = "RAYBET TEAM";
             let html = '';
             
@@ -658,171 +541,90 @@
                 }
             }
             
-            rainbowTitle.innerHTML = html;
+            titleElement.innerHTML = html;
         }
         
-        // ===== WORLD NAME MANAGEMENT =====
-        function loadWorldName() {
-            // For now, just show default
-            // In future, you can implement server-side storage
-            worldNameElement.textContent = DEFAULT_WORLD_NAME;
-        }
-        
-        // ===== ADMIN FUNCTIONS =====
+        // Admin Functions
         function openAdminPanel() {
-            const isLoggedIn = sessionStorage.getItem('raybetAdminLoggedIn') === 'true';
+            const isLoggedIn = sessionStorage.getItem('raybetAdmin') === 'true';
             
             if (isLoggedIn) {
-                showControlScreen();
+                loginScreen.style.display = 'none';
+                controlScreen.style.display = 'block';
+                document.getElementById('adminTitle').textContent = '⚙️ Admin Controls';
+                document.getElementById('newWorldName').value = WORLD_NAME;
+                updateSuccess.style.display = 'none';
             } else {
-                showLoginScreen();
+                loginScreen.style.display = 'block';
+                controlScreen.style.display = 'none';
+                document.getElementById('adminTitle').textContent = '🔒 Admin Login';
+                document.getElementById('adminPassword').value = '';
+                loginError.style.display = 'none';
             }
             
             adminPanel.style.display = 'flex';
-            document.getElementById('adminPassword').focus();
         }
         
         function closeAdminPanel() {
             adminPanel.style.display = 'none';
-            hideAllMessages();
-        }
-        
-        function showLoginScreen() {
-            loginScreen.style.display = 'block';
-            controlScreen.style.display = 'none';
-            adminTitle.textContent = '🔒 Admin Login';
-            document.getElementById('adminPassword').value = '';
-            loginError.style.display = 'none';
-        }
-        
-        function showControlScreen() {
-            loginScreen.style.display = 'none';
-            controlScreen.style.display = 'block';
-            adminTitle.textContent = '⚙️ Admin Controls';
-            document.getElementById('newWorldName').value = worldNameElement.textContent;
-            updateSuccess.style.display = 'none';
         }
         
         function checkPassword() {
             const password = document.getElementById('adminPassword').value;
             
             if (password === ADMIN_PASSWORD) {
-                // Login successful
-                sessionStorage.setItem('raybetAdminLoggedIn', 'true');
-                showControlScreen();
+                sessionStorage.setItem('raybetAdmin', 'true');
+                openAdminPanel();
             } else {
-                // Wrong password
                 loginError.style.display = 'block';
                 document.getElementById('adminPassword').value = '';
                 document.getElementById('adminPassword').focus();
-                
-                // Shake animation
-                const input = document.getElementById('adminPassword');
-                input.style.animation = 'none';
-                setTimeout(() => {
-                    input.style.animation = 'shake 0.5s';
-                }, 10);
             }
         }
         
-        function updateWorldName() {
+        function showUpdateInstructions() {
             const newName = document.getElementById('newWorldName').value.trim();
             
             if (!newName || newName.length < 3) {
-                alert('⚠️ Please enter a valid name (at least 3 characters)');
+                alert('Please enter a valid name (at least 3 characters)');
                 return;
             }
             
-            // IMPORTANT: Show instructions for updating for ALL users
             const instructions = `
-🔧 TO UPDATE FOR ALL USERS (not just you):
+🔧 TO CHANGE WORLD NAME FOR ALL USERS:
 
 1. Go to: https://github.com/RAYBETGT/RAYBET
-2. Click on "index.html"
-3. Click the pencil icon (Edit) at top-right
-4. Find this line:
-   <span class="world-name" id="worldName">${worldNameElement.textContent}</span>
-5. Change "${worldNameElement.textContent}" to "${newName}"
-6. Scroll down, click "Commit changes"
-7. Wait 1-2 minutes for update
+2. Click "index.html"
+3. Click pencil icon (Edit)
+4. FIND LINE ~358 (search for: "RAYBET")
+5. Change "${WORLD_NAME}" to "${newName}"
+6. Click "Commit changes"
+7. Wait 1 minute
 
-📱 All users will see "${newName}" after refreshing!
+📱 All users will see "${newName}" immediately!
             `;
             
             alert(instructions);
             
-            // Update locally for admin
-            worldNameElement.textContent = newName;
-            
-            // Show success message
-            updateSuccess.textContent = `✅ Updated locally. Follow instructions above to update for everyone.`;
+            updateSuccess.textContent = `Follow the instructions above to update for everyone`;
             updateSuccess.style.display = 'block';
             
-            // Clear input
-            document.getElementById('newWorldName').value = '';
-            
-            // Hide message after 5 seconds
             setTimeout(() => {
                 updateSuccess.style.display = 'none';
             }, 5000);
         }
         
         function logoutAdmin() {
-            sessionStorage.removeItem('raybetAdminLoggedIn');
-            showLoginScreen();
+            sessionStorage.removeItem('raybetAdmin');
+            closeAdminPanel();
         }
         
-        function hideAllMessages() {
-            loginError.style.display = 'none';
-            updateSuccess.style.display = 'none';
-        }
-        
-        // ===== KEYBOARD SHORTCUTS =====
-        function handleKeyboardShortcuts(event) {
-            // Ctrl+Alt+A to open admin panel
-            if (event.ctrlKey && event.altKey && event.key === 'a') {
-                event.preventDefault();
-                openAdminPanel();
-            }
-            
-            // Escape to close admin panel
-            if (event.key === 'Escape' && adminPanel.style.display === 'flex') {
-                closeAdminPanel();
-            }
-            
-            // Enter to submit forms
-            if (event.key === 'Enter' && adminPanel.style.display === 'flex') {
-                if (loginScreen.style.display !== 'none') {
-                    checkPassword();
-                } else if (controlScreen.style.display !== 'none') {
-                    updateWorldName();
-                }
-            }
-        }
-        
-        // ===== CLICK OUTSIDE TO CLOSE =====
-        adminPanel.addEventListener('click', function(event) {
-            if (event.target === adminPanel) {
+        // Close panel when clicking outside
+        adminPanel.addEventListener('click', function(e) {
+            if (e.target === adminPanel) {
                 closeAdminPanel();
             }
         });
-        
-        // ===== ADD SHAKE ANIMATION =====
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-                20%, 40%, 60%, 80% { transform: translateX(5px); }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // ===== TOUCH DEVICE SUPPORT =====
-        if ('ontouchstart' in window) {
-            document.body.classList.add('touch-device');
-        }
     </script>
 </body>
 </html>
-
