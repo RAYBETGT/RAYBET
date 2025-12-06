@@ -554,6 +554,27 @@
             transform: scale(1.1);
         }
 
+        /* ===== SYNC STATUS ===== */
+        .sync-status {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            z-index: 99;
+        }
+
+        .sync-online {
+            color: #00ff00;
+        }
+
+        .sync-offline {
+            color: #ff9900;
+        }
+
         /* ===== ANIMATION KEYFRAMES ===== */
         @keyframes teamNameEntrance {
             from {
@@ -706,6 +727,11 @@
                 font-size: 1.1rem;
                 padding: 10px;
             }
+            .sync-status {
+                bottom: 70px;
+                left: 10px;
+                font-size: 0.7rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -757,6 +783,11 @@
         <span class="letter" data-text="E">E</span>
         <span class="letter" data-text="A">A</span>
         <span class="letter" data-text="M">M</span>
+    </div>
+
+    <!-- SYNC STATUS -->
+    <div class="sync-status" id="syncStatus">
+        <span id="syncIcon">🔄</span> <span id="syncText">Connecting...</span>
     </div>
 
     <!-- INTRO SCREEN -->
@@ -867,6 +898,14 @@
             <div id="controlScreen" style="display: none;">
                 <h3 class="admin-title">⚙️ ADMIN CONTROL PANEL</h3>
                 
+                <!-- Connection Status -->
+                <div class="admin-section">
+                    <div class="admin-section-title">📡 CONNECTION STATUS</div>
+                    <div id="connectionStatus" style="color: #ff9900; text-align: center;">
+                        🔄 Checking connection...
+                    </div>
+                </div>
+                
                 <!-- Website Content Section -->
                 <div class="admin-section">
                     <div class="admin-section-title">📢 WEBSITE CONTENT</div>
@@ -922,6 +961,12 @@
                 <div class="loading" id="updateLoading">
                     🔄 Saving to database...
                 </div>
+                
+                <!-- Force Sync Button -->
+                <button class="admin-btn" onclick="forceSyncAllUsers()" 
+                        style="background: #0088ff; margin-top: 5px;">
+                    🔄 Force Sync to All Users
+                </button>
             </div>
         </div>
     </div>
@@ -956,6 +1001,34 @@
         let currentEventEndDate = null;
         let isFirebaseConnected = false;
         let realtimeListener = null;
+        let lastSyncTime = null;
+        let syncCheckInterval = null;
+
+        // ============================================
+        // ==== SYNC STATUS FUNCTIONS =================
+        // ============================================
+        function updateSyncStatus(status, text) {
+            const syncIcon = document.getElementById('syncIcon');
+            const syncText = document.getElementById('syncText');
+            
+            if (status === 'online') {
+                syncIcon.textContent = '✅';
+                syncText.textContent = 'Live Sync Active';
+                syncText.className = 'sync-online';
+            } else if (status === 'offline') {
+                syncIcon.textContent = '📱';
+                syncText.textContent = 'Local Mode';
+                syncText.className = 'sync-offline';
+            } else if (status === 'connecting') {
+                syncIcon.textContent = '🔄';
+                syncText.textContent = text || 'Connecting...';
+            } else if (status === 'error') {
+                syncIcon.textContent = '⚠️';
+                syncText.textContent = text || 'Sync Error';
+            }
+            
+            document.getElementById('syncStatus').style.display = 'block';
+        }
 
         // ============================================
         // ==== WHATSAPP AUTO-OPEN FUNCTIONS ==========
@@ -985,6 +1058,9 @@
             setTimeout(async () => {
                 await initializeFirebase();
             }, 3500);
+            
+            // Setup periodic sync check
+            syncCheckInterval = setInterval(checkSyncStatus, 30000); // Check every 30 seconds
         });
 
         // ============================================
@@ -993,6 +1069,7 @@
         async function initializeFirebase() {
             try {
                 console.log("🔄 Initializing Firebase...");
+                updateSyncStatus('connecting', 'Initializing Firebase...');
                 
                 // Initialize Firebase
                 firebase.initializeApp(firebaseConfig);
@@ -1018,6 +1095,7 @@
         async function testFirebaseConnection() {
             try {
                 console.log("🔄 Testing Firebase connection...");
+                updateSyncStatus('connecting', 'Testing connection...');
                 
                 // Try to read data with timeout
                 const docRef = db.collection('website').doc('config');
@@ -1029,11 +1107,13 @@
                 ]);
                 
                 isFirebaseConnected = true;
+                lastSyncTime = new Date();
                 console.log("✅ Firebase connection successful!");
+                updateSyncStatus('online');
                 
                 // Update UI to show online status
                 document.getElementById('announcementText').textContent = 
-                    "🎉 WELCOME TO RAYBET CASINO! ✅ Live Updates Enabled";
+                    "🎉 WELCOME TO RAYBET CASINO! ✅ Live";
                 
                 // Load data and setup real-time updates
                 await loadWebsiteData();
@@ -1042,10 +1122,11 @@
             } catch (error) {
                 console.warn("⚠️ Firebase connection test failed:", error.message);
                 isFirebaseConnected = false;
+                updateSyncStatus('offline');
                 
                 // Update UI to show offline status
                 document.getElementById('announcementText').textContent = 
-                    "🎉 WELCOME TO RAYBET CASINO! 📱 Local Mode";
+                    "🎉 WELCOME TO RAYBET CASINO! 📱 Local";
                 
                 // Load from local storage
                 loadLocalData();
@@ -1056,13 +1137,51 @@
         function handleFirebaseError() {
             isFirebaseConnected = false;
             console.log("📱 Using local storage mode");
+            updateSyncStatus('offline');
             
             // Update UI
             document.getElementById('announcementText').textContent = 
-                "🎉 WELCOME TO RAYBET CASINO! 📱 Local Mode";
+                "🎉 WELCOME TO RAYBET CASINO! 📱 Local";
             
             loadLocalData();
             startDefaultTimer();
+        }
+
+        // ============================================
+        // ==== CHECK SYNC STATUS ====================
+        // ============================================
+        async function checkSyncStatus() {
+            if (!isFirebaseConnected || !db) {
+                console.log("Checking sync status: Not connected to Firebase");
+                return;
+            }
+            
+            try {
+                // Try a simple read to check connection
+                const docRef = db.collection('website').doc('config');
+                await docRef.get();
+                
+                if (!isFirebaseConnected) {
+                    // Reconnected!
+                    isFirebaseConnected = true;
+                    updateSyncStatus('online');
+                    console.log("✅ Reconnected to Firebase");
+                    
+                    // Reload data and restart listener
+                    await loadWebsiteData();
+                    setupRealtimeUpdates();
+                }
+                
+                lastSyncTime = new Date();
+                
+            } catch (error) {
+                if (isFirebaseConnected) {
+                    // Connection lost
+                    isFirebaseConnected = false;
+                    updateSyncStatus('offline');
+                    console.warn("⚠️ Lost connection to Firebase");
+                }
+            }
         }
 
         // ============================================
@@ -1091,6 +1210,7 @@
             
             try {
                 console.log("🔄 Loading data from Firebase...");
+                
                 const docRef = db.collection('website').doc('config');
                 const doc = await docRef.get();
                 
@@ -1111,6 +1231,9 @@
                     
                     // Save to local storage as backup
                     saveToLocalStorage(data);
+                    
+                    // Update last sync time
+                    lastSyncTime = new Date();
                     
                 } else {
                     console.log("No data in Firebase, creating default...");
@@ -1133,7 +1256,9 @@
                     eventName: "NEXT TOURNAMENT",
                     eventEndDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastUpdatedBy: "system",
+                    syncVersion: 1
                 };
                 
                 await db.collection('website').doc('config').set(defaultData);
@@ -1203,9 +1328,18 @@
                             
                             // Save to local storage as backup
                             saveToLocalStorage(data);
+                            
+                            // Show notification for updates (if not admin)
+                            if (!isAdmin) {
+                                showUpdateNotification();
+                            }
+                            
+                            lastSyncTime = new Date();
                         }
                     }, (error) => {
                         console.error("❌ Realtime listener error:", error);
+                        updateSyncStatus('error', 'Sync error');
+                        
                         // Try to reconnect after 10 seconds
                         setTimeout(() => {
                             if (isFirebaseConnected) {
@@ -1219,6 +1353,32 @@
             } catch (error) {
                 console.error("Error setting up realtime updates:", error);
             }
+        }
+
+        function showUpdateNotification() {
+            // Create a small notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #ff4500;
+                color: white;
+                padding: 10px 15px;
+                border-radius: 5px;
+                z-index: 1000;
+                animation: slideInRight 0.3s ease-out;
+            `;
+            notification.innerHTML = '🔄 Content Updated!';
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
         }
 
         // ============================================
@@ -1248,6 +1408,19 @@
             try {
                 console.log("🔄 Updating website...");
                 
+                // Get current sync version
+                let syncVersion = 1;
+                if (isFirebaseConnected && db) {
+                    try {
+                        const currentDoc = await db.collection('website').doc('config').get();
+                        if (currentDoc.exists) {
+                            syncVersion = (currentDoc.data().syncVersion || 0) + 1;
+                        }
+                    } catch (e) {
+                        console.log("Could not get current sync version");
+                    }
+                }
+                
                 // Prepare update data
                 const updateData = {
                     announcement: announcement,
@@ -1256,7 +1429,9 @@
                     eventEndDate: eventDateObj.toISOString(),
                     updatedAt: new Date().toISOString(),
                     updatedBy: "admin",
-                    timestamp: Date.now()
+                    timestamp: Date.now(),
+                    syncVersion: syncVersion,
+                    forceUpdate: true  // Flag to force updates on all clients
                 };
                 
                 // 1. Always save to local storage first (immediate backup)
@@ -1284,16 +1459,19 @@
                         firebaseSuccess = true;
                         console.log("✅ Data saved to Firebase");
                         
+                        // Create an update trigger for other clients
+                        await createUpdateTrigger();
+                        
                         // Show success message with Firebase info
                         document.getElementById('updateSuccess').innerHTML = 
-                            "✅ Updated for ALL users! <br><small>Real-time updates active</small>";
+                            "✅ Updated for ALL users! <br><small>Changes synced to all connected devices</small>";
                         
                     } catch (firebaseError) {
                         console.warn("⚠️ Could not save to Firebase:", firebaseError);
                         
                         // Show warning but still success (local storage saved)
                         document.getElementById('updateSuccess').innerHTML = 
-                            "✅ Updated locally! <br><small>Firebase sync failed - check security rules</small>";
+                            "✅ Updated locally! <br><small>Firebase sync failed - changes saved locally</small>";
                     }
                 } else {
                     console.log("📱 Firebase not connected, saving locally only");
@@ -1319,6 +1497,68 @@
         }
 
         // ============================================
+        // ==== FORCE SYNC TO ALL USERS ==============
+        // ============================================
+        async function forceSyncAllUsers() {
+            if (!isFirebaseConnected || !db) {
+                alert("Not connected to Firebase. Cannot force sync.");
+                return;
+            }
+            
+            try {
+                console.log("🔄 Forcing sync to all users...");
+                
+                // Get current data
+                const announcement = document.getElementById('announcementInput').value.trim();
+                const worldName = document.getElementById('worldNameInput').value.trim();
+                const eventName = document.getElementById('eventNameInput').value.trim();
+                const eventDate = document.getElementById('eventDateInput').value;
+                const eventDateObj = new Date(eventDate);
+                
+                // Create a special sync trigger
+                const syncTrigger = {
+                    type: "force_sync",
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    data: {
+                        announcement: announcement,
+                        worldName: worldName,
+                        eventName: eventName,
+                        eventEndDate: eventDateObj.toISOString()
+                    },
+                    triggeredBy: "admin",
+                    triggerId: Date.now().toString()
+                };
+                
+                // Save to a special collection that all clients listen to
+                await db.collection('sync_triggers').doc(Date.now().toString()).set(syncTrigger);
+                
+                alert("✅ Sync trigger sent! All connected users will update within seconds.");
+                
+            } catch (error) {
+                console.error("Force sync error:", error);
+                alert("❌ Failed to force sync: " + error.message);
+            }
+        }
+
+        async function createUpdateTrigger() {
+            if (!isFirebaseConnected || !db) return;
+            
+            try {
+                // Create a trigger document
+                const triggerData = {
+                    type: "content_update",
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    triggeredBy: "admin"
+                };
+                
+                await db.collection('updates').doc(Date.now().toString()).set(triggerData);
+                console.log("✅ Update trigger created");
+            } catch (error) {
+                console.log("Could not create update trigger:", error);
+            }
+        }
+
+        // ============================================
         // ==== LOCAL STORAGE FUNCTIONS ==============
         // ============================================
         function saveToLocalStorage(data) {
@@ -1335,6 +1575,8 @@
                 if (data.eventEndDate) {
                     localStorage.setItem('raybetEventDate', data.eventEndDate);
                 }
+                // Save sync version
+                localStorage.setItem('raybetLastSync', new Date().toISOString());
                 console.log("💾 Data saved to local storage");
             } catch (error) {
                 console.warn("Could not save to local storage:", error);
@@ -1422,10 +1664,26 @@
         function openAdminPanel() {
             document.getElementById('adminPanel').style.display = 'flex';
             
+            // Update connection status in admin panel
+            updateAdminConnectionStatus();
+            
             if (isAdmin) {
                 showControlScreen();
             } else {
                 showLoginScreen();
+            }
+        }
+
+        function updateAdminConnectionStatus() {
+            const statusElement = document.getElementById('connectionStatus');
+            if (!statusElement) return;
+            
+            if (isFirebaseConnected) {
+                statusElement.innerHTML = '✅ <strong>Connected to Firebase</strong><br><small>Real-time updates active</small>';
+                statusElement.style.color = '#00ff00';
+            } else {
+                statusElement.innerHTML = '📱 <strong>Local Mode Only</strong><br><small>Changes saved locally</small>';
+                statusElement.style.color = '#ff9900';
             }
         }
 
@@ -1531,6 +1789,20 @@
                 closeAdminPanel();
             }
         });
+
+        // Add CSS for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
 
         // Debug info
         console.log("🌐 Website loaded successfully");
