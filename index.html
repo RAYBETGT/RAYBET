@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raybet Casino</title>
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js"></script>
+    <!-- CORRECT Firebase SDK v9 (compatibility version for CDN) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     
     <style>
         /* ===== BASE STYLES ===== */
@@ -967,6 +967,12 @@
                         style="background: #0088ff; margin-top: 5px;">
                     🔄 Force Sync to All Users
                 </button>
+                
+                <!-- Debug Button -->
+                <button class="admin-btn" onclick="testFirebaseConnection()" 
+                        style="background: #444; margin-top: 5px;">
+                    🔧 Test Firebase Connection
+                </button>
             </div>
         </div>
     </div>
@@ -984,7 +990,8 @@
             projectId: "raybet-82ea0",
             storageBucket: "raybet-82ea0.firebasestorage.app",
             messagingSenderId: "851971186704",
-            appId: "1:851971186704:web:e20e3581ee97a3a7aeaa95"
+            appId: "1:851971186704:web:e20e3581ee97a3a7aeaa95",
+            measurementId: "G-187DZPGSC3"
         };
 
         // ============================================
@@ -1015,10 +1022,14 @@
                 syncIcon.textContent = '✅';
                 syncText.textContent = 'Live Sync Active';
                 syncText.className = 'sync-online';
+                document.getElementById('announcementText').textContent = 
+                    "🎉 WELCOME TO RAYBET CASINO! ✅ Live";
             } else if (status === 'offline') {
                 syncIcon.textContent = '📱';
                 syncText.textContent = 'Local Mode';
                 syncText.className = 'sync-offline';
+                document.getElementById('announcementText').textContent = 
+                    "🎉 WELCOME TO RAYBET CASINO! 📱 Local";
             } else if (status === 'connecting') {
                 syncIcon.textContent = '🔄';
                 syncText.textContent = text || 'Connecting...';
@@ -1060,7 +1071,7 @@
             }, 3500);
             
             // Setup periodic sync check
-            syncCheckInterval = setInterval(checkSyncStatus, 30000); // Check every 30 seconds
+            syncCheckInterval = setInterval(checkSyncStatus, 30000);
         });
 
         // ============================================
@@ -1071,19 +1082,24 @@
                 console.log("🔄 Initializing Firebase...");
                 updateSyncStatus('connecting', 'Initializing Firebase...');
                 
-                // Initialize Firebase
-                firebase.initializeApp(firebaseConfig);
-                db = firebase.firestore();
+                // Check if Firebase is already initialized
+                if (firebase.apps.length > 0) {
+                    console.log("Firebase already initialized, using existing app");
+                    db = firebase.firestore();
+                } else {
+                    // Initialize Firebase
+                    firebase.initializeApp(firebaseConfig);
+                    db = firebase.firestore();
+                }
                 
-                // Enable offline persistence
-                await db.enablePersistence()
-                    .catch((err) => {
-                        console.warn("Offline persistence not supported:", err.code);
-                    });
+                // Set Firestore settings
+                db.settings({
+                    cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
+                });
                 
                 console.log("✅ Firebase initialized successfully");
                 
-                // Test connection by reading data
+                // Test connection
                 await testFirebaseConnection();
                 
             } catch (error) {
@@ -1097,36 +1113,30 @@
                 console.log("🔄 Testing Firebase connection...");
                 updateSyncStatus('connecting', 'Testing connection...');
                 
-                // Try to read data with timeout
-                const docRef = db.collection('website').doc('config');
-                const doc = await Promise.race([
-                    docRef.get(),
-                    new Promise((_, reject) => 
-                        setTimeout(() => reject(new Error('Connection timeout')), 10000)
-                    )
-                ]);
+                // Test with a simple read operation
+                const testDoc = await db.collection('website').doc('config').get();
                 
                 isFirebaseConnected = true;
                 lastSyncTime = new Date();
                 console.log("✅ Firebase connection successful!");
-                updateSyncStatus('online');
+                console.log("Document exists:", testDoc.exists);
                 
-                // Update UI to show online status
-                document.getElementById('announcementText').textContent = 
-                    "🎉 WELCOME TO RAYBET CASINO! ✅ Live";
+                if (testDoc.exists) {
+                    console.log("Current data:", testDoc.data());
+                }
+                
+                updateSyncStatus('online');
                 
                 // Load data and setup real-time updates
                 await loadWebsiteData();
                 setupRealtimeUpdates();
                 
             } catch (error) {
-                console.warn("⚠️ Firebase connection test failed:", error.message);
+                console.error("⚠️ Firebase connection test failed:", error);
+                console.error("Error details:", error.message, error.code);
+                
                 isFirebaseConnected = false;
                 updateSyncStatus('offline');
-                
-                // Update UI to show offline status
-                document.getElementById('announcementText').textContent = 
-                    "🎉 WELCOME TO RAYBET CASINO! 📱 Local";
                 
                 // Load from local storage
                 loadLocalData();
@@ -1140,9 +1150,6 @@
             updateSyncStatus('offline');
             
             // Update UI
-            document.getElementById('announcementText').textContent = 
-                "🎉 WELCOME TO RAYBET CASINO! 📱 Local";
-            
             loadLocalData();
             startDefaultTimer();
         }
@@ -1151,15 +1158,14 @@
         // ==== CHECK SYNC STATUS ====================
         // ============================================
         async function checkSyncStatus() {
-            if (!isFirebaseConnected || !db) {
-                console.log("Checking sync status: Not connected to Firebase");
+            if (!db) {
+                console.log("Checking sync status: Firebase not initialized");
                 return;
             }
             
             try {
                 // Try a simple read to check connection
-                const docRef = db.collection('website').doc('config');
-                await docRef.get();
+                await db.collection('website').doc('config').get();
                 
                 if (!isFirebaseConnected) {
                     // Reconnected!
@@ -1431,7 +1437,7 @@
                     updatedBy: "admin",
                     timestamp: Date.now(),
                     syncVersion: syncVersion,
-                    forceUpdate: true  // Flag to force updates on all clients
+                    forceUpdate: true
                 };
                 
                 // 1. Always save to local storage first (immediate backup)
@@ -1458,9 +1464,6 @@
                         
                         firebaseSuccess = true;
                         console.log("✅ Data saved to Firebase");
-                        
-                        // Create an update trigger for other clients
-                        await createUpdateTrigger();
                         
                         // Show success message with Firebase info
                         document.getElementById('updateSuccess').innerHTML = 
@@ -1515,46 +1518,37 @@
                 const eventDate = document.getElementById('eventDateInput').value;
                 const eventDateObj = new Date(eventDate);
                 
-                // Create a special sync trigger
-                const syncTrigger = {
-                    type: "force_sync",
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    data: {
-                        announcement: announcement,
-                        worldName: worldName,
-                        eventName: eventName,
-                        eventEndDate: eventDateObj.toISOString()
-                    },
-                    triggeredBy: "admin",
-                    triggerId: Date.now().toString()
+                // Increment sync version
+                let syncVersion = 1;
+                try {
+                    const currentDoc = await db.collection('website').doc('config').get();
+                    if (currentDoc.exists) {
+                        syncVersion = (currentDoc.data().syncVersion || 0) + 1;
+                    }
+                } catch (e) {
+                    console.log("Could not get current sync version");
+                }
+                
+                // Update with force flag
+                const updateData = {
+                    announcement: announcement,
+                    worldName: worldName,
+                    eventName: eventName,
+                    eventEndDate: eventDateObj.toISOString(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedBy: "admin",
+                    syncVersion: syncVersion,
+                    forceUpdate: true,
+                    lastForceSync: new Date().toISOString()
                 };
                 
-                // Save to a special collection that all clients listen to
-                await db.collection('sync_triggers').doc(Date.now().toString()).set(syncTrigger);
+                await db.collection('website').doc('config').set(updateData, { merge: true });
                 
-                alert("✅ Sync trigger sent! All connected users will update within seconds.");
+                alert("✅ Force sync triggered! All users will update within seconds.");
                 
             } catch (error) {
                 console.error("Force sync error:", error);
                 alert("❌ Failed to force sync: " + error.message);
-            }
-        }
-
-        async function createUpdateTrigger() {
-            if (!isFirebaseConnected || !db) return;
-            
-            try {
-                // Create a trigger document
-                const triggerData = {
-                    type: "content_update",
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    triggeredBy: "admin"
-                };
-                
-                await db.collection('updates').doc(Date.now().toString()).set(triggerData);
-                console.log("✅ Update trigger created");
-            } catch (error) {
-                console.log("Could not create update trigger:", error);
             }
         }
 
@@ -1577,6 +1571,7 @@
                 }
                 // Save sync version
                 localStorage.setItem('raybetLastSync', new Date().toISOString());
+                localStorage.setItem('raybetData', JSON.stringify(data));
                 console.log("💾 Data saved to local storage");
             } catch (error) {
                 console.warn("Could not save to local storage:", error);
@@ -1585,6 +1580,22 @@
 
         function loadLocalData() {
             try {
+                // Try to load from combined JSON first
+                const savedData = localStorage.getItem('raybetData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    updateUIFromData(data);
+                    if (data.eventEndDate) {
+                        currentEventEndDate = new Date(data.eventEndDate);
+                        startTimer();
+                    } else {
+                        startDefaultTimer();
+                    }
+                    console.log("📱 Loaded from local storage (JSON)");
+                    return;
+                }
+                
+                // Fallback to individual items
                 const localAnnouncement = localStorage.getItem('raybetAnnouncement');
                 const localWorldName = localStorage.getItem('raybetWorldName');
                 const localEventName = localStorage.getItem('raybetEventName');
