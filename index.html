@@ -10,13 +10,924 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js"></script>
     
     <style>
-        /* ALL YOUR CSS STAYS THE SAME - NOT CHANGING */
-        /* ... (all your existing CSS code) ... */
+        /* ===== BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), 
+                        url('./PNG.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ===== ENHANCED TEAM NAME WITH INDIVIDUAL LETTERS ===== */
+        .team-name {
+            position: fixed;
+            top: 10px;
+            left: 20px;
+            z-index: 100;
+            pointer-events: none;
+            animation: teamNameEntrance 1s ease-out 4s forwards;
+            opacity: 0;
+            display: flex;
+            gap: 2px;
+            flex-wrap: nowrap;
+        }
+
+        .letter {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            position: relative;
+            display: inline-block;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
+            margin-right: 2px;
+        }
+
+        /* Individual moving rainbow inside each letter */
+        .letter::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                #ff0000,
+                #ff8800,
+                #ffff00,
+                #00ff00,
+                #0088ff,
+                #8800ff,
+                #ff0000
+            );
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbowMove 3s linear infinite;
+            z-index: -1;
+        }
+
+        .letter::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: transparent;
+            text-shadow: 
+                0 0 10px rgba(255,255,255,0.3),
+                0 0 20px rgba(255,255,255,0.2),
+                0 0 30px rgba(255,255,255,0.1);
+            z-index: -2;
+        }
+
+        /* Different animation delays for each letter */
+        .letter:nth-child(1)::before { animation-delay: 0s; }
+        .letter:nth-child(2)::before { animation-delay: 0.2s; }
+        .letter:nth-child(3)::before { animation-delay: 0.4s; }
+        .letter:nth-child(4)::before { animation-delay: 0.6s; }
+        .letter:nth-child(5)::before { animation-delay: 0.8s; }
+        .letter:nth-child(6)::before { animation-delay: 1.0s; }
+        .letter:nth-child(7)::before { animation-delay: 1.2s; }
+        .letter:nth-child(8)::before { animation-delay: 1.4s; }
+        .letter:nth-child(9)::before { animation-delay: 1.6s; }
+        .letter:nth-child(10)::before { animation-delay: 1.8s; }
+        .letter:nth-child(11)::before { animation-delay: 2.0s; }
+
+        /* Letter bounce effect */
+        .letter {
+            animation: letterBounce 4s ease-in-out infinite;
+        }
+
+        .letter:nth-child(1) { animation-delay: 0s; }
+        .letter:nth-child(2) { animation-delay: 0.1s; }
+        .letter:nth-child(3) { animation-delay: 0.2s; }
+        .letter:nth-child(4) { animation-delay: 0.3s; }
+        .letter:nth-child(5) { animation-delay: 0.4s; }
+        .letter:nth-child(6) { animation-delay: 0.5s; }
+        .letter:nth-child(7) { animation-delay: 0.6s; }
+        .letter:nth-child(8) { animation-delay: 0.7s; }
+        .letter:nth-child(9) { animation-delay: 0.8s; }
+        .letter:nth-child(10) { animation-delay: 0.9s; }
+        .letter:nth-child(11) { animation-delay: 1.0s; }
+
+        /* ===== INTRO SCREEN ===== */
+        .intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000000, #1a0000, #330000);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: introBackground 4s ease-out forwards;
+        }
+
+        .intro-logo {
+            position: relative;
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: transparent;
+            background: linear-gradient(45deg, #ff4500, #ff9900, #ff4500);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: introText 3s ease-out forwards;
+            text-shadow: 0 0 50px rgba(255, 69, 0, 0.5);
+            font-family: 'Impact', 'Arial Black', sans-serif;
+        }
+
+        /* ===== MAIN CONTENT CONTAINER ===== */
+        .main-content {
+            opacity: 0;
+            animation: fadeInMain 1s ease-out 4s forwards;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding-top: 120px;
+        }
+
+        /* Content wrapper for centering */
+        .content-wrapper {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* ===== ANNOUNCEMENT BAR ===== */
+        .announcement-bar {
+            width: 100%;
+            background: linear-gradient(90deg, #ff4500, #ff5500);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 20px rgba(255,69,0,0.4);
+            animation: slideDown 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ===== EVENT TIMER SECTION ===== */
+        .event-timer {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.9), rgba(178, 34, 34, 0.9));
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            border: 2px solid #ff9900;
+            text-align: center;
+            animation: fadeInUp 1s ease-out 0.3s both;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .timer-title {
+            color: #ffcc00;
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255,204,0,0.5);
+        }
+
+        .timer-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .timer-unit {
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            padding: 15px 10px;
+            min-width: 80px;
+            border: 2px solid #ff4500;
+        }
+
+        .timer-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #ff4500;
+            text-shadow: 0 0 10px rgba(255,69,0,0.7);
+        }
+
+        .timer-label {
+            font-size: 0.9rem;
+            color: #ffcc00;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .event-name {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255,69,0,0.2);
+            border-radius: 8px;
+            border: 1px solid #ff9900;
+        }
+
+        /* ===== WORLD BOX ===== */
+        .world-box {
+            background: rgba(0,0,0,0.85);
+            border: 3px solid #ff4500;
+            border-radius: 15px;
+            padding: 20px 30px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .world-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .world-name {
+            color: #ff4500;
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(255,69,0,0.7);
+        }
+
+        /* ===== VIDEO REWARD SECTION ===== */
+        .video-reward {
+            background: linear-gradient(135deg, #8B0000, #B22222);
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            border: 2px solid #ff0000;
+            text-align: center;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .reward-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255,0,0,0.7);
+        }
+
+        .warning-note {
+            color: #ffcccc;
+            font-weight: 700;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,0,0,0.2);
+            border-radius: 8px;
+            border: 1px solid #ff0000;
+        }
+
+        /* ===== SPECIAL SECTIONS CONTAINER ===== */
+        .special-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
+        /* PROBLEMS NUMBER Section */
+        .problems-section {
+            background: linear-gradient(135deg, #4B0082, #8A2BE2);
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            border: 2px solid #9370DB;
+            text-align: center;
+            animation: fadeInUp 1s ease-out 0.5s both;
+            box-shadow: 0 5px 15px rgba(147,112,219,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .problems-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(147,112,219,0.4);
+        }
+
+        .problems-title {
+            color: #d8bfd8;
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(216,191,216,0.7);
+        }
+
+        .phone-number {
+            color: #00ff00;
+            font-size: 1.3rem;
+            font-weight: 900;
+            padding: 12px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            border: 2px solid #00ff00;
+            margin: 15px 0;
+            display: inline-block;
+            text-shadow: 0 0 10px rgba(0,255,0,0.5);
+            animation: phonePulse 2s infinite;
+        }
+
+        .support-click-note {
+            color: #9370DB;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 15px;
+            padding: 8px;
+            background: rgba(147,112,219,0.1);
+            border-radius: 8px;
+            border: 1px dashed #9370DB;
+        }
+
+        /* ===== BUTTONS ===== */
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .btn-instagram {
+            background: linear-gradient(45deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D);
+            color: white;
+        }
+
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366, #25D366);
+            color: white;
+        }
+
+        .btn-discord {
+            background: linear-gradient(135deg, #5865F2, #7289DA);
+            color: white;
+        }
+
+        .btn-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* ===== ADMIN PANEL ===== */
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .admin-content {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid #ff4500;
+            box-shadow: 0 0 30px rgba(255,69,0,0.3);
+        }
+
+        .admin-title {
+            color: #ff4500;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .admin-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,69,0,0.1);
+            border-radius: 10px;
+            border-left: 4px solid #ff4500;
+        }
+
+        .admin-section-title {
+            color: #ffcc00;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .admin-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #333;
+            border: 2px solid #444;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .admin-input:focus {
+            border-color: #ff4500;
+            outline: none;
+        }
+
+        .admin-btn {
+            width: 100%;
+            padding: 12px;
+            background: #ff4500;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .admin-btn:hover {
+            background: #ff5500;
+            transform: translateY(-2px);
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .success {
+            background: rgba(0,255,0,0.1);
+            color: #0f0;
+            border: 1px solid #0f0;
+        }
+
+        .error {
+            background: rgba(255,0,0,0.1);
+            color: #f00;
+            border: 1px solid #f00;
+        }
+
+        .loading {
+            color: #ff9900;
+            text-align: center;
+            margin: 10px 0;
+            display: none;
+        }
+
+        /* ===== ADMIN ACCESS BUTTON ===== */
+        .admin-access-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255,69,0,0.2);
+            color: #ff4500;
+            border: 2px solid #ff4500;
+            padding: 12px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 100;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .admin-access-btn:hover {
+            background: rgba(255,69,0,0.3);
+            transform: scale(1.1);
+        }
+
+        /* ===== ANIMATION KEYFRAMES ===== */
+        @keyframes teamNameEntrance {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes rainbowMove {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 400% 50%;
+            }
+        }
+
+        @keyframes letterBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes phonePulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(0,255,0,0.5);
+            }
+            50% {
+                transform: scale(1.03);
+                box-shadow: 0 0 20px rgba(0,255,0,0.8);
+            }
+        }
+
+        @keyframes introBackground {
+            0% {
+                background: linear-gradient(135deg, #000000, #000000, #000000);
+                opacity: 1;
+            }
+            70% {
+                background: linear-gradient(135deg, #660000, #330000, #990000);
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                display: none;
+            }
+        }
+
+        @keyframes introText {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            40% {
+                transform: scale(1);
+                text-shadow: 0 0 30px rgba(255, 69, 0, 0.8);
+            }
+            80% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes fadeInMain {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .team-name {
+                top: 15px;
+                left: 15px;
+            }
+            
+            .letter {
+                font-size: 2.5rem;
+            }
+            
+            .intro-logo {
+                font-size: 3.5rem;
+                letter-spacing: 3px;
+            }
+            
+            .main-content {
+                padding-top: 100px;
+            }
+            
+            .world-text { font-size: 1.3rem; }
+            .world-name { font-size: 1.5rem; }
+            .reward-title { font-size: 1.3rem; }
+            .problems-title { font-size: 1.3rem; }
+            .btn { padding: 12px 15px; }
+            .timer-display { gap: 10px; }
+            .timer-unit { min-width: 70px; padding: 12px 8px; }
+            .timer-value { font-size: 1.7rem; }
+            .timer-title { font-size: 1.3rem; }
+            .admin-content { padding: 20px; }
+            .content-wrapper {
+                padding: 0 15px;
+            }
+            .phone-number {
+                font-size: 1.1rem;
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .team-name {
+                top: 10px;
+                left: 10px;
+            }
+            
+            .letter {
+                font-size: 2rem;
+                margin-right: 1px;
+            }
+            
+            .intro-logo {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+            
+            .timer-display {
+                gap: 8px;
+            }
+            .timer-unit {
+                min-width: 60px;
+                padding: 10px 5px;
+            }
+            .timer-value {
+                font-size: 1.5rem;
+            }
+            .content-wrapper {
+                padding: 0 10px;
+            }
+            .phone-number {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- ALL YOUR HTML STAYS THE SAME - NOT CHANGING -->
-    <!-- ... (all your existing HTML code) ... -->
+    <!-- ENHANCED RAINBOW TEAM NAME -->
+    <div class="team-name">
+        <span class="letter" data-text="R">R</span>
+        <span class="letter" data-text="A">A</span>
+        <span class="letter" data-text="Y">Y</span>
+        <span class="letter" data-text="B">B</span>
+        <span class="letter" data-text="E">E</span>
+        <span class="letter" data-text="T">T</span>
+        <span class="letter" data-text=" "> </span>
+        <span class="letter" data-text="T">T</span>
+        <span class="letter" data-text="E">E</span>
+        <span class="letter" data-text="A">A</span>
+        <span class="letter" data-text="M">M</span>
+    </div>
+
+    <!-- INTRO SCREEN -->
+    <div class="intro-screen" id="introScreen">
+        <div class="intro-logo" id="introLogo">RAYBET</div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content" id="mainContent">
+        <div class="content-wrapper">
+            <!-- ANNOUNCEMENT BAR -->
+            <div class="announcement-bar" id="announcementBar">
+                <span id="announcementText">🎉 WELCOME TO RAYBET CASINO!</span>
+            </div>
+
+            <!-- WORLD BOX -->
+            <div class="world-box">
+                <p class="world-text">
+                    🌍 JOIN WORLD: <span class="world-name" id="worldName">RAYBET</span>
+                </p>
+            </div>
+
+            <!-- EVENT TIMER SECTION -->
+            <div class="event-timer" id="eventTimer">
+                <div class="timer-title" id="timerTitle">🎯 NEXT TOURNAMENT</div>
+                <div class="timer-display">
+                    <div class="timer-unit">
+                        <div class="timer-value" id="days">07</div>
+                        <div class="timer-label">Days</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-value" id="hours">00</div>
+                        <div class="timer-label">Hours</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-value" id="minutes">00</div>
+                        <div class="timer-label">Minutes</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-value" id="seconds">00</div>
+                        <div class="timer-label">Seconds</div>
+                    </div>
+                </div>
+                <div class="event-name" id="eventName">Tournament Countdown</div>
+            </div>
+
+            <!-- VIDEO REWARD SECTION -->
+            <div class="video-reward">
+                <div class="reward-title">🎬 UPLOAD VIDEO ABOUT OUR TEAM</div>
+                <p>Get 10 DLS for each 1,000 views</p>
+                <div class="warning-note">🚫 DONT TRY USE FAKE - WE CAN DETECT!</div>
+            </div>
+
+            <!-- PROBLEMS SECTION -->
+            <div class="special-sections">
+                <div class="problems-section" onclick="openSupportWhatsApp()">
+                    <div class="problems-title">📞 PROBLEMS / SUPPORT</div>
+                    <p>Contact us for any issues or questions</p>
+                    <div class="phone-number">+961 81 050 883</div>
+                    <p>24/7 Support Available</p>
+                    <div class="support-click-note">
+                        📱 CLICK HERE TO CONTACT SUPPORT ON WHATSAPP
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOCIAL BUTTONS -->
+            <div class="buttons-container">
+                <a href="https://www.instagram.com/raybet.gt" target="_blank" class="btn btn-instagram">
+                    <span class="btn-icon">📷</span>
+                    Instagram
+                </a>
+                <a href="https://wa.me/96181050883?text=Hello%20Raybet%20Team!" target="_blank" class="btn btn-whatsapp">
+                    <span class="btn-icon">💬</span>
+                    WhatsApp
+                </a>
+                <a href="https://discord.gg/5BkyZkZm" target="_blank" class="btn btn-discord">
+                    <span class="btn-icon">🎮</span>
+                    Discord
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-content">
+            <h2 class="admin-title">🔒 ADMIN LOGIN</h2>
+            
+            <div id="loginScreen">
+                <input type="password" 
+                       id="adminPassword" 
+                       class="admin-input" 
+                       placeholder="Owner Password"
+                       autocomplete="off">
+                
+                <button class="admin-btn" onclick="adminLogin()">Login</button>
+                
+                <div class="message error" id="loginError">
+                    ❌ Wrong password!
+                </div>
+                
+                <div class="loading" id="loginLoading">
+                    🔄 Connecting to database...
+                </div>
+            </div>
+            
+            <div id="controlScreen" style="display: none;">
+                <h3 class="admin-title">⚙️ ADMIN CONTROL PANEL</h3>
+                
+                <!-- Website Content Section -->
+                <div class="admin-section">
+                    <div class="admin-section-title">📢 WEBSITE CONTENT</div>
+                    
+                    <input type="text" 
+                           id="announcementInput" 
+                           class="admin-input" 
+                           placeholder="New Announcement">
+                    
+                    <input type="text" 
+                           id="worldNameInput" 
+                           class="admin-input" 
+                           placeholder="New World Name">
+                </div>
+                
+                <!-- Event Timer Section -->
+                <div class="admin-section">
+                    <div class="admin-section-title">⏰ EVENT TIMER SETTINGS</div>
+                    
+                    <input type="text" 
+                           id="eventNameInput" 
+                           class="admin-input" 
+                           placeholder="Event Name (e.g., 'Tournament Final')">
+                    
+                    <input type="datetime-local" 
+                           id="eventDateInput" 
+                           class="admin-input" 
+                           placeholder="Event Date & Time">
+                    
+                    <small style="color: #ff9900; display: block; margin-bottom: 10px;">
+                        Set future date & time for the event countdown
+                    </small>
+                </div>
+                
+                <!-- Action Buttons -->
+                <button class="admin-btn" onclick="updateWebsite()">
+                    ✅ Update ALL Settings
+                </button>
+                
+                <button class="admin-btn" onclick="logoutAdmin()" style="background: #444; margin-top: 10px;">
+                    🔓 Logout
+                </button>
+                
+                <!-- Messages -->
+                <div class="message success" id="updateSuccess">
+                    ✅ Website updated successfully!
+                </div>
+                
+                <div class="message error" id="updateError">
+                    ❌ Update failed! Check console.
+                </div>
+                
+                <div class="loading" id="updateLoading">
+                    🔄 Saving to database...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN ACCESS BUTTON -->
+    <button class="admin-access-btn" onclick="openAdminPanel()">🔧 Owner</button>
 
     <script>
         // ============================================
@@ -506,9 +1417,8 @@
         }
 
         // ============================================
-        // ==== ADMIN FUNCTIONS (REST) ===============
+        // ==== ADMIN FUNCTIONS ======================
         // ============================================
-        // ... (rest of your admin functions remain the same) ...
         function openAdminPanel() {
             document.getElementById('adminPanel').style.display = 'flex';
             
