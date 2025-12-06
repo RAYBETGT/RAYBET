@@ -801,22 +801,22 @@
         <div class="content-wrapper">
             <!-- ANNOUNCEMENT BAR -->
             <div class="announcement-bar" id="announcementBar">
-                <span id="announcementText">Loading announcement...</span>
+                <span id="announcementText">🎉 WELCOME TO RAYBET CASINO!</span>
             </div>
 
             <!-- WORLD BOX -->
             <div class="world-box">
                 <p class="world-text">
-                    🌍 JOIN WORLD: <span class="world-name" id="worldName">Loading...</span>
+                    🌍 JOIN WORLD: <span class="world-name" id="worldName">RAYBET</span>
                 </p>
             </div>
 
             <!-- EVENT TIMER SECTION -->
             <div class="event-timer" id="eventTimer">
-                <div class="timer-title" id="timerTitle">🎯 NEXT BIG EVENT</div>
+                <div class="timer-title" id="timerTitle">🎯 NEXT TOURNAMENT</div>
                 <div class="timer-display">
                     <div class="timer-unit">
-                        <div class="timer-value" id="days">00</div>
+                        <div class="timer-value" id="days">07</div>
                         <div class="timer-label">Days</div>
                     </div>
                     <div class="timer-unit">
@@ -832,7 +832,7 @@
                         <div class="timer-label">Seconds</div>
                     </div>
                 </div>
-                <div class="event-name" id="eventName">Loading event...</div>
+                <div class="event-name" id="eventName">Tournament Countdown</div>
             </div>
 
             <!-- VIDEO REWARD SECTION - UPDATED TEXT -->
@@ -945,11 +945,11 @@
                 
                 <!-- Messages -->
                 <div class="message success" id="updateSuccess">
-                    ✅ Website updated successfully for ALL users!
+                    ✅ Website updated successfully!
                 </div>
                 
                 <div class="message error" id="updateError">
-                    ❌ Update failed! Check console for details.
+                    ❌ Update failed! Using local storage instead.
                 </div>
                 
                 <div class="loading" id="updateLoading">
@@ -987,6 +987,7 @@
         let isAdmin = false;
         let timerInterval = null;
         let currentEventEndDate = null;
+        let isFirebaseConnected = false;
 
         // ============================================
         // ==== WHATSAPP AUTO-OPEN FUNCTIONS ==========
@@ -1007,27 +1008,70 @@
             // Start intro animation
             startIntroAnimation();
             
-            // After intro animation completes, load everything else
+            // Set default values immediately
+            setDefaultValues();
+            
+            // After intro animation completes, try to connect to Firebase
             setTimeout(async () => {
                 try {
+                    console.log("🔄 Attempting to connect to Firebase...");
+                    
                     // Initialize Firebase
                     firebase.initializeApp(firebaseConfig);
                     db = firebase.firestore();
-                    console.log("✅ Firebase connected!");
-
-                    // Load data from Firebase
-                    await loadWebsiteData();
-
-                    // Listen for real-time updates
-                    setupRealtimeUpdates();
-
+                    
+                    // Test connection with timeout
+                    const connectionTest = await Promise.race([
+                        db.collection('website').doc('config').get(),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 5000))
+                    ]);
+                    
+                    if (connectionTest.exists) {
+                        isFirebaseConnected = true;
+                        console.log("✅ Firebase connected successfully!");
+                        
+                        // Load data from Firebase
+                        await loadWebsiteData();
+                        
+                        // Listen for real-time updates
+                        setupRealtimeUpdates();
+                        
+                        // Update announcement to show online status
+                        document.getElementById('announcementText').textContent = 
+                            "🎉 WELCOME TO RAYBET CASINO! ✅ Database Online";
+                    }
+                    
                 } catch (error) {
-                    console.error("Firebase error:", error);
+                    console.warn("⚠️ Firebase connection failed:", error.message);
+                    console.log("📱 Using local storage and default values");
+                    isFirebaseConnected = false;
+                    
+                    // Update announcement to show offline status
+                    document.getElementById('announcementText').textContent = 
+                        "🎉 WELCOME TO RAYBET CASINO! 📱 Local Mode";
+                    
+                    // Load local data
                     loadLocalData();
                     startDefaultTimer();
                 }
             }, 3500); // Wait for intro to finish
         });
+
+        // ============================================
+        // ==== SET DEFAULT VALUES ===================
+        // ============================================
+        function setDefaultValues() {
+            // Set default values that will show immediately
+            document.getElementById('announcementText').textContent = 
+                "🎉 WELCOME TO RAYBET CASINO!";
+            
+            document.getElementById('worldName').textContent = "RAYBET";
+            document.getElementById('timerTitle').textContent = "🎯 NEXT TOURNAMENT";
+            document.getElementById('eventName').textContent = "Tournament Countdown";
+            
+            // Start timer with default values
+            startDefaultTimer();
+        }
 
         // ============================================
         // ==== INTRO ANIMATION FUNCTIONS =============
@@ -1045,6 +1089,12 @@
         // ==== LOAD DATA FROM FIREBASE ==============
         // ============================================
         async function loadWebsiteData() {
+            if (!isFirebaseConnected) {
+                console.log("Skipping Firebase load - not connected");
+                loadLocalData();
+                return;
+            }
+            
             try {
                 const doc = await db.collection('website').doc('config').get();
                 
@@ -1062,41 +1112,55 @@
                     } else {
                         startDefaultTimer();
                     }
-                } else {
-                    // Create default data
-                    const defaultData = {
-                        announcement: "🎉 WELCOME TO RAYBET CASINO!",
-                        worldName: "RAYBET",
-                        eventName: "NEXT TOURNAMENT",
-                        eventEndDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    };
                     
-                    await db.collection('website').doc('config').set(defaultData);
-                    updateUIFromData(defaultData);
-                    currentEventEndDate = new Date(defaultData.eventEndDate);
-                    startTimer();
-                    console.log("✅ Default data created");
+                    // Save to local storage as backup
+                    saveToLocalStorage(data);
+                    
+                } else {
+                    console.log("No Firebase data found, using defaults");
+                    loadLocalData();
+                    startDefaultTimer();
                 }
             } catch (error) {
-                console.error("Error loading data:", error);
+                console.error("Error loading data from Firebase:", error);
                 loadLocalData();
                 startDefaultTimer();
             }
         }
 
         function updateUIFromData(data) {
-            document.getElementById('announcementText').textContent = 
-                data.announcement || "🎉 WELCOME TO RAYBET CASINO!";
+            if (data.announcement) {
+                document.getElementById('announcementText').textContent = data.announcement;
+            }
             
-            document.getElementById('worldName').textContent = 
-                data.worldName || "RAYBET";
+            if (data.worldName) {
+                document.getElementById('worldName').textContent = data.worldName;
+            }
             
-            document.getElementById('timerTitle').textContent = 
-                data.eventName ? `🎯 ${data.eventName}` : "🎯 NEXT BIG EVENT";
-            
-            document.getElementById('eventName').textContent = 
-                data.eventName || "Tournament Countdown";
+            if (data.eventName) {
+                document.getElementById('timerTitle').textContent = `🎯 ${data.eventName}`;
+                document.getElementById('eventName').textContent = data.eventName;
+            }
+        }
+
+        function saveToLocalStorage(data) {
+            try {
+                if (data.announcement) {
+                    localStorage.setItem('raybetAnnouncement', data.announcement);
+                }
+                if (data.worldName) {
+                    localStorage.setItem('raybetWorldName', data.worldName);
+                }
+                if (data.eventName) {
+                    localStorage.setItem('raybetEventName', data.eventName);
+                }
+                if (data.eventEndDate) {
+                    localStorage.setItem('raybetEventDate', data.eventEndDate);
+                }
+                console.log("💾 Data saved to local storage as backup");
+            } catch (error) {
+                console.warn("Could not save to local storage:", error);
+            }
         }
 
         // ============================================
@@ -1159,6 +1223,8 @@
         // ==== REALTIME UPDATES =====================
         // ============================================
         function setupRealtimeUpdates() {
+            if (!isFirebaseConnected) return;
+            
             db.collection('website').doc('config')
                 .onSnapshot((doc) => {
                     if (doc.exists) {
@@ -1176,11 +1242,47 @@
                             }
                         }
                         
+                        // Save to local storage as backup
+                        saveToLocalStorage(data);
+                        
                         console.log("🔄 Real-time update received");
                     }
                 }, (error) => {
                     console.error("Realtime error:", error);
                 });
+        }
+
+        // ============================================
+        // ==== LOAD LOCAL DATA ======================
+        // ============================================
+        function loadLocalData() {
+            try {
+                const localAnnouncement = localStorage.getItem('raybetAnnouncement');
+                const localWorldName = localStorage.getItem('raybetWorldName');
+                const localEventName = localStorage.getItem('raybetEventName');
+                const localEventDate = localStorage.getItem('raybetEventDate');
+                
+                if (localAnnouncement) {
+                    document.getElementById('announcementText').textContent = localAnnouncement;
+                }
+                
+                if (localWorldName) {
+                    document.getElementById('worldName').textContent = localWorldName;
+                }
+                
+                if (localEventName) {
+                    document.getElementById('timerTitle').textContent = `🎯 ${localEventName}`;
+                    document.getElementById('eventName').textContent = localEventName;
+                }
+                
+                if (localEventDate) {
+                    currentEventEndDate = new Date(localEventDate);
+                }
+                
+                console.log("📱 Using local data");
+            } catch (error) {
+                console.log("No local data found, using defaults");
+            }
         }
 
         // ============================================
@@ -1227,6 +1329,10 @@
                 const dateInput = new Date(currentEventEndDate);
                 const localDateTime = dateInput.toISOString().slice(0, 16);
                 document.getElementById('eventDateInput').value = localDateTime;
+            } else {
+                // Set default date (7 days from now)
+                const defaultDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+                document.getElementById('eventDateInput').value = defaultDate.toISOString().slice(0, 16);
             }
             
             hideAllMessages();
@@ -1239,15 +1345,16 @@
                 document.getElementById('loginLoading').style.display = 'block';
                 
                 try {
-                    if (db) {
-                        isAdmin = true;
-                        showControlScreen();
-                        console.log("✅ Admin logged in");
+                    // Check if Firebase is connected
+                    if (isFirebaseConnected && db) {
+                        console.log("✅ Admin logged in with Firebase");
                     } else {
-                        alert("⚠️ Database not connected");
-                        isAdmin = true;
-                        showControlScreen();
+                        console.log("✅ Admin logged in (Local Mode)");
                     }
+                    
+                    isAdmin = true;
+                    showControlScreen();
+                    
                 } catch (error) {
                     console.error("Login error:", error);
                     showMessage('loginError');
@@ -1281,23 +1388,53 @@
             hideAllMessages();
             
             try {
-                // Update Firebase
-                await db.collection('website').doc('config').set({
+                // Always save to local storage first
+                const updateData = {
                     announcement: announcement,
                     worldName: worldName,
                     eventName: eventName,
                     eventEndDate: eventDateObj.toISOString(),
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedBy: "admin",
-                    timestamp: Date.now()
-                }, { merge: true });
+                    updatedAt: new Date().toISOString(),
+                    updatedBy: "admin"
+                };
                 
-                showMessage('updateSuccess');
-                console.log("✅ Data saved to Firebase");
+                // Save to local storage
+                localStorage.setItem('raybetAnnouncement', announcement);
+                localStorage.setItem('raybetWorldName', worldName);
+                localStorage.setItem('raybetEventName', eventName);
+                localStorage.setItem('raybetEventDate', eventDateObj.toISOString());
                 
-                // Update local variables
+                // Try to save to Firebase if connected
+                if (isFirebaseConnected && db) {
+                    try {
+                        await db.collection('website').doc('config').set({
+                            announcement: announcement,
+                            worldName: worldName,
+                            eventName: eventName,
+                            eventEndDate: eventDateObj.toISOString(),
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            updatedBy: "admin",
+                            timestamp: Date.now()
+                        }, { merge: true });
+                        
+                        console.log("✅ Data saved to Firebase");
+                    } catch (firebaseError) {
+                        console.warn("⚠️ Could not save to Firebase:", firebaseError);
+                    }
+                }
+                
+                // Update UI immediately
+                document.getElementById('announcementText').textContent = announcement;
+                document.getElementById('worldName').textContent = worldName;
+                document.getElementById('timerTitle').textContent = `🎯 ${eventName}`;
+                document.getElementById('eventName').textContent = eventName;
+                
+                // Update timer
                 currentEventEndDate = eventDateObj;
                 startTimer();
+                
+                showMessage('updateSuccess');
+                console.log("✅ Website updated successfully!");
                 
                 // Close panel after 2 seconds
                 setTimeout(() => {
@@ -1321,32 +1458,6 @@
         // ============================================
         // ==== HELPER FUNCTIONS =====================
         // ============================================
-        function loadLocalData() {
-            const localAnnouncement = localStorage.getItem('raybetAnnouncement');
-            const localWorldName = localStorage.getItem('raybetWorldName');
-            const localEventName = localStorage.getItem('raybetEventName');
-            const localEventDate = localStorage.getItem('raybetEventDate');
-            
-            if (localAnnouncement) {
-                document.getElementById('announcementText').textContent = localAnnouncement;
-            }
-            
-            if (localWorldName) {
-                document.getElementById('worldName').textContent = localWorldName;
-            }
-            
-            if (localEventName) {
-                document.getElementById('timerTitle').textContent = `🎯 ${localEventName}`;
-                document.getElementById('eventName').textContent = localEventName;
-            }
-            
-            if (localEventDate) {
-                currentEventEndDate = new Date(localEventDate);
-            }
-            
-            console.log("📱 Using local data");
-        }
-
         function showMessage(elementId) {
             hideAllMessages();
             document.getElementById(elementId).style.display = 'block';
@@ -1375,15 +1486,6 @@
                 closeAdminPanel();
             }
         });
-
-        // Check if Firebase is working
-        setTimeout(() => {
-            if (!db) {
-                console.warn("⚠️ Firebase not connected - using local storage");
-                document.getElementById('announcementText').textContent = 
-                    "⚠️ Database offline - Using local data";
-            }
-        }, 8000);
     </script>
 </body>
 </html>
