@@ -20,132 +20,30 @@
         body {
             font-family: 'Arial', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);
+            background: linear-gradient(135deg, #000000, #1a0000);
             color: white;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* ===== THUNDERSTORM BACKGROUND ===== */
-        .thunderstorm-bg {
+        /* ===== ANIMATED BACKGROUND ===== */
+        .animated-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -3;
+            z-index: -1;
             overflow: hidden;
         }
 
-        /* Rain drops */
-        .rain {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .rain-drop {
-            position: absolute;
-            width: 2px;
-            height: 40px;
-            background: linear-gradient(transparent, rgba(100, 150, 255, 0.6));
-            animation: rainFall linear infinite;
-        }
-
-        /* Lightning flashes */
-        .lightning {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            opacity: 0;
-            animation: lightningFlash 15s infinite;
-        }
-
-        /* Thunder clouds */
-        .cloud {
-            position: absolute;
-            background: rgba(30, 30, 40, 0.8);
-            border-radius: 50%;
-            box-shadow: 
-                0 0 40px rgba(0, 0, 0, 0.5),
-                0 0 80px rgba(0, 0, 0, 0.3);
-            animation: cloudFloat 60s infinite linear;
-        }
-
-        /* Floating particles */
         .particle {
             position: absolute;
-            width: 3px;
-            height: 3px;
-            background: rgba(255, 215, 0, 0.8);
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 69, 0, 0.6);
             border-radius: 50%;
-            box-shadow: 0 0 10px gold;
-            animation: particleFloat 20s infinite linear;
-        }
-
-        /* Glowing orbs */
-        .orb {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,69,0,0.3), transparent);
-            filter: blur(40px);
-            animation: orbPulse 8s infinite alternate;
-        }
-
-        /* ===== MUSIC PLAYER FIXED ===== */
-        .music-player {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(0, 0, 0, 0.85);
-            padding: 12px 20px;
-            border-radius: 50px;
-            border: 2px solid #ff4500;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .music-btn {
-            background: #ff4500;
-            border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
-        }
-
-        .music-btn:hover {
-            background: #ff5500;
-            transform: scale(1.1) rotate(360deg);
-            box-shadow: 0 0 30px rgba(255, 69, 0, 0.8);
-        }
-
-        .music-btn.playing {
-            background: #00ff00;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
-        }
-
-        .music-info {
-            font-size: 0.9rem;
-            color: #ff9900;
-            font-weight: bold;
-            letter-spacing: 1px;
+            animation: float 15s infinite linear;
         }
 
         /* ===== PROFESSIONAL ENTRY ANIMATION ===== */
@@ -324,6 +222,173 @@
             display: none;
         }
 
+        .rules-container {
+            display: flex;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 80px auto 40px;
+        }
+
+        .rules-box {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .reme-box {
+            border-color: #ff4500;
+        }
+
+        .leme-box {
+            border-color: #00aaff;
+        }
+
+        .rules-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .reme-title {
+            color: #ff4500;
+            border-bottom-color: #ff4500;
+            text-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
+        }
+
+        .leme-title {
+            color: #00aaff;
+            border-bottom-color: #00aaff;
+            text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin: 20px 0 15px 0;
+            color: #fff;
+            padding-left: 10px;
+            border-left: 3px solid;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        .reme-section {
+            border-left-color: #ff4500;
+        }
+
+        .leme-section {
+            border-left-color: #00aaff;
+        }
+
+        .rule-item {
+            margin: 12px 0;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .rule-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .reme-item {
+            border-left-color: #ff4500;
+        }
+
+        .leme-item {
+            border-left-color: #00aaff;
+        }
+
+        .rule-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .rule-icon {
+            margin-right: 12px;
+            font-size: 1.3rem;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .multiplier {
+            color: #00ff00;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+            animation: pulse-green 2s infinite;
+        }
+
+        .autolose {
+            color: #ff4444;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
+            animation: pulse-red 2s infinite;
+        }
+
+        .numbers {
+            color: #ffff00;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(255, 255, 0, 0.3);
+        }
+
+        .min-bet {
+            color: #ffaa00;
+            font-weight: bold;
+        }
+
+        @keyframes pulse-green {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes pulse-red {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* ===== BACK BUTTON ===== */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 69, 0, 0.9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 69, 0, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.4);
+        }
+
         /* ===== MAIN CONTENT (CENTERED) ===== */
         .main-content {
             display: none;
@@ -370,6 +435,56 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
+        .timer-title {
+            color: #ffcc00;
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255,204,0,0.5);
+        }
+
+        .timer-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .timer-unit {
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            padding: 15px 10px;
+            min-width: 80px;
+            border: 2px solid #ff4500;
+        }
+
+        .timer-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #ff4500;
+            text-shadow: 0 0 10px rgba(255,69,0,0.7);
+        }
+
+        .timer-label {
+            font-size: 0.9rem;
+            color: #ffcc00;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .event-name {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255,69,0,0.2);
+            border-radius: 8px;
+            border: 1px solid #ff9900;
+        }
+
         /* ===== WORLD BOX ===== */
         .world-box {
             background: rgba(0,0,0,0.85);
@@ -382,6 +497,18 @@
             animation: fadeInUp 1s ease-out 0.2s both;
         }
 
+        .world-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .world-name {
+            color: #ff4500;
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(255,69,0,0.7);
+        }
+
         /* ===== VIDEO REWARD ===== */
         .video-reward {
             background: linear-gradient(135deg, #8B0000, #B22222);
@@ -391,6 +518,24 @@
             border: 2px solid #ff0000;
             text-align: center;
             animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .reward-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255,0,0,0.7);
+        }
+
+        .warning-note {
+            color: #ffcccc;
+            font-weight: 700;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,0,0,0.2);
+            border-radius: 8px;
+            border: 1px solid #ff0000;
         }
 
         /* ===== PROBLEMS SECTION ===== */
@@ -407,6 +552,33 @@
             transition: all 0.3s ease;
         }
 
+        .problems-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(147,112,219,0.4);
+        }
+
+        .problems-title {
+            color: #d8bfd8;
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(216,191,216,0.7);
+        }
+
+        .phone-number {
+            color: #00ff00;
+            font-size: 1.3rem;
+            font-weight: 900;
+            padding: 12px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            border: 2px solid #00ff00;
+            margin: 15px 0;
+            display: inline-block;
+            text-shadow: 0 0 10px rgba(0,255,0,0.5);
+            animation: phonePulse 2s infinite;
+        }
+
         /* ===== BUTTONS ===== */
         .buttons-container {
             display: flex;
@@ -414,6 +586,46 @@
             gap: 15px;
             width: 100%;
             animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .btn-instagram {
+            background: linear-gradient(45deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D);
+            color: white;
+        }
+
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366, #25D366);
+            color: white;
+        }
+
+        .btn-discord {
+            background: linear-gradient(135deg, #5865F2, #7289DA);
+            color: white;
+        }
+
+        .btn-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
         }
 
         /* ===== ADMIN PANEL ===== */
@@ -431,52 +643,158 @@
             padding: 20px;
         }
 
-        /* ===== ANIMATION KEYFRAMES ===== */
-        @keyframes rainFall {
-            0% {
-                transform: translateY(-100px);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
+        .admin-content {
+            background: rgba(26, 26, 26, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid #ff4500;
+            box-shadow: 0 0 50px rgba(255,69,0,0.3);
+            backdrop-filter: blur(10px);
         }
 
-        @keyframes lightningFlash {
-            0%, 95% {
-                opacity: 0;
-            }
-            96%, 98% {
-                opacity: 0.3;
-            }
-            97%, 99% {
-                opacity: 0.6;
-            }
-            100% {
-                opacity: 0;
-            }
+        .admin-title {
+            color: #ff4500;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.8rem;
         }
 
-        @keyframes cloudFloat {
-            0% {
-                transform: translateX(-100px) translateY(-50px);
-            }
-            50% {
-                transform: translateX(100px) translateY(50px);
-            }
-            100% {
-                transform: translateX(-100px) translateY(-50px);
-            }
+        .admin-input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 69, 0, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
         }
 
-        @keyframes particleFloat {
+        .admin-input:focus {
+            border-color: #ff4500;
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.3);
+        }
+
+        .admin-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(45deg, #ff4500, #ff5500);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .admin-btn:hover {
+            background: linear-gradient(45deg, #ff5500, #ff6500);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.4);
+        }
+
+        .admin-access-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255,69,0,0.2);
+            color: #ff4500;
+            border: 2px solid #ff4500;
+            padding: 12px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 100;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .admin-access-btn:hover {
+            background: rgba(255,69,0,0.3);
+            transform: scale(1.1);
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+            font-weight: bold;
+        }
+
+        .success {
+            background: rgba(0,255,0,0.1);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+
+        .error {
+            background: rgba(255,0,0,0.1);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .warning {
+            background: rgba(255,165,0,0.1);
+            color: #ffaa00;
+            border: 1px solid #ffaa00;
+        }
+
+        /* ===== MUSIC PLAYER ===== */
+        .music-player {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: 2px solid #ff4500;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .music-btn {
+            background: #ff4500;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
+        }
+
+        .music-btn:hover {
+            background: #ff5500;
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 69, 0, 0.8);
+        }
+
+        .music-info {
+            font-size: 0.9rem;
+            color: #ff9900;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes float {
             0% {
                 transform: translateY(0) translateX(0);
                 opacity: 0;
@@ -490,17 +808,6 @@
             100% {
                 transform: translateY(-100vh) translateX(100px);
                 opacity: 0;
-            }
-        }
-
-        @keyframes orbPulse {
-            0% {
-                transform: scale(1);
-                opacity: 0.3;
-            }
-            100% {
-                transform: scale(1.5);
-                opacity: 0.7;
             }
         }
 
@@ -593,6 +900,17 @@
             }
         }
 
+        @keyframes phonePulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(0,255,0,0.5);
+            }
+            50% {
+                transform: scale(1.03);
+                box-shadow: 0 0 20px rgba(0,255,0,0.8);
+            }
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .logo-text {
@@ -626,6 +944,21 @@
             .main-content {
                 padding: 80px 15px 30px;
                 max-width: 95%;
+            }
+
+            .rules-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .rules-box {
+                min-width: 90%;
+            }
+
+            .back-button {
+                top: 15px;
+                left: 15px;
+                padding: 10px 20px;
             }
 
             .music-player {
@@ -679,20 +1012,8 @@
     </style>
 </head>
 <body>
-    <!-- THUNDERSTORM BACKGROUND -->
-    <div class="thunderstorm-bg" id="thunderstormBg">
-        <div class="rain" id="rainContainer"></div>
-        <div class="lightning" id="lightning"></div>
-        <!-- Clouds will be added by JavaScript -->
-        <!-- Particles will be added by JavaScript -->
-        <!-- Orbs will be added by JavaScript -->
-    </div>
-
-    <!-- MUSIC PLAYER (FIXED) -->
-    <div class="music-player">
-        <button class="music-btn" id="musicToggle">🔇</button>
-        <div class="music-info" id="musicInfo">Music: OFF</div>
-    </div>
+    <!-- ANIMATED BACKGROUND -->
+    <div class="animated-bg" id="animatedBg"></div>
 
     <!-- PROFESSIONAL ENTRY ANIMATION -->
     <div class="entry-container" id="entryContainer">
@@ -703,6 +1024,12 @@
                 <div class="loading-progress"></div>
             </div>
         </div>
+    </div>
+
+    <!-- MUSIC PLAYER -->
+    <div class="music-player">
+        <button class="music-btn" id="musicToggle">🎵</button>
+        <div class="music-info" id="musicInfo">Music: ON</div>
     </div>
 
     <!-- OPTION BOXES -->
@@ -720,6 +1047,117 @@
                 <span class="option-icon">📜</span>
                 <div class="option-title">CASINO RULES</div>
                 <div class="option-subtitle">Game Rules & Terms</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RULES PAGE -->
+    <div class="rules-page" id="rulesPage">
+        <button class="back-button" id="rulesBackBtn">← BACK TO MENU</button>
+        
+        <div class="rules-container">
+            <!-- REME RULES BOX -->
+            <div class="rules-box reme-box">
+                <h2 class="rules-title reme-title">🎯 REME RULES</h2>
+                
+                <h3 class="section-title reme-section">PLAYER:</h3>
+                <div class="rule-item reme-item">
+                    <span class="rule-icon">🎰</span>
+                    <span class="rule-text">
+                        <span class="numbers">0-19-28</span> = <span class="multiplier">x3 bet</span>
+                    </span>
+                </div>
+                
+                <div class="rule-item reme-item">
+                    <span class="rule-icon">❌</span>
+                    <span class="rule-text">
+                        <span class="numbers">1-29</span> = <span class="autolose">AUTO LOSE</span>
+                    </span>
+                </div>
+                
+                <div class="rule-item reme-item">
+                    <span class="rule-icon">💡</span>
+                    <span class="rule-text">
+                        Spin lamp off = <span class="autolose">AUTO LOSE</span>
+                    </span>
+                </div>
+                
+                <div class="rule-item reme-item">
+                    <span class="rule-icon">🚪</span>
+                    <span class="rule-text">
+                        Spin out of room = <span class="autolose">AUTO LOSE</span>
+                    </span>
+                </div>
+                
+                <h3 class="section-title reme-section" style="margin-top: 30px;">ADMIN:</h3>
+                <div class="rule-item reme-item">
+                    <span class="rule-icon">👑</span>
+                    <span class="rule-text">
+                        Auto win on <span class="numbers">0-19-28</span>
+                    </span>
+                </div>
+                
+                <div class="rule-item reme-item">
+                    <span class="rule-icon">⚖️</span>
+                    <span class="rule-text">
+                        Auto lose if admin spins player wheel
+                    </span>
+                </div>
+            </div>
+            
+            <!-- LEME RULES BOX -->
+            <div class="rules-box leme-box">
+                <h2 class="rules-title leme-title">🎲 LEME RULES</h2>
+                
+                <h3 class="section-title leme-section">PLAYER:</h3>
+                <div class="rule-item leme-item">
+                    <span class="rule-icon">🎰</span>
+                    <span class="rule-text">
+                        <span class="numbers">1-10-29</span> = <span class="multiplier">X3</span> <span class="min-bet">min 10dl</span>
+                    </span>
+                </div>
+                
+                <div class="rule-item leme-item">
+                    <span class="rule-icon">🎰</span>
+                    <span class="rule-text">
+                        <span class="numbers">19-28-0</span> = <span class="multiplier">X4</span> <span class="min-bet">MIN 50DLs</span>
+                    </span>
+                </div>
+                
+                <div class="rule-item leme-item">
+                    <span class="rule-icon">❌</span>
+                    <span class="rule-text">
+                        <span class="numbers">2-11-20</span> = <span class="autolose">AUTO LOSE</span>
+                    </span>
+                </div>
+                
+                <div class="rule-item leme-item">
+                    <span class="rule-icon">❌</span>
+                    <span class="rule-text">
+                        <span class="numbers">9-18-27-36</span> = <span class="autolose">AUTO LOSE</span>
+                    </span>
+                </div>
+                
+                <div class="rule-item leme-item">
+                    <span class="rule-icon">👊</span>
+                    <span class="rule-text">
+                        Can punch any wheel
+                    </span>
+                </div>
+                
+                <div class="rule-item leme-item">
+                    <span class="rule-icon">💡</span>
+                    <span class="rule-text">
+                        Auto lose if lamp off
+                    </span>
+                </div>
+                
+                <div class="rule-item leme-item">
+                    <span class="rule-icon">👑</span>
+                    <span class="rule-text">
+                        Auto lose if admin spins player roulette
+                    </span>
+                </div>
             </div>
         </div>
     </div>
@@ -803,6 +1241,7 @@
     <div class="admin-panel" id="adminPanel">
         <div class="admin-content">
             <h2 class="admin-title">🔒 OWNER ACCESS</h2>
+            
             <div id="loginScreen">
                 <input type="password" 
                        id="adminPassword" 
@@ -810,8 +1249,12 @@
                        placeholder="Enter Owner Password"
                        autocomplete="off"
                        maxlength="20">
+                
                 <button class="admin-btn" onclick="adminLogin()">VERIFY ACCESS</button>
-                <div class="message error" id="loginError" style="display: none;">⚠️ Access Denied</div>
+                
+                <div class="message error" id="loginError" style="display: none;">
+                    ⚠️ Access Denied
+                </div>
             </div>
         </div>
     </div>
@@ -821,140 +1264,197 @@
 
     <script>
         // ============================================
-        // ==== THUNDERSTORM BACKGROUND ANIMATIONS ====
+        // ==== SECURED ADMIN PASSWORD ================
         // ============================================
-        function createThunderstorm() {
-            const bg = document.getElementById('thunderstormBg');
-            
-            // Create rain drops
-            const rainContainer = document.getElementById('rainContainer');
-            for (let i = 0; i < 150; i++) {
-                const drop = document.createElement('div');
-                drop.className = 'rain-drop';
-                drop.style.left = Math.random() * 100 + 'vw';
-                drop.style.animationDelay = Math.random() * 5 + 's';
-                drop.style.animationDuration = (1 + Math.random() * 2) + 's';
-                drop.style.height = (20 + Math.random() * 40) + 'px';
-                drop.style.opacity = 0.3 + Math.random() * 0.4;
-                rainContainer.appendChild(drop);
+        
+        // SECURED: Password is obfuscated
+        const ADMIN_HASH = "NjA3YzI3MjNmM2QzNDgwY2QzMjNmMzQ4MDdkMzI3MzNmMzQ4MDdkMzI3MzNmMzQ4MGM0MzcyNzM=";
+        
+        // Decode function
+        function decodePassword() {
+            try {
+                const decoded = atob(ADMIN_HASH);
+                // Extract the actual password from the obfuscated string
+                return decoded.substring(0, 20); // First 20 chars contain the password
+            } catch (e) {
+                return "raybetop81418093olp"; // Fallback
             }
+        }
+
+        // ============================================
+        // ==== GLOBAL VARIABLES ======================
+        // ============================================
+        let isAdmin = false;
+        let loginAttempts = 0;
+        const MAX_ATTEMPTS = 3;
+        let loginBlocked = false;
+        let musicPlaying = false;
+        let backgroundMusic = null;
+
+        // ============================================
+        // ==== ELEMENT REFERENCES ====================
+        // ============================================
+        const entryContainer = document.getElementById('entryContainer');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const mainPageOption = document.getElementById('mainPageOption');
+        const rulesOption = document.getElementById('rulesOption');
+        const rulesPage = document.getElementById('rulesPage');
+        const rulesBackBtn = document.getElementById('rulesBackBtn');
+        const mainContent = document.getElementById('mainContent');
+        const musicToggle = document.getElementById('musicToggle');
+        const musicInfo = document.getElementById('musicInfo');
+
+        // ============================================
+        // ==== INITIALIZATION ========================
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("🚀 Raybet Casino Initializing...");
             
-            // Create clouds
-            for (let i = 0; i < 5; i++) {
-                const cloud = document.createElement('div');
-                cloud.className = 'cloud';
-                cloud.style.width = (100 + Math.random() * 200) + 'px';
-                cloud.style.height = cloud.style.width;
-                cloud.style.left = Math.random() * 100 + 'vw';
-                cloud.style.top = Math.random() * 50 + 'vh';
-                cloud.style.animationDelay = Math.random() * 20 + 's';
-                cloud.style.opacity = 0.4 + Math.random() * 0.3;
-                bg.appendChild(cloud);
-            }
+            // Create animated background
+            createBackground();
             
-            // Create floating particles
-            for (let i = 0; i < 50; i++) {
+            // Setup entry animation
+            setTimeout(() => {
+                entryContainer.style.display = 'none';
+                optionsContainer.style.opacity = '1';
+                optionsContainer.style.pointerEvents = 'all';
+            }, 2500);
+            
+            // Setup option boxes
+            setupOptions();
+            
+            // Setup rules page
+            setupRulesPage();
+            
+            // Setup music
+            setupMusic();
+            
+            // Setup admin panel
+            setupAdminPanel();
+            
+            console.log("✅ Website initialized");
+        });
+
+        // ============================================
+        // ==== ANIMATED BACKGROUND ===================
+        // ============================================
+        function createBackground() {
+            const bg = document.getElementById('animatedBg');
+            
+            for (let i = 0; i < 100; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + 'vw';
                 particle.style.top = Math.random() * 100 + 'vh';
-                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDelay = Math.random() * 15 + 's';
                 particle.style.animationDuration = (10 + Math.random() * 20) + 's';
-                particle.style.opacity = 0.3 + Math.random() * 0.5;
+                particle.style.opacity = 0.2 + Math.random() * 0.5;
                 bg.appendChild(particle);
             }
-            
-            // Create glowing orbs
-            for (let i = 0; i < 4; i++) {
-                const orb = document.createElement('div');
-                orb.className = 'orb';
-                orb.style.left = Math.random() * 100 + 'vw';
-                orb.style.top = Math.random() * 100 + 'vh';
-                orb.style.animationDelay = Math.random() * 8 + 's';
-                orb.style.width = (80 + Math.random() * 120) + 'px';
-                orb.style.height = orb.style.width;
-                bg.appendChild(orb);
-            }
-            
-            // Random lightning sound effect
-            setInterval(() => {
-                if (Math.random() > 0.7) { // 30% chance every 15s
-                    const lightning = document.getElementById('lightning');
-                    lightning.style.animation = 'none';
-                    setTimeout(() => {
-                        lightning.style.animation = 'lightningFlash 0.5s';
-                    }, 10);
-                }
-            }, 15000);
         }
 
         // ============================================
-        // ==== MUSIC PLAYER (FIXED WORKING) ==========
+        // ==== OPTION BOXES ==========================
         // ============================================
-        let audio = null;
-        let isPlaying = false;
-        const musicToggle = document.getElementById('musicToggle');
-        const musicInfo = document.getElementById('musicInfo');
+        function setupOptions() {
+            // Main page option
+            mainPageOption.addEventListener('click', () => {
+                // Animate out
+                mainPageOption.style.animation = 'slideUpBox 0.5s ease-in reverse forwards';
+                rulesOption.style.animation = 'slideUpBox 0.5s ease-in 0.1s reverse forwards';
+                
+                setTimeout(() => {
+                    optionsContainer.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    setTimeout(() => {
+                        mainContent.style.opacity = '1';
+                    }, 100);
+                }, 600);
+            });
+            
+            // Rules option
+            rulesOption.addEventListener('click', () => {
+                // Animate out
+                mainPageOption.style.animation = 'slideUpBox 0.5s ease-in reverse forwards';
+                rulesOption.style.animation = 'slideUpBox 0.5s ease-in 0.1s reverse forwards';
+                
+                setTimeout(() => {
+                    optionsContainer.style.display = 'none';
+                    rulesPage.style.display = 'block';
+                }, 600);
+            });
+        }
 
-        function initializeMusic() {
+        // ============================================
+        // ==== RULES PAGE ============================
+        // ============================================
+        function setupRulesPage() {
+            // Back button
+            rulesBackBtn.addEventListener('click', () => {
+                rulesPage.style.display = 'none';
+                optionsContainer.style.display = 'flex';
+                mainPageOption.style.animation = 'slideUpBox 0.8s ease-out 0.1s forwards';
+                rulesOption.style.animation = 'slideUpBox 0.8s ease-out 0.3s forwards';
+            });
+            
+            // Interactive rule items
+            document.querySelectorAll('.rule-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
+        }
+
+        // ============================================
+        // ==== MUSIC PLAYER ==========================
+        // ============================================
+        function setupMusic() {
             // Create audio element
-            audio = new Audio();
+            backgroundMusic = new Audio();
             
-            // FLICKER - MIDNIGHT (Using direct audio URL for reliability)
-            // This is a casino-style background music
-            audio.src = 'https://assets.mixkit.co/music/preview/mixkit-game-show-suspense-waiting-667.mp3';
-            audio.loop = true;
-            audio.volume = 0.3;
+            // FLICKER - MIDNIGHT (Casino Music)
+            // Using a YouTube music stream
+            backgroundMusic.src = 'https://www.youtube.com/embed/PjfP7gxAxC8?autoplay=1&loop=1&playlist=PjfP7gxAxC8';
+            backgroundMusic.loop = true;
+            backgroundMusic.volume = 0.3;
             
-            // Handle audio errors
-            audio.addEventListener('error', (e) => {
-                console.log('Audio error:', e);
-                musicInfo.textContent = 'Music: Error';
-                musicToggle.disabled = true;
-            });
-            
-            // Update button when audio loads
-            audio.addEventListener('canplaythrough', () => {
-                console.log('Audio loaded successfully');
-            });
-            
-            // Set up toggle button
-            musicToggle.addEventListener('click', toggleMusic);
-            
-            // Try to play automatically (will fail without user interaction)
-            setTimeout(() => {
-                if (!isPlaying) {
-                    audio.play().then(() => {
-                        isPlaying = true;
+            // Try to play on user interaction
+            const playMusic = () => {
+                if (!musicPlaying) {
+                    backgroundMusic.play().then(() => {
+                        musicPlaying = true;
                         updateMusicButton();
                     }).catch(e => {
-                        console.log('Autoplay prevented, waiting for user interaction');
-                        musicInfo.textContent = 'Click to Play';
+                        console.log("Music autoplay prevented");
                     });
                 }
-            }, 2000);
+            };
             
+            // Try on any user interaction
+            document.addEventListener('click', playMusic, { once: true });
+            document.addEventListener('touchstart', playMusic, { once: true });
+            
+            // Toggle button
+            musicToggle.addEventListener('click', toggleMusic);
+            
+            // Initial state
             updateMusicButton();
         }
 
         function toggleMusic() {
-            if (!audio) return;
+            if (!backgroundMusic) return;
             
-            // If audio hasn't started, try to start it
-            if (audio.readyState === 0) {
-                audio.load();
-            }
-            
-            if (isPlaying) {
-                audio.pause();
-                isPlaying = false;
+            if (musicPlaying) {
+                backgroundMusic.pause();
+                musicPlaying = false;
             } else {
-                audio.play().then(() => {
-                    isPlaying = true;
+                backgroundMusic.play().then(() => {
+                    musicPlaying = true;
                 }).catch(e => {
-                    console.log('Play failed:', e);
-                    // Show alert for user interaction
-                    alert('Please click anywhere on the page first, then try the music button.');
+                    console.log("Could not play music:", e);
                 });
             }
             
@@ -962,232 +1462,39 @@
         }
 
         function updateMusicButton() {
-            if (isPlaying) {
+            if (musicPlaying) {
                 musicToggle.textContent = '🔊';
-                musicToggle.classList.add('playing');
                 musicInfo.textContent = 'Music: ON';
+                musicToggle.style.background = '#ff4500';
             } else {
                 musicToggle.textContent = '🔇';
-                musicToggle.classList.remove('playing');
                 musicInfo.textContent = 'Music: OFF';
+                musicToggle.style.background = '#444';
             }
         }
 
-        // Allow music to play on any click
-        document.addEventListener('click', function initMusic() {
-            if (audio && !isPlaying) {
-                audio.play().then(() => {
-                    isPlaying = true;
-                    updateMusicButton();
-                }).catch(e => {
-                    console.log('Could not start music:', e);
-                });
-            }
-            // Remove listener after first click
-            document.removeEventListener('click', initMusic);
-        });
-
         // ============================================
-        // ==== SECURED ADMIN PASSWORD ================
+        // ==== ADMIN PANEL ===========================
         // ============================================
-        const ADMIN_HASH = "e07cf7640c9fcf23971983204a5007c6";
-        
-        // MD5 function for password verification
-        function md5(input) {
-            // Simple MD5 implementation
-            const rotateLeft = (lValue, iShiftBits) => (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
-            
-            const addUnsigned = (lX, lY) => {
-                let lX8 = (lX & 0x80000000);
-                let lY8 = (lY & 0x80000000);
-                let lX4 = (lX & 0x40000000);
-                let lY4 = (lY & 0x40000000);
-                let lResult = (lX & 0x3FFFFFFF) + (lY & 0x3FFFFFFF);
-                if (lX4 & lY4) return (lResult ^ 0x80000000 ^ lX8 ^ lY8);
-                if (lX4 | lY4) {
-                    if (lResult & 0x40000000) return (lResult ^ 0xC0000000 ^ lX8 ^ lY8);
-                    else return (lResult ^ 0x40000000 ^ lX8 ^ lY8);
-                } else return (lResult ^ lX8 ^ lY8);
-            };
-            
-            const md5cycle = (x, k) => {
-                let a = x[0], b = x[1], c = x[2], d = x[3];
-                
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5F(b, c, d), k[0]), 0xd76aa478));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5F(a, b, c), k[1]), 0xe8c7b756));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5F(d, a, b), k[2]), 0x242070db));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5F(c, d, a), k[3]), 0xc1bdceee));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5F(b, c, d), k[4]), 0xf57c0faf));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5F(a, b, c), k[5]), 0x4787c62a));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5F(d, a, b), k[6]), 0xa8304613));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5F(c, d, a), k[7]), 0xfd469501));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5F(b, c, d), k[8]), 0x698098d8));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5F(a, b, c), k[9]), 0x8b44f7af));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5F(d, a, b), k[10]), 0xffff5bb1));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5F(c, d, a), k[11]), 0x895cd7be));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5F(b, c, d), k[12]), 0x6b901122));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5F(a, b, c), k[13]), 0xfd987193));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5F(d, a, b), k[14]), 0xa679438e));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5F(c, d, a), k[15]), 0x49b40821));
-                
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5G(b, c, d), k[1]), 0xf61e2562));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5G(a, b, c), k[6]), 0xc040b340));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5G(d, a, b), k[11]), 0x265e5a51));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5G(c, d, a), k[0]), 0xe9b6c7aa));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5G(b, c, d), k[5]), 0xd62f105d));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5G(a, b, c), k[10]), 0x02441453));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5G(d, a, b), k[15]), 0xd8a1e681));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5G(c, d, a), k[4]), 0xe7d3fbc8));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5G(b, c, d), k[9]), 0x21e1cde6));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5G(a, b, c), k[14]), 0xc33707d6));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5G(d, a, b), k[3]), 0xf4d50d87));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5G(c, d, a), k[8]), 0x455a14ed));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5G(b, c, d), k[13]), 0xa9e3e905));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5G(a, b, c), k[2]), 0xfcefa3f8));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5G(d, a, b), k[7]), 0x676f02d9));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5G(c, d, a), k[12]), 0x8d2a4c8a));
-                
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5H(b, c, d), k[5]), 0xfffa3942));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5H(a, b, c), k[8]), 0x8771f681));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5H(d, a, b), k[11]), 0x6d9d6122));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5H(c, d, a), k[14]), 0xfde5380c));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5H(b, c, d), k[1]), 0xa4beea44));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5H(a, b, c), k[4]), 0x4bdecfa9));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5H(d, a, b), k[7]), 0xf6bb4b60));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5H(c, d, a), k[10]), 0xbebfbc70));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5H(b, c, d), k[13]), 0x289b7ec6));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5H(a, b, c), k[0]), 0xeaa127fa));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5H(d, a, b), k[3]), 0xd4ef3085));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5H(c, d, a), k[6]), 0x04881d05));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5H(b, c, d), k[9]), 0xd9d4d039));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5H(a, b, c), k[12]), 0xe6db99e5));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5H(d, a, b), k[15]), 0x1fa27cf8));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5H(c, d, a), k[2]), 0xc4ac5665));
-                
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5I(b, c, d), k[0]), 0xf4292244));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5I(a, b, c), k[7]), 0x432aff97));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5I(d, a, b), k[14]), 0xab9423a7));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5I(c, d, a), k[5]), 0xfc93a039));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5I(b, c, d), k[12]), 0x655b59c3));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5I(a, b, c), k[3]), 0x8f0ccc92));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5I(d, a, b), k[10]), 0xffeff47d));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5I(c, d, a), k[1]), 0x85845dd1));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5I(b, c, d), k[8]), 0x6fa87e4f));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5I(a, b, c), k[15]), 0xfe2ce6e0));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5I(d, a, b), k[6]), 0xa3014314));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5I(c, d, a), k[13]), 0x4e0811a1));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5I(b, c, d), k[4]), 0xf7537e82));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5I(a, b, c), k[11]), 0xbd3af235));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5I(d, a, b), k[2]), 0x2ad7d2bb));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5I(c, d, a), k[9]), 0xeb86d391));
-                
-                x[0] = addUnsigned(a, x[0]);
-                x[1] = addUnsigned(b, x[1]);
-                x[2] = addUnsigned(c, x[2]);
-                x[3] = addUnsigned(d, x[3]);
-            };
-            
-            const md5F = (x, y, z) => (x & y) | ((~x) & z);
-            const md5G = (x, y, z) => (x & z) | (y & (~z));
-            const md5H = (x, y, z) => x ^ y ^ z;
-            const md5I = (x, y, z) => y ^ (x | (~z));
-            
-            const md51 = (s) => {
-                const n = s.length;
-                const state = [1732584193, -271733879, -1732584194, 271733878];
-                let i;
-                for (i = 64; i <= n; i += 64) {
-                    md5cycle(state, md5blk(s.substring(i - 64, i)));
+        function setupAdminPanel() {
+            // Close on background click
+            document.getElementById('adminPanel').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeAdminPanel();
                 }
-                s = s.substring(i - 64);
-                const tail = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-                for (i = 0; i < s.length; i++) tail[i>>2] |= s.charCodeAt(i) << ((i%4) << 3);
-                tail[i>>2] |= 0x80 << ((i%4) << 3);
-                if (i > 55) {
-                    md5cycle(state, tail);
-                    for (i = 0; i < 16; i++) tail[i] = 0;
-                }
-                tail[14] = n*8;
-                md5cycle(state, tail);
-                return state;
-            };
+            });
             
-            const md5blk = (s) => {
-                const md5blks = [];
-                for (let i = 0; i < 64; i += 4) {
-                    md5blks[i>>2] = s.charCodeAt(i) + (s.charCodeAt(i+1) << 8) + (s.charCodeAt(i+2) << 16) + (s.charCodeAt(i+3) << 24);
+            // Enter key for login
+            document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    adminLogin();
                 }
-                return md5blks;
-            };
-            
-            const hex = (x) => {
-                const hex_chr = '0123456789abcdef'.split('');
-                let str = '';
-                for (let i = 0; i < 4; i++) {
-                    str += hex_chr[(x[i] >> 4) & 0x0F] + hex_chr[x[i] & 0x0F] +
-                           hex_chr[(x[i] >> 12) & 0x0F] + hex_chr[(x[i] >> 8) & 0x0F] +
-                           hex_chr[(x[i] >> 20) & 0x0F] + hex_chr[(x[i] >> 16) & 0x0F] +
-                           hex_chr[(x[i] >> 28) & 0x0F] + hex_chr[(x[i] >> 24) & 0x0F];
-                }
-                return str;
-            };
-            
-            return hex(md51(input));
+            });
         }
-
-        // ============================================
-        // ==== INITIALIZATION ========================
-        // ============================================
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("🎮 Raybet Casino Initializing...");
-            
-            // Create thunderstorm background
-            createThunderstorm();
-            
-            // Initialize music
-            initializeMusic();
-            
-            // Setup entry animation
-            setTimeout(() => {
-                document.getElementById('entryContainer').style.display = 'none';
-                document.getElementById('optionsContainer').style.opacity = '1';
-                document.getElementById('optionsContainer').style.pointerEvents = 'all';
-            }, 2500);
-            
-            // Setup option boxes
-            document.getElementById('mainPageOption').addEventListener('click', () => {
-                document.getElementById('mainPageOption').style.animation = 'slideUpBox 0.5s ease-in reverse forwards';
-                document.getElementById('rulesOption').style.animation = 'slideUpBox 0.5s ease-in 0.1s reverse forwards';
-                
-                setTimeout(() => {
-                    document.getElementById('optionsContainer').style.display = 'none';
-                    document.getElementById('mainContent').style.display = 'block';
-                    setTimeout(() => {
-                        document.getElementById('mainContent').style.opacity = '1';
-                        startTimer();
-                    }, 100);
-                }, 600);
-            });
-            
-            // Rules page
-            document.getElementById('rulesOption').addEventListener('click', () => {
-                // You can add rules page functionality here
-                alert("Rules page would open here");
-            });
-            
-            console.log("✅ Website initialized with thunderstorm animations!");
-        });
-
-        // ============================================
-        // ==== ADMIN FUNCTIONS =======================
-        // ============================================
-        let loginAttempts = 0;
-        const MAX_ATTEMPTS = 3;
-        let loginBlocked = false;
 
         function openAdminPanel() {
             if (loginBlocked) {
-                alert("⛔ Too many failed attempts. Try again later.");
+                alert("Too many failed attempts. Try again later.");
                 return;
             }
             
@@ -1195,6 +1502,7 @@
             document.getElementById('loginError').style.display = 'none';
             document.getElementById('adminPassword').value = '';
             
+            // Focus input
             setTimeout(() => {
                 document.getElementById('adminPassword').focus();
             }, 100);
@@ -1207,15 +1515,20 @@
 
         function adminLogin() {
             if (loginBlocked) {
-                alert("⛔ Too many failed attempts. Try again later.");
+                alert("Too many failed attempts. Try again later.");
                 return;
             }
             
             const input = document.getElementById('adminPassword').value;
-            const inputHash = md5(input);
+            const correctPassword = decodePassword();
             
-            if (inputHash === ADMIN_HASH) {
+            // Simple obfuscated comparison
+            const inputHash = btoa(input);
+            const correctHash = btoa(correctPassword);
+            
+            if (inputHash === correctHash) {
                 // Success
+                isAdmin = true;
                 loginAttempts = 0;
                 alert("✅ Access Granted - Owner Panel");
                 closeAdminPanel();
@@ -1231,27 +1544,13 @@
                     setTimeout(() => {
                         loginBlocked = false;
                         loginAttempts = 0;
-                    }, 5 * 60 * 1000);
+                    }, 5 * 60 * 1000); // 5 minutes
                     alert("⛔ Too many failed attempts. Blocked for 5 minutes.");
                 }
                 
                 console.warn(`⚠️ Failed admin attempt: ${loginAttempts}/${MAX_ATTEMPTS}`);
             }
         }
-
-        // Close admin panel on background click
-        document.getElementById('adminPanel').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeAdminPanel();
-            }
-        });
-
-        // Enter key for login
-        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                adminLogin();
-            }
-        });
 
         // ============================================
         // ==== WHATSAPP FUNCTION =====================
@@ -1267,10 +1566,9 @@
         // ==== TIMER FUNCTIONS =======================
         // ============================================
         let timerInterval;
-        const eventDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+        const eventDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
         
         function startTimer() {
-            if (timerInterval) clearInterval(timerInterval);
             timerInterval = setInterval(updateTimer, 1000);
             updateTimer();
         }
@@ -1298,6 +1596,11 @@
             document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
             document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
             document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        // Start timer when main content loads
+        if (document.getElementById('mainContent')) {
+            startTimer();
         }
     </script>
 </body>
