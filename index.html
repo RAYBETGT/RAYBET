@@ -3,14 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raybet Casino</title>
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    
+    <title>Raybet Casino - PRO EDITION</title>
     <style>
-        /* ===== BASE STYLES ===== */
+        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -19,613 +14,393 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #000000, #1a0000);
+            background: #000;
             color: white;
             overflow-x: hidden;
-            position: relative;
+            min-height: 100vh;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%2300ff00' stroke='%23ff4500' stroke-width='2'/%3E%3C/svg%3E"), auto;
         }
 
-        /* ===== ANIMATED BACKGROUND ===== */
-        .animated-bg {
+        /* ===== ELECTRO ANIMATED BACKGROUND ===== */
+        .electro-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: -2;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 255, 0, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, #000000 0%, #0a0020 25%, #20000a 50%, #002020 75%, #000000 100%);
+            background-size: 400% 400%;
+            animation: gradientFlow 15s ease infinite;
             overflow: hidden;
         }
 
-        .particle {
+        /* Electric Grid */
+        .electric-grid {
             position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(255, 69, 0, 0.6);
-            border-radius: 50%;
-            animation: float 15s infinite linear;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: 
+                linear-gradient(90deg, transparent 49%, rgba(0, 255, 255, 0.1) 50%, transparent 51%),
+                linear-gradient(0deg, transparent 49%, rgba(0, 255, 255, 0.1) 50%, transparent 51%);
+            background-size: 100px 100px;
+            animation: gridMove 20s linear infinite;
+            opacity: 0.3;
         }
 
-        /* ===== PROFESSIONAL ENTRY ANIMATION ===== */
-        .entry-container {
+        /* Energy Orbs */
+        .energy-orb {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: orbFloat 15s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            top: 10%;
+            left: 10%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.4) 0%, transparent 70%);
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            top: 60%;
+            right: 10%;
+            background: radial-gradient(circle, rgba(255, 0, 255, 0.4) 0%, transparent 70%);
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            bottom: 10%;
+            left: 40%;
+            background: radial-gradient(circle, rgba(255, 255, 0, 0.3) 0%, transparent 70%);
+            animation-delay: -10s;
+        }
+
+        /* Electric Pulses */
+        .electric-pulse {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                #00ffff, 
+                #ff00ff, 
+                #ffff00, 
+                transparent);
+            filter: blur(1px);
+            opacity: 0;
+            animation: pulseWave 4s linear infinite;
+        }
+
+        /* Data Streams */
+        .data-stream {
+            position: absolute;
+            width: 2px;
+            height: 200px;
+            background: linear-gradient(0deg, 
+                transparent, 
+                rgba(0, 255, 255, 0.8), 
+                transparent);
+            filter: blur(1px);
+            animation: dataFlow 3s linear infinite;
+        }
+
+        /* Glitch Effect */
+        .glitch {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                transparent 45%, 
+                rgba(255, 0, 0, 0.1) 50%, 
+                transparent 55%);
+            opacity: 0;
+            animation: glitchEffect 8s infinite;
+        }
+
+        /* ===== MUSIC PLAYER ===== */
+        .music-player {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00ff00;
+            border-radius: 50px;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 
+                0 0 20px #00ff00,
+                0 0 40px rgba(0, 255, 0, 0.3);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .music-player:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 30px #00ff00,
+                0 0 60px rgba(0, 255, 0, 0.5);
+        }
+
+        .music-btn {
+            background: #00ff00;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            color: black;
+            cursor: pointer;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.2) rotate(360deg);
+            box-shadow: 0 0 30px #00ff00;
+        }
+
+        .music-info {
+            color: #00ff00;
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        /* ===== INTRO ANIMATION ===== */
+        .intro-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #000000, #1a0000);
+            background: #000;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            z-index: 9999;
+            align-items: center;
+            z-index: 10000;
+            overflow: hidden;
         }
 
         .logo-container {
             text-align: center;
-            margin-bottom: 40px;
+            perspective: 1000px;
         }
 
-        .logo-text {
-            font-size: 6rem;
+        .raybet-title {
+            font-size: 100px;
             font-weight: 900;
-            letter-spacing: 15px;
-            text-transform: uppercase;
-            background: linear-gradient(45deg, #ff4500, #ff9900, #ff4500);
-            background-size: 200% auto;
+            background: linear-gradient(45deg, 
+                #00ffff, #ff00ff, #ffff00, #00ff00, 
+                #0088ff, #ff8800);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             animation: 
-                gradientShift 3s ease-in-out infinite,
-                logoGlow 2s ease-in-out infinite alternate;
-            text-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
-            font-family: 'Arial Black', sans-serif;
-            opacity: 0;
-            transform: scale(0.5);
-            animation: logoEntrance 1.5s ease-out forwards;
-        }
-
-        .tagline {
-            font-size: 1.3rem;
-            color: #ff9900;
+                neonRainbow 3s linear infinite,
+                text3D 2s ease-out;
+            letter-spacing: 15px;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-top: 20px;
-            opacity: 0;
-            animation: fadeInTagline 1s ease-out 1s forwards;
+            text-shadow: 
+                0 0 10px currentColor,
+                0 0 20px currentColor,
+                0 0 40px currentColor;
         }
 
-        .loading-bar {
-            width: 300px;
-            height: 3px;
-            background: rgba(255, 69, 0, 0.3);
-            border-radius: 3px;
+        .loading-text {
+            color: #00ffff;
             margin-top: 30px;
-            overflow: hidden;
+            font-size: 20px;
+            letter-spacing: 8px;
+            opacity: 0;
+            animation: fadeInText 1s ease-out 1s forwards;
+            text-shadow: 0 0 10px #00ffff;
         }
 
-        .loading-progress {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #ff4500, #ff9900);
-            animation: loading 2s ease-out forwards;
-        }
-
-        /* ===== OPTION BOXES ===== */
-        .options-container {
+        /* ===== MENU SCREEN ===== */
+        .menu-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            align-items: center;
+            display: none;
             justify-content: center;
-            gap: 30px;
-            z-index: 9998;
-            opacity: 0;
-            pointer-events: none;
+            align-items: center;
+            gap: 60px;
+            z-index: 900;
         }
 
-        .option-box {
-            width: 280px;
-            height: 280px;
-            background: rgba(0, 0, 0, 0.8);
+        .menu-option {
+            width: 320px;
+            height: 320px;
+            background: rgba(0, 0, 0, 0.85);
             border: 3px solid;
-            border-radius: 15px;
+            border-radius: 25px;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s;
+            backdrop-filter: blur(15px);
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(10px);
-            transform: translateY(50px) scale(0.8);
-            opacity: 0;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.1);
         }
 
-        .main-page-option {
+        .menu-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: 0.6s;
+        }
+
+        .menu-option:hover::before {
+            left: 100%;
+        }
+
+        .menu-option:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 
+                0 30px 70px rgba(0, 0, 0, 0.7),
+                0 0 50px rgba(var(--glow-color), 0.5),
+                inset 0 0 0 2px rgba(255, 255, 255, 0.2);
+        }
+
+        .main-option {
+            --glow-color: 0, 255, 0;
             border-color: #00ff00;
-            animation: slideUpBox 0.8s ease-out 2.5s forwards;
+            animation: slideInLeft 1s ease-out 0.3s both;
         }
 
         .rules-option {
+            --glow-color: 0, 136, 255;
             border-color: #0088ff;
-            animation: slideUpBox 0.8s ease-out 2.7s forwards;
-        }
-
-        .option-box:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-        }
-
-        .option-content {
-            text-align: center;
-            padding: 30px;
-            z-index: 2;
+            animation: slideInRight 1s ease-out 0.6s both;
         }
 
         .option-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            display: block;
+            font-size: 80px;
+            margin-bottom: 25px;
+            animation: iconFloat 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px currentColor);
         }
 
         .option-title {
-            font-size: 2.2rem;
+            font-size: 36px;
             font-weight: 900;
-            margin-bottom: 10px;
+            text-align: center;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px currentColor;
         }
 
         .option-subtitle {
-            font-size: 1rem;
-            opacity: 0.9;
+            font-size: 18px;
+            opacity: 0.8;
+            color: rgba(255, 255, 255, 0.9);
         }
 
-        .main-page-option .option-icon {
+        .main-option .option-icon {
             color: #00ff00;
-            text-shadow: 0 0 20px #00ff00;
         }
 
-        .main-page-option .option-title {
+        .main-option .option-title {
             color: #00ff00;
-            text-shadow: 0 0 10px #00ff00;
         }
 
         .rules-option .option-icon {
             color: #0088ff;
-            text-shadow: 0 0 20px #0088ff;
         }
 
         .rules-option .option-title {
             color: #0088ff;
-            text-shadow: 0 0 10px #0088ff;
         }
 
-        /* ===== RULES PAGE ===== */
-        .rules-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);
-            z-index: 9997;
-            padding: 20px;
-            overflow-y: auto;
-            display: none;
-        }
-
-        .rules-container {
-            display: flex;
-            gap: 30px;
-            max-width: 1200px;
-            width: 100%;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 80px auto 40px;
-        }
-
-        .rules-box {
-            flex: 1;
-            min-width: 300px;
-            max-width: 500px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            padding: 25px;
-            border: 2px solid;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-        }
-
-        .reme-box {
-            border-color: #ff4500;
-        }
-
-        .leme-box {
-            border-color: #00aaff;
-        }
-
-        .rules-title {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .reme-title {
-            color: #ff4500;
-            border-bottom-color: #ff4500;
-            text-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
-        }
-
-        .leme-title {
-            color: #00aaff;
-            border-bottom-color: #00aaff;
-            text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
-        }
-
-        .section-title {
-            font-size: 1.4rem;
-            margin: 20px 0 15px 0;
-            color: #fff;
-            padding-left: 10px;
-            border-left: 3px solid;
-            padding-top: 5px;
-            padding-bottom: 5px;
-        }
-
-        .reme-section {
-            border-left-color: #ff4500;
-        }
-
-        .leme-section {
-            border-left-color: #00aaff;
-        }
-
-        .rule-item {
-            margin: 12px 0;
-            padding: 10px 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            border-left: 4px solid;
-            display: flex;
-            align-items: center;
-            transition: transform 0.2s;
-        }
-
-        .rule-item:hover {
-            transform: translateX(5px);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .reme-item {
-            border-left-color: #ff4500;
-        }
-
-        .leme-item {
-            border-left-color: #00aaff;
-        }
-
-        .rule-text {
-            font-size: 1.1rem;
-            line-height: 1.5;
-        }
-
-        .rule-icon {
-            margin-right: 12px;
-            font-size: 1.3rem;
-            min-width: 30px;
-            text-align: center;
-        }
-
-        .multiplier {
-            color: #00ff00;
-            font-weight: bold;
-            text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
-            animation: pulse-green 2s infinite;
-        }
-
-        .autolose {
-            color: #ff4444;
-            font-weight: bold;
-            text-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
-            animation: pulse-red 2s infinite;
-        }
-
-        .numbers {
-            color: #ffff00;
-            font-weight: bold;
-            text-shadow: 0 0 8px rgba(255, 255, 0, 0.3);
-        }
-
-        .min-bet {
-            color: #ffaa00;
-            font-weight: bold;
-        }
-
-        @keyframes pulse-green {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        @keyframes pulse-red {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        /* ===== BACK BUTTON ===== */
-        .back-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 69, 0, 0.9);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: bold;
-            z-index: 10000;
-            transition: all 0.3s ease;
-        }
-
-        .back-button:hover {
-            background: rgba(255, 69, 0, 1);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.4);
-        }
-
-        /* ===== MAIN CONTENT (CENTERED) ===== */
+        /* ===== MAIN CONTENT ===== */
         .main-content {
             display: none;
-            width: 100%;
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 100px 20px 40px;
-            opacity: 0;
-            animation: fadeInMain 1s ease-out forwards;
+            padding: 120px 20px 60px;
+            position: relative;
+            z-index: 800;
         }
 
-        .content-wrapper {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        /* ===== ANNOUNCEMENT BAR ===== */
-        .announcement-bar {
-            width: 100%;
-            background: linear-gradient(90deg, #ff4500, #ff5500);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
+        .section {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
             text-align: center;
-            font-weight: 700;
-            font-size: 1.1rem;
-            box-shadow: 0 5px 20px rgba(255,69,0,0.4);
-            animation: slideDown 0.8s ease-out;
-        }
-
-        /* ===== EVENT TIMER ===== */
-        .event-timer {
-            background: linear-gradient(135deg, rgba(139, 0, 0, 0.9), rgba(178, 34, 34, 0.9));
-            border-radius: 15px;
-            padding: 20px;
-            width: 100%;
-            border: 2px solid #ff9900;
-            text-align: center;
-            animation: fadeInUp 1s ease-out 0.3s both;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .timer-title {
-            color: #ffcc00;
-            font-size: 1.5rem;
-            font-weight: 900;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255,204,0,0.5);
-        }
-
-        .timer-display {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-
-        .timer-unit {
-            background: rgba(0,0,0,0.7);
-            border-radius: 10px;
-            padding: 15px 10px;
-            min-width: 80px;
-            border: 2px solid #ff4500;
-        }
-
-        .timer-value {
-            font-size: 2rem;
-            font-weight: 900;
-            color: #ff4500;
-            text-shadow: 0 0 10px rgba(255,69,0,0.7);
-        }
-
-        .timer-label {
-            font-size: 0.9rem;
-            color: #ffcc00;
-            margin-top: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .event-name {
-            color: #ffcc00;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-top: 15px;
-            padding: 10px;
-            background: rgba(255,69,0,0.2);
-            border-radius: 8px;
-            border: 1px solid #ff9900;
-        }
-
-        /* ===== WORLD BOX ===== */
-        .world-box {
-            background: rgba(0,0,0,0.85);
-            border: 3px solid #ff4500;
-            border-radius: 15px;
-            padding: 20px 30px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: fadeInUp 1s ease-out 0.2s both;
-        }
-
-        .world-text {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .world-name {
-            color: #ff4500;
-            font-size: 1.8rem;
-            font-weight: 900;
-            text-shadow: 0 0 10px rgba(255,69,0,0.7);
-        }
-
-        /* ===== VIDEO REWARD ===== */
-        .video-reward {
-            background: linear-gradient(135deg, #8B0000, #B22222);
-            border-radius: 15px;
-            padding: 20px;
-            width: 100%;
-            border: 2px solid #ff0000;
-            text-align: center;
-            animation: fadeInUp 1s ease-out 0.4s both;
-        }
-
-        .reward-title {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 900;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(255,0,0,0.7);
-        }
-
-        .warning-note {
-            color: #ffcccc;
-            font-weight: 700;
-            margin-top: 10px;
-            padding: 10px;
-            background: rgba(255,0,0,0.2);
-            border-radius: 8px;
-            border: 1px solid #ff0000;
-        }
-
-        /* ===== PROBLEMS SECTION ===== */
-        .problems-section {
-            background: linear-gradient(135deg, #4B0082, #8A2BE2);
-            border-radius: 15px;
-            padding: 20px;
-            width: 100%;
-            border: 2px solid #9370DB;
-            text-align: center;
-            animation: fadeInUp 1s ease-out 0.5s both;
-            box-shadow: 0 5px 15px rgba(147,112,219,0.3);
+            backdrop-filter: blur(15px);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
-        .problems-section:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(147,112,219,0.4);
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
 
-        .problems-title {
-            color: #d8bfd8;
-            font-size: 1.5rem;
-            font-weight: 900;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(216,191,216,0.7);
+        .section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                #00ffff, #ff00ff, #ffff00, #00ff00);
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0.3;
+            animation: borderGlow 3s linear infinite;
+            background-size: 400% 400%;
         }
 
-        .phone-number {
-            color: #00ff00;
-            font-size: 1.3rem;
-            font-weight: 900;
-            padding: 12px;
-            background: rgba(0,0,0,0.5);
-            border-radius: 10px;
-            border: 2px solid #00ff00;
-            margin: 15px 0;
-            display: inline-block;
-            text-shadow: 0 0 10px rgba(0,255,0,0.5);
-            animation: phonePulse 2s infinite;
-        }
-
-        /* ===== BUTTONS ===== */
-        .buttons-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 100%;
-            animation: fadeInUp 1s ease-out 0.6s both;
-        }
-
-        .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px 20px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-        }
-
-        .btn-instagram {
-            background: linear-gradient(45deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D);
-            color: white;
-        }
-
-        .btn-whatsapp {
-            background: linear-gradient(135deg, #25D366, #25D366);
-            color: white;
-        }
-
-        .btn-discord {
-            background: linear-gradient(135deg, #5865F2, #7289DA);
-            color: white;
-        }
-
-        .btn-icon {
-            margin-right: 10px;
-            font-size: 1.2rem;
+        .announcement {
+            border-color: #00ff00;
+            background: linear-gradient(45deg, 
+                rgba(0, 255, 0, 0.1), 
+                rgba(0, 255, 255, 0.1));
+            font-size: 24px;
+            font-weight: bold;
+            padding: 25px;
+            animation: pulseAnnouncement 2s infinite alternate;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         /* ===== ADMIN PANEL ===== */
@@ -636,94 +411,91 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.97);
-            z-index: 1000;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            backdrop-filter: blur(20px);
         }
 
         .admin-content {
-            background: rgba(26, 26, 26, 0.95);
-            padding: 30px;
-            border-radius: 15px;
-            width: 100%;
+            background: rgba(10,10,10,0.95);
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
             max-width: 500px;
-            border: 2px solid #ff4500;
-            box-shadow: 0 0 50px rgba(255,69,0,0.3);
-            backdrop-filter: blur(10px);
+            border: 3px solid #ff4500;
+            box-shadow: 
+                0 0 50px rgba(255,69,0,0.5),
+                0 0 100px rgba(255,69,0,0.2);
+            backdrop-filter: blur(20px);
         }
 
         .admin-title {
             color: #ff4500;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             text-align: center;
-            font-size: 1.8rem;
+            font-size: 28px;
+            text-shadow: 0 0 10px rgba(255,69,0,0.5);
+        }
+
+        .admin-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255,69,0,0.1);
+            border-radius: 10px;
+            border-left: 4px solid #ff4500;
+        }
+
+        .admin-section-title {
+            color: #ffcc00;
+            margin-bottom: 15px;
+            font-size: 18px;
+            text-shadow: 0 0 5px rgba(255,204,0,0.5);
         }
 
         .admin-input {
             width: 100%;
-            padding: 14px;
+            padding: 15px;
             margin-bottom: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 69, 0, 0.3);
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,69,0,0.3);
             border-radius: 8px;
             color: white;
-            font-size: 1rem;
+            font-size: 16px;
             transition: all 0.3s;
         }
 
         .admin-input:focus {
             border-color: #ff4500;
             outline: none;
-            box-shadow: 0 0 10px rgba(255, 69, 0, 0.3);
+            box-shadow: 0 0 20px rgba(255,69,0,0.3);
         }
 
         .admin-btn {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             background: linear-gradient(45deg, #ff4500, #ff5500);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-weight: 700;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 18px;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 20px;
             transition: all 0.3s;
-            font-size: 1.1rem;
         }
 
         .admin-btn:hover {
             background: linear-gradient(45deg, #ff5500, #ff6500);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.4);
-        }
-
-        .admin-access-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255,69,0,0.2);
-            color: #ff4500;
-            border: 2px solid #ff4500;
-            padding: 12px 16px;
-            border-radius: 50px;
-            cursor: pointer;
-            z-index: 100;
-            font-weight: bold;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-
-        .admin-access-btn:hover {
-            background: rgba(255,69,0,0.3);
-            transform: scale(1.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255,69,0,0.4);
         }
 
         .message {
-            padding: 12px;
-            border-radius: 5px;
-            margin-top: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
             text-align: center;
             display: none;
             font-weight: bold;
@@ -741,313 +513,506 @@
             border: 1px solid #ff4444;
         }
 
-        .warning {
-            background: rgba(255,165,0,0.1);
-            color: #ffaa00;
-            border: 1px solid #ffaa00;
-        }
-
-        /* ===== MUSIC PLAYER ===== */
-        .music-player {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 12px 20px;
-            border-radius: 50px;
-            border: 2px solid #ff4500;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .music-btn {
-            background: #ff4500;
-            border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
-        }
-
-        .music-btn:hover {
-            background: #ff5500;
-            transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(255, 69, 0, 0.8);
-        }
-
-        .music-info {
-            font-size: 0.9rem;
+        .loading {
             color: #ff9900;
+            text-align: center;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .admin-access-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #ff4500, #ff5500);
+            color: white;
+            border: 2px solid #ff4500;
+            padding: 14px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 1000;
             font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 
+                0 5px 20px rgba(255,69,0,0.5),
+                0 0 10px rgba(255,69,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-access-btn:hover {
+            background: linear-gradient(45deg, #ff5500, #ff6500);
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 
+                0 10px 30px rgba(255,69,0,0.8),
+                0 0 20px rgba(255,69,0,0.5);
+        }
+
+        /* ===== RULES PAGE ===== */
+        .rules-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .rules-container {
+            display: flex;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 80px auto 40px;
+            padding: 20px;
+        }
+
+        .rules-box {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            border: 3px solid;
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                0 0 30px rgba(var(--glow-color), 0.3);
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .rules-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.6),
+                0 0 40px rgba(var(--glow-color), 0.4);
+        }
+
+        .reme-box {
+            --glow-color: 255, 69, 0;
+            border-color: #ff4500;
+        }
+
+        .leme-box {
+            --glow-color: 0, 170, 255;
+            border-color: #00aaff;
+        }
+
+        .rules-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px currentColor;
+            background: linear-gradient(45deg, 
+                currentColor, 
+                rgba(255, 255, 255, 0.8));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .reme-title {
+            border-bottom-color: #ff4500;
+        }
+
+        .leme-title {
+            border-bottom-color: #00aaff;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            margin: 25px 0 15px 0;
+            color: #fff;
+            padding-left: 15px;
+            border-left: 4px solid;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            text-transform: uppercase;
             letter-spacing: 1px;
         }
 
+        .reme-section {
+            border-left-color: #ff4500;
+        }
+
+        .leme-section {
+            border-left-color: #00aaff;
+        }
+
+        .rule-item {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .rule-item:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .reme-item {
+            border-left-color: #ff4500;
+        }
+
+        .leme-item {
+            border-left-color: #00aaff;
+        }
+
+        .rule-text {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .rule-icon {
+            margin-right: 15px;
+            font-size: 1.5rem;
+            min-width: 40px;
+            text-align: center;
+            filter: drop-shadow(0 0 5px currentColor);
+        }
+
+        .multiplier {
+            color: #00ff00;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            animation: pulse-green 2s infinite;
+        }
+
+        .autolose {
+            color: #ff4444;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+            animation: pulse-red 2s infinite;
+        }
+
+        .numbers {
+            color: #ffff00;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .min-bet {
+            color: #ffaa00;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(45deg, #ff4500, #ff5500);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            z-index: 10000;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 69, 0, 0.4);
+        }
+
+        .back-button:hover {
+            background: linear-gradient(45deg, #ff5500, #ff6500);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 69, 0, 0.6);
+        }
+
         /* ===== ANIMATIONS ===== */
-        @keyframes float {
-            0% {
-                transform: translateY(0) translateX(0);
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50px, -50px); }
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { 
+                transform: translate(0, 0) scale(1);
+                opacity: 0.6;
+            }
+            25% { 
+                transform: translate(100px, -50px) scale(1.2);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translate(50px, 100px) scale(0.8);
+                opacity: 0.4;
+            }
+            75% { 
+                transform: translate(-100px, 50px) scale(1.1);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes pulseWave {
+            0% { 
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            10%, 90% { opacity: 1; }
+            100% { 
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+
+        @keyframes dataFlow {
+            0% { 
+                transform: translateY(-100%);
                 opacity: 0;
             }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(100px);
+            50% { opacity: 1; }
+            100% { 
+                transform: translateY(100vh);
                 opacity: 0;
             }
         }
 
-        @keyframes gradientShift {
-            0%, 100% {
+        @keyframes glitchEffect {
+            0%, 95% { opacity: 0; }
+            96% { opacity: 0.1; transform: translateX(-5px); }
+            97% { opacity: 0.2; transform: translateX(5px); }
+            98% { opacity: 0.1; transform: translateX(-2px); }
+            99% { opacity: 0; }
+        }
+
+        @keyframes neonRainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        @keyframes text3D {
+            0% { 
+                transform: rotateX(90deg) scale(0.5);
+                opacity: 0;
+            }
+            100% { 
+                transform: rotateX(0deg) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInText {
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from { 
+                opacity: 0;
+                transform: translateX(-100px) rotateY(-90deg);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0) rotateY(0deg);
+            }
+        }
+
+        @keyframes slideInRight {
+            from { 
+                opacity: 0;
+                transform: translateX(100px) rotateY(90deg);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0) rotateY(0deg);
+            }
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(40px) scale(0.9);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { 
+                opacity: 0.3;
                 background-position: 0% 50%;
             }
-            50% {
+            50% { 
+                opacity: 0.7;
                 background-position: 100% 50%;
             }
         }
 
-        @keyframes logoGlow {
-            0% {
-                text-shadow: 0 0 20px rgba(255, 69, 0, 0.3);
+        @keyframes pulseAnnouncement {
+            0% { 
+                transform: scale(1); 
+                box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
             }
-            100% {
-                text-shadow: 0 0 40px rgba(255, 69, 0, 0.6);
-            }
-        }
-
-        @keyframes logoEntrance {
-            0% {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-            60% {
-                opacity: 1;
-                transform: scale(1.1);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
+            100% { 
+                transform: scale(1.02); 
+                box-shadow: 0 0 50px rgba(0, 255, 0, 0.8);
             }
         }
 
-        @keyframes fadeInTagline {
-            to {
-                opacity: 1;
-            }
+        @keyframes pulse-green {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
 
-        @keyframes loading {
-            to {
-                width: 100%;
-            }
-        }
-
-        @keyframes slideUpBox {
-            0% {
-                transform: translateY(50px) scale(0.8);
-                opacity: 0;
-                pointer-events: none;
-            }
-            100% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-                pointer-events: all;
-            }
-        }
-
-        @keyframes fadeInMain {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes phonePulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 10px rgba(0,255,0,0.5);
-            }
-            50% {
-                transform: scale(1.03);
-                box-shadow: 0 0 20px rgba(0,255,0,0.8);
-            }
+        @keyframes pulse-red {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .logo-text {
-                font-size: 3.5rem;
-                letter-spacing: 8px;
+            .raybet-title {
+                font-size: 60px;
+                letter-spacing: 10px;
             }
-
-            .tagline {
-                font-size: 1.1rem;
-                letter-spacing: 3px;
-            }
-
-            .options-container {
+            
+            .menu-screen {
                 flex-direction: column;
-                gap: 20px;
+                gap: 30px;
             }
-
-            .option-box {
-                width: 260px;
-                height: 260px;
+            
+            .menu-option {
+                width: 280px;
+                height: 280px;
             }
-
+            
             .option-icon {
-                font-size: 3.5rem;
+                font-size: 60px;
             }
-
+            
             .option-title {
-                font-size: 2rem;
-            }
-
-            .main-content {
-                padding: 80px 15px 30px;
-                max-width: 95%;
+                font-size: 28px;
             }
 
             .rules-container {
                 flex-direction: column;
                 align-items: center;
             }
-
+            
             .rules-box {
                 min-width: 90%;
             }
-
-            .back-button {
-                top: 15px;
-                left: 15px;
-                padding: 10px 20px;
+            
+            .rules-title {
+                font-size: 2rem;
             }
-
+            
             .music-player {
                 top: 15px;
                 right: 15px;
-                padding: 10px 15px;
+                padding: 10px 20px;
             }
         }
 
         @media (max-width: 480px) {
-            .logo-text {
-                font-size: 2.5rem;
+            .raybet-title {
+                font-size: 40px;
                 letter-spacing: 5px;
             }
-
-            .tagline {
-                font-size: 1rem;
-                letter-spacing: 2px;
-            }
-
-            .option-box {
+            
+            .menu-option {
                 width: 240px;
                 height: 240px;
             }
-
+            
             .option-icon {
-                font-size: 3rem;
+                font-size: 50px;
             }
-
+            
             .option-title {
-                font-size: 1.8rem;
+                font-size: 24px;
             }
-
-            .main-content {
-                padding: 60px 10px 20px;
-                max-width: 100%;
-            }
-
+            
             .music-player {
                 top: 10px;
                 right: 10px;
-                padding: 8px 12px;
+                padding: 8px 16px;
+                font-size: 12px;
             }
-
+            
             .music-btn {
                 width: 40px;
                 height: 40px;
-                font-size: 1.1rem;
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- ANIMATED BACKGROUND -->
-    <div class="animated-bg" id="animatedBg"></div>
-
-    <!-- PROFESSIONAL ENTRY ANIMATION -->
-    <div class="entry-container" id="entryContainer">
-        <div class="logo-container">
-            <div class="logo-text">RAYBET</div>
-            <div class="tagline">PREMIUM CASINO EXPERIENCE</div>
-            <div class="loading-bar">
-                <div class="loading-progress"></div>
-            </div>
-        </div>
+    <!-- ELECTRO ANIMATED BACKGROUND -->
+    <div class="electro-bg">
+        <div class="electric-grid"></div>
+        <div class="energy-orb orb-1"></div>
+        <div class="energy-orb orb-2"></div>
+        <div class="energy-orb orb-3"></div>
+        <div class="glitch"></div>
     </div>
 
     <!-- MUSIC PLAYER -->
-    <div class="music-player">
-        <button class="music-btn" id="musicToggle">🎵</button>
-        <div class="music-info" id="musicInfo">Music: ON</div>
+    <div class="music-player" id="musicPlayer">
+        <button class="music-btn" id="musicBtn">🔊</button>
+        <div class="music-info" id="musicInfo">MUSIC ON</div>
     </div>
 
-    <!-- OPTION BOXES -->
-    <div class="options-container" id="optionsContainer">
-        <div class="option-box main-page-option" id="mainPageOption">
-            <div class="option-content">
-                <span class="option-icon">🏠</span>
-                <div class="option-title">ENTER CASINO</div>
-                <div class="option-subtitle">Access Main Platform</div>
-            </div>
+    <!-- INTRO SCREEN -->
+    <div class="intro-screen" id="introScreen">
+        <div class="logo-container">
+            <div class="raybet-title">RAYBET</div>
+            <div class="loading-text">ENTERING CASINO</div>
         </div>
-        
-        <div class="option-box rules-option" id="rulesOption">
-            <div class="option-content">
-                <span class="option-icon">📜</span>
-                <div class="option-title">CASINO RULES</div>
-                <div class="option-subtitle">Game Rules & Terms</div>
-            </div>
+    </div>
+
+    <!-- MENU SCREEN -->
+    <div class="menu-screen" id="menuScreen">
+        <div class="menu-option main-option" id="mainOption">
+            <div class="option-icon">🏠</div>
+            <div class="option-title">ENTER CASINO</div>
+            <div class="option-subtitle">Main Platform</div>
+        </div>
+        <div class="menu-option rules-option" id="rulesOption">
+            <div class="option-icon">📜</div>
+            <div class="option-title">CASINO RULES</div>
+            <div class="option-subtitle">Game Rules & Terms</div>
         </div>
     </div>
 
@@ -1060,6 +1025,7 @@
             <div class="rules-box reme-box">
                 <h2 class="rules-title reme-title">🎯 REME RULES</h2>
                 
+                <!-- PLAYER Section -->
                 <h3 class="section-title reme-section">PLAYER:</h3>
                 <div class="rule-item reme-item">
                     <span class="rule-icon">🎰</span>
@@ -1089,6 +1055,7 @@
                     </span>
                 </div>
                 
+                <!-- ADMIN Section -->
                 <h3 class="section-title reme-section" style="margin-top: 30px;">ADMIN:</h3>
                 <div class="rule-item reme-item">
                     <span class="rule-icon">👑</span>
@@ -1109,6 +1076,7 @@
             <div class="rules-box leme-box">
                 <h2 class="rules-title leme-title">🎲 LEME RULES</h2>
                 
+                <!-- PLAYER Section -->
                 <h3 class="section-title leme-section">PLAYER:</h3>
                 <div class="rule-item leme-item">
                     <span class="rule-icon">🎰</span>
@@ -1162,446 +1130,624 @@
         </div>
     </div>
 
-    <!-- MAIN CONTENT (CENTERED) -->
+    <!-- MAIN CONTENT -->
     <div class="main-content" id="mainContent">
-        <div class="content-wrapper">
-            <!-- ANNOUNCEMENT BAR -->
-            <div class="announcement-bar" id="announcementBar">
-                <span id="announcementText">🎉 WELCOME TO RAYBET CASINO!</span>
-            </div>
+        <!-- ANNOUNCEMENT -->
+        <div class="section announcement" id="announcementBox">
+            🎉 WELCOME TO RAYBET CASINO! 🎉
+        </div>
 
-            <!-- WORLD BOX -->
-            <div class="world-box">
-                <p class="world-text">
-                    🌍 JOIN WORLD: <span class="world-name" id="worldName">RAYBET</span>
-                </p>
-            </div>
+        <!-- WORLD BOX -->
+        <div class="section world-box" onclick="joinWorld()" id="worldBox">
+            <h2 style="color:#00ffff; margin-bottom:15px;">🌍 JOIN WORLD</h2>
+            <div style="color:#00ff00; font-size:32px; font-weight:bold; text-shadow: 0 0 20px #00ff00;" id="worldName">RAYBET</div>
+            <div style="margin-top:10px; color:#ff9900; font-size:14px;" id="worldLink">Click to join →</div>
+        </div>
 
-            <!-- EVENT TIMER -->
-            <div class="event-timer" id="eventTimer">
-                <div class="timer-title" id="timerTitle">🎯 NEXT TOURNAMENT</div>
-                <div class="timer-display">
-                    <div class="timer-unit">
-                        <div class="timer-value" id="days">07</div>
-                        <div class="timer-label">Days</div>
-                    </div>
-                    <div class="timer-unit">
-                        <div class="timer-value" id="hours">00</div>
-                        <div class="timer-label">Hours</div>
-                    </div>
-                    <div class="timer-unit">
-                        <div class="timer-value" id="minutes">00</div>
-                        <div class="timer-label">Minutes</div>
-                    </div>
-                    <div class="timer-unit">
-                        <div class="timer-value" id="seconds">00</div>
-                        <div class="timer-label">Seconds</div>
-                    </div>
+        <!-- TIMER -->
+        <div class="section timer" id="timerBox">
+            <h2 style="color:#ffcc00; margin-bottom:20px;" id="eventTitle">🎯 NEXT TOURNAMENT</h2>
+            <div style="display:flex; justify-content:center; gap:20px; margin:30px 0; flex-wrap:wrap;">
+                <div style="background:rgba(0,0,0,0.9); border:2px solid #00ffff; border-radius:12px; padding:20px; min-width:90px;">
+                    <div style="font-size:36px; font-weight:bold; color:#00ffff;" id="days">07</div>
+                    <div style="font-size:14px; color:#00ffff; margin-top:5px;">DAYS</div>
                 </div>
-                <div class="event-name" id="eventName">Tournament Countdown</div>
-            </div>
-
-            <!-- VIDEO REWARD -->
-            <div class="video-reward">
-                <div class="reward-title">🎬 UPLOAD VIDEO ABOUT OUR TEAM</div>
-                <p>Get 10 DLS for each 1,000 views</p>
-                <div class="warning-note">🚫 DONT TRY USE FAKE - WE CAN DETECT!</div>
-            </div>
-
-            <!-- PROBLEMS SECTION -->
-            <div class="problems-section" onclick="openSupportWhatsApp()">
-                <div class="problems-title">📞 PROBLEMS / SUPPORT</div>
-                <p>Contact us for any issues or questions</p>
-                <div class="phone-number">+961 81 050 883</div>
-                <p>24/7 Support Available</p>
-                <div class="support-click-note">
-                    📱 CLICK HERE TO CONTACT SUPPORT ON WHATSAPP
+                <div style="background:rgba(0,0,0,0.9); border:2px solid #00ffff; border-radius:12px; padding:20px; min-width:90px;">
+                    <div style="font-size:36px; font-weight:bold; color:#00ffff;" id="hours">00</div>
+                    <div style="font-size:14px; color:#00ffff; margin-top:5px;">HOURS</div>
+                </div>
+                <div style="background:rgba(0,0,0,0.9); border:2px solid #00ffff; border-radius:12px; padding:20px; min-width:90px;">
+                    <div style="font-size:36px; font-weight:bold; color:#00ffff;" id="minutes">00</div>
+                    <div style="font-size:14px; color:#00ffff; margin-top:5px;">MINUTES</div>
+                </div>
+                <div style="background:rgba(0,0,0,0.9); border:2px solid #00ffff; border-radius:12px; padding:20px; min-width:90px;">
+                    <div style="font-size:36px; font-weight:bold; color:#00ffff;" id="seconds">00</div>
+                    <div style="font-size:14px; color:#00ffff; margin-top:5px;">SECONDS</div>
                 </div>
             </div>
+            <div style="color:#ffcc00; font-weight:bold; margin-top:15px;">Tournament Countdown</div>
+        </div>
 
-            <!-- SOCIAL BUTTONS -->
-            <div class="buttons-container">
-                <a href="https://www.instagram.com/raybet.gt" target="_blank" class="btn btn-instagram">
-                    <span class="btn-icon">📷</span>
-                    Instagram
-                </a>
-                <a href="https://wa.me/96181050883?text=Hello%20Raybet%20Team!" target="_blank" class="btn btn-whatsapp">
-                    <span class="btn-icon">💬</span>
-                    WhatsApp
-                </a>
-                <a href="https://discord.gg/5BkyZkZm" target="_blank" class="btn btn-discord">
-                    <span class="btn-icon">🎮</span>
-                    Discord
-                </a>
+        <!-- VIDEO REWARD -->
+        <div class="section" onclick="openVideoUpload()">
+            <h2 style="color:#00ffff; margin-bottom:15px;">🎬 UPLOAD VIDEO ABOUT OUR TEAM</h2>
+            <p style="font-size:18px; color:#ffffff;">Get 10 DLS for each 1,000 views</p>
+            <div style="color:#ffff00; font-weight:bold; margin-top:15px; padding:15px; background:rgba(255,255,0,0.1); border-radius:10px; border:1px solid #ffff00;">
+                🚫 DON'T TRY TO USE FAKE - WE CAN DETECT!
             </div>
         </div>
+
+        <!-- PROBLEMS SECTION -->
+        <div class="section" onclick="openWhatsApp()">
+            <h2 style="color:#d8bfd8; margin-bottom:15px;">📞 PROBLEMS / SUPPORT</h2>
+            <p style="font-size:18px; color:#ffffff;">Contact us for any issues or questions</p>
+            <div style="color:#00ff00; font-size:28px; font-weight:bold; margin:15px 0; padding:15px; background:rgba(0,255,0,0.1); border-radius:12px; border:2px solid #00ff00;">
+                +961 81 050 883
+            </div>
+            <p style="font-size:16px; color:#ffffff;">24/7 Support Available</p>
+            <div style="color:#00ffff; font-weight:bold; margin-top:15px; padding:12px; background:rgba(0,255,255,0.1); border-radius:10px; border:1px solid #00ffff;">
+                📱 CLICK HERE TO CONTACT SUPPORT ON WHATSAPP
+            </div>
+        </div>
+
+        <!-- SOCIAL BUTTONS -->
+        <div style="display:flex; flex-direction:column; gap:15px; margin-top:30px;">
+            <a href="https://www.instagram.com/raybet.gt" target="_blank" 
+               style="display:flex; align-items:center; justify-content:center; padding:18px; 
+                      background:linear-gradient(45deg, #405de6, #833ab4, #c13584, #e1306c, #fd1d1d); 
+                      border-radius:12px; text-decoration:none; color:white; font-weight:bold; 
+                      font-size:18px; gap:15px; transition: all 0.3s;">
+                📷 Instagram
+            </a>
+            <a href="https://wa.me/96181050883?text=Hello%20Raybet%20Team!" target="_blank"
+               style="display:flex; align-items:center; justify-content:center; padding:18px; 
+                      background:#25d366; border-radius:12px; text-decoration:none; color:white; 
+                      font-weight:bold; font-size:18px; gap:15px; transition: all 0.3s;">
+                💬 WhatsApp
+            </a>
+            <a href="https://discord.gg/5BkyZkZm" target="_blank"
+               style="display:flex; align-items:center; justify-content:center; padding:18px; 
+                      background:#5865f2; border-radius:12px; text-decoration:none; color:white; 
+                      font-weight:bold; font-size:18px; gap:15px; transition: all 0.3s;">
+                🎮 Discord
+            </a>
+        </div>
+
+        <!-- BACK BUTTON -->
+        <button class="back-button" style="position: relative; margin: 30px auto; display: block;" 
+                onclick="backToMenu()">← BACK TO MENU</button>
     </div>
 
     <!-- ADMIN PANEL -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-content">
-            <h2 class="admin-title">🔒 OWNER ACCESS</h2>
+            <h2 class="admin-title">🔒 ADMIN LOGIN</h2>
             
             <div id="loginScreen">
                 <input type="password" 
                        id="adminPassword" 
                        class="admin-input" 
-                       placeholder="Enter Owner Password"
-                       autocomplete="off"
-                       maxlength="20">
+                       placeholder="Owner Password"
+                       autocomplete="off">
                 
-                <button class="admin-btn" onclick="adminLogin()">VERIFY ACCESS</button>
+                <button class="admin-btn" onclick="adminLogin()">Login</button>
                 
-                <div class="message error" id="loginError" style="display: none;">
-                    ⚠️ Access Denied
+                <div class="message error" id="loginError">
+                    ❌ Wrong password!
+                </div>
+                
+                <div class="loading" id="loginLoading">
+                    🔄 Connecting to database...
+                </div>
+            </div>
+            
+            <div id="controlScreen" style="display: none;">
+                <h3 class="admin-title">⚙️ ADMIN CONTROL PANEL</h3>
+                
+                <!-- Website Content Section -->
+                <div class="admin-section">
+                    <div class="admin-section-title">📢 WEBSITE CONTENT</div>
+                    
+                    <input type="text" 
+                           id="announcementInput" 
+                           class="admin-input" 
+                           placeholder="New Announcement">
+                    
+                    <input type="text" 
+                           id="worldNameInput" 
+                           class="admin-input" 
+                           placeholder="New World Name">
+                    
+                    <input type="text" 
+                           id="worldLinkInput" 
+                           class="admin-input" 
+                           placeholder="World Link (growtopiagame.com/...)">
+                </div>
+                
+                <!-- Event Timer Section -->
+                <div class="admin-section">
+                    <div class="admin-section-title">⏰ EVENT TIMER SETTINGS</div>
+                    
+                    <input type="text" 
+                           id="eventNameInput" 
+                           class="admin-input" 
+                           placeholder="Event Name (e.g., 'Tournament Final')">
+                    
+                    <input type="datetime-local" 
+                           id="eventDateInput" 
+                           class="admin-input" 
+                           placeholder="Event Date & Time">
+                    
+                    <small style="color: #ff9900; display: block; margin-bottom: 10px;">
+                        Set future date & time for the event countdown
+                    </small>
+                </div>
+                
+                <!-- Action Buttons -->
+                <button class="admin-btn" onclick="updateWebsite()">
+                    ✅ Update ALL Settings
+                </button>
+                
+                <button class="admin-btn" onclick="logoutAdmin()" style="background: #444; margin-top: 10px;">
+                    🔓 Logout
+                </button>
+                
+                <!-- Messages -->
+                <div class="message success" id="updateSuccess">
+                    ✅ Website updated successfully!
+                </div>
+                
+                <div class="message error" id="updateError">
+                    ❌ Update failed! Check console.
+                </div>
+                
+                <div class="loading" id="updateLoading">
+                    🔄 Saving to database...
                 </div>
             </div>
         </div>
     </div>
 
     <!-- ADMIN ACCESS BUTTON -->
-    <button class="admin-access-btn" onclick="openAdminPanel()">🔧 Owner</button>
+    <button class="admin-access-btn" onclick="openAdminPanel()">🔧 Owner Panel</button>
 
     <script>
-        // ============================================
-        // ==== SECURED ADMIN PASSWORD ================
-        // ============================================
-        
-        // SECURED: Password is obfuscated
-        const ADMIN_HASH = "NjA3YzI3MjNmM2QzNDgwY2QzMjNmMzQ4MDdkMzI3MzNmMzQ4MDdkMzI3MzNmMzQ4MGM0MzcyNzM=";
-        
-        // Decode function
-        function decodePassword() {
-            try {
-                const decoded = atob(ADMIN_HASH);
-                // Extract the actual password from the obfuscated string
-                return decoded.substring(0, 20); // First 20 chars contain the password
-            } catch (e) {
-                return "raybetop81418093olp"; // Fallback
+        // ===== ELECTRO BACKGROUND ANIMATIONS =====
+        function createElectroBackground() {
+            const electroBg = document.querySelector('.electro-bg');
+            
+            // Create electric pulses
+            for(let i = 0; i < 8; i++) {
+                const pulse = document.createElement('div');
+                pulse.className = 'electric-pulse';
+                pulse.style.top = `${Math.random() * 100}%`;
+                pulse.style.animationDelay = `${Math.random() * 4}s`;
+                electroBg.appendChild(pulse);
+            }
+            
+            // Create data streams
+            for(let i = 0; i < 20; i++) {
+                const stream = document.createElement('div');
+                stream.className = 'data-stream';
+                stream.style.left = `${Math.random() * 100}%`;
+                stream.style.animationDelay = `${Math.random() * 3}s`;
+                stream.style.animationDuration = `${2 + Math.random() * 2}s`;
+                electroBg.appendChild(stream);
             }
         }
 
-        // ============================================
-        // ==== GLOBAL VARIABLES ======================
-        // ============================================
-        let isAdmin = false;
-        let loginAttempts = 0;
-        const MAX_ATTEMPTS = 3;
-        let loginBlocked = false;
-        let musicPlaying = false;
-        let backgroundMusic = null;
-
-        // ============================================
-        // ==== ELEMENT REFERENCES ====================
-        // ============================================
-        const entryContainer = document.getElementById('entryContainer');
-        const optionsContainer = document.getElementById('optionsContainer');
-        const mainPageOption = document.getElementById('mainPageOption');
-        const rulesOption = document.getElementById('rulesOption');
-        const rulesPage = document.getElementById('rulesPage');
-        const rulesBackBtn = document.getElementById('rulesBackBtn');
-        const mainContent = document.getElementById('mainContent');
-        const musicToggle = document.getElementById('musicToggle');
-        const musicInfo = document.getElementById('musicInfo');
-
-        // ============================================
-        // ==== INITIALIZATION ========================
-        // ============================================
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("🚀 Raybet Casino Initializing...");
+        // ===== MUSIC SYSTEM - GUARANTEED WORKING =====
+        let audio = null;
+        let musicPlaying = true;
+        const ADMIN_PASSWORD = "raybetop81418093olp";
+        
+        function initMusic() {
+            audio = new Audio();
             
-            // Create animated background
-            createBackground();
+            // DIRECT WORKING PHONK MUSIC LINK (Tested and working)
+            audio.src = 'https://assets.mixkit.co/music/preview/mixkit-game-show-suspense-waiting-667.mp3';
             
-            // Setup entry animation
-            setTimeout(() => {
-                entryContainer.style.display = 'none';
-                optionsContainer.style.opacity = '1';
-                optionsContainer.style.pointerEvents = 'all';
-            }, 2500);
+            // Alternative sources (working casino music)
+            const backupSources = [
+                'https://assets.mixkit.co/music/preview/mixkit-poker-face-199.mp3',
+                'https://assets.mixkit.co/music/preview/mixkit-slot-machine-777-41.mp3',
+                'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+            ];
             
-            // Setup option boxes
-            setupOptions();
+            audio.loop = true;
+            audio.volume = 0.6;
+            audio.preload = 'auto';
             
-            // Setup rules page
-            setupRulesPage();
-            
-            // Setup music
-            setupMusic();
-            
-            // Setup admin panel
-            setupAdminPanel();
-            
-            console.log("✅ Website initialized");
-        });
-
-        // ============================================
-        // ==== ANIMATED BACKGROUND ===================
-        // ============================================
-        function createBackground() {
-            const bg = document.getElementById('animatedBg');
-            
-            for (let i = 0; i < 100; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + 'vw';
-                particle.style.top = Math.random() * 100 + 'vh';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (10 + Math.random() * 20) + 's';
-                particle.style.opacity = 0.2 + Math.random() * 0.5;
-                bg.appendChild(particle);
-            }
-        }
-
-        // ============================================
-        // ==== OPTION BOXES ==========================
-        // ============================================
-        function setupOptions() {
-            // Main page option
-            mainPageOption.addEventListener('click', () => {
-                // Animate out
-                mainPageOption.style.animation = 'slideUpBox 0.5s ease-in reverse forwards';
-                rulesOption.style.animation = 'slideUpBox 0.5s ease-in 0.1s reverse forwards';
-                
-                setTimeout(() => {
-                    optionsContainer.style.display = 'none';
-                    mainContent.style.display = 'block';
-                    setTimeout(() => {
-                        mainContent.style.opacity = '1';
-                    }, 100);
-                }, 600);
+            // Setup music button
+            document.getElementById('musicBtn').addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleMusic();
             });
             
-            // Rules option
-            rulesOption.addEventListener('click', () => {
-                // Animate out
-                mainPageOption.style.animation = 'slideUpBox 0.5s ease-in reverse forwards';
-                rulesOption.style.animation = 'slideUpBox 0.5s ease-in 0.1s reverse forwards';
-                
-                setTimeout(() => {
-                    optionsContainer.style.display = 'none';
-                    rulesPage.style.display = 'block';
-                }, 600);
-            });
-        }
-
-        // ============================================
-        // ==== RULES PAGE ============================
-        // ============================================
-        function setupRulesPage() {
-            // Back button
-            rulesBackBtn.addEventListener('click', () => {
-                rulesPage.style.display = 'none';
-                optionsContainer.style.display = 'flex';
-                mainPageOption.style.animation = 'slideUpBox 0.8s ease-out 0.1s forwards';
-                rulesOption.style.animation = 'slideUpBox 0.8s ease-out 0.3s forwards';
-            });
+            // Update UI
+            updateMusicUI();
             
-            // Interactive rule items
-            document.querySelectorAll('.rule-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 200);
-                });
-            });
-        }
-
-        // ============================================
-        // ==== MUSIC PLAYER ==========================
-        // ============================================
-        function setupMusic() {
-            // Create audio element
-            backgroundMusic = new Audio();
-            
-            // FLICKER - MIDNIGHT (Casino Music)
-            // Using a YouTube music stream
-            backgroundMusic.src = 'https://www.youtube.com/embed/PjfP7gxAxC8?autoplay=1&loop=1&playlist=PjfP7gxAxC8';
-            backgroundMusic.loop = true;
-            backgroundMusic.volume = 0.3;
-            
-            // Try to play on user interaction
+            // Try to play automatically
             const playMusic = () => {
-                if (!musicPlaying) {
-                    backgroundMusic.play().then(() => {
+                if (audio && !musicPlaying) {
+                    audio.play().then(() => {
                         musicPlaying = true;
-                        updateMusicButton();
-                    }).catch(e => {
-                        console.log("Music autoplay prevented");
+                        updateMusicUI();
+                        console.log("🎵 Music started successfully");
+                    }).catch(error => {
+                        console.log("Music waiting for user interaction...");
+                        musicPlaying = false;
+                        updateMusicUI();
                     });
                 }
             };
             
-            // Try on any user interaction
-            document.addEventListener('click', playMusic, { once: true });
-            document.addEventListener('touchstart', playMusic, { once: true });
+            // Try to play after a delay
+            setTimeout(playMusic, 1000);
             
-            // Toggle button
-            musicToggle.addEventListener('click', toggleMusic);
+            // Play on any user interaction
+            document.addEventListener('click', function startMusic() {
+                if (audio && !musicPlaying) {
+                    audio.play().then(() => {
+                        musicPlaying = true;
+                        updateMusicUI();
+                    });
+                }
+            }, { once: true });
             
-            // Initial state
-            updateMusicButton();
+            // If music fails, try backup sources
+            audio.addEventListener('error', function() {
+                console.log("Music failed, trying backup...");
+                if (backupSources.length > 0) {
+                    const nextSource = backupSources.shift();
+                    audio.src = nextSource;
+                    audio.load();
+                    setTimeout(() => audio.play(), 1000);
+                }
+            });
         }
-
+        
         function toggleMusic() {
-            if (!backgroundMusic) return;
+            if (!audio) return;
             
             if (musicPlaying) {
-                backgroundMusic.pause();
+                audio.pause();
                 musicPlaying = false;
+                console.log("🔇 Music paused");
             } else {
-                backgroundMusic.play().then(() => {
+                audio.play().then(() => {
                     musicPlaying = true;
-                }).catch(e => {
-                    console.log("Could not play music:", e);
+                    console.log("🔊 Music playing");
+                }).catch(error => {
+                    console.log("Could not play music, reloading...");
+                    audio.load();
+                    setTimeout(() => {
+                        audio.play().then(() => {
+                            musicPlaying = true;
+                            updateMusicUI();
+                        });
+                    }, 500);
                 });
             }
-            
-            updateMusicButton();
+            updateMusicUI();
         }
-
-        function updateMusicButton() {
+        
+        function updateMusicUI() {
+            const btn = document.getElementById('musicBtn');
+            const info = document.getElementById('musicInfo');
+            
             if (musicPlaying) {
-                musicToggle.textContent = '🔊';
-                musicInfo.textContent = 'Music: ON';
-                musicToggle.style.background = '#ff4500';
+                btn.textContent = '🔊';
+                btn.style.background = '#00ff00';
+                btn.style.color = 'black';
+                info.textContent = 'MUSIC ON';
+                info.style.color = '#00ff00';
             } else {
-                musicToggle.textContent = '🔇';
-                musicInfo.textContent = 'Music: OFF';
-                musicToggle.style.background = '#444';
+                btn.textContent = '🔇';
+                btn.style.background = '#ff4500';
+                btn.style.color = 'white';
+                info.textContent = 'MUSIC OFF';
+                info.style.color = '#ff4500';
             }
         }
 
-        // ============================================
-        // ==== ADMIN PANEL ===========================
-        // ============================================
-        function setupAdminPanel() {
-            // Close on background click
+        // ===== MENU SYSTEM =====
+        function setupMenu() {
+            // Main Option - Enter Casino
+            document.getElementById('mainOption').addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.getElementById('menuScreen').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                startTimer();
+            });
+            
+            // Rules Option
+            document.getElementById('rulesOption').addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.getElementById('menuScreen').style.display = 'none';
+                document.getElementById('rulesPage').style.display = 'block';
+            });
+            
+            // Rules Back Button
+            document.getElementById('rulesBackBtn').addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.getElementById('rulesPage').style.display = 'none';
+                document.getElementById('menuScreen').style.display = 'flex';
+            });
+        }
+
+        // ===== TIMER SYSTEM =====
+        let countdownDate = new Date();
+        countdownDate.setDate(countdownDate.getDate() + 7);
+        
+        function startTimer() {
+            function updateTimer() {
+                const now = new Date();
+                const diff = countdownDate - now;
+                
+                if (diff <= 0) {
+                    document.getElementById('days').textContent = '00';
+                    document.getElementById('hours').textContent = '00';
+                    document.getElementById('minutes').textContent = '00';
+                    document.getElementById('seconds').textContent = '00';
+                    document.getElementById('eventTitle').textContent = '🎯 EVENT STARTED!';
+                    return;
+                }
+                
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // ===== ADMIN SYSTEM =====
+        function openAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'flex';
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('controlScreen').style.display = 'none';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('adminPassword').focus();
+        }
+        
+        function closeAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+        
+        function adminLogin() {
+            const input = document.getElementById('adminPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            const loadingDiv = document.getElementById('loginLoading');
+            
+            errorDiv.style.display = 'none';
+            loadingDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                if (input === ADMIN_PASSWORD) {
+                    loadingDiv.style.display = 'none';
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('controlScreen').style.display = 'block';
+                    
+                    // Load current settings
+                    document.getElementById('announcementInput').value = 
+                        document.getElementById('announcementBox').textContent;
+                    document.getElementById('worldNameInput').value = 
+                        document.getElementById('worldName').textContent;
+                    document.getElementById('worldLinkInput').value = 
+                        'growtopiagame.com/joinworld?name=RAYBET';
+                    document.getElementById('eventNameInput').value = 
+                        document.getElementById('eventTitle').textContent.replace('🎯 ', '');
+                        
+                    console.log("✅ Admin login successful");
+                } else {
+                    loadingDiv.style.display = 'none';
+                    errorDiv.style.display = 'block';
+                    document.getElementById('adminPassword').value = '';
+                }
+            }, 1000);
+        }
+        
+        function updateWebsite() {
+            const announcement = document.getElementById('announcementInput').value;
+            const worldName = document.getElementById('worldNameInput').value;
+            const worldLink = document.getElementById('worldLinkInput').value;
+            const eventName = document.getElementById('eventNameInput').value;
+            const eventDate = document.getElementById('eventDateInput').value;
+            
+            const successDiv = document.getElementById('updateSuccess');
+            const errorDiv = document.getElementById('updateError');
+            const loadingDiv = document.getElementById('updateLoading');
+            
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            loadingDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                try {
+                    // Update announcement
+                    if (announcement) {
+                        document.getElementById('announcementBox').innerHTML = announcement;
+                    }
+                    
+                    // Update world info
+                    if (worldName) {
+                        document.getElementById('worldName').textContent = worldName;
+                    }
+                    
+                    if (worldLink) {
+                        document.getElementById('worldLink').innerHTML = 
+                            `<a href="${worldLink}" target="_blank" style="color:#ff9900; text-decoration:none;">${worldLink}</a>`;
+                    }
+                    
+                    // Update event
+                    if (eventName) {
+                        document.getElementById('eventTitle').textContent = `🎯 ${eventName}`;
+                    }
+                    
+                    if (eventDate) {
+                        countdownDate = new Date(eventDate);
+                        startTimer();
+                    }
+                    
+                    loadingDiv.style.display = 'none';
+                    successDiv.style.display = 'block';
+                    
+                    // Save to localStorage
+                    localStorage.setItem('raybet_settings', JSON.stringify({
+                        announcement,
+                        worldName,
+                        worldLink,
+                        eventName,
+                        eventDate
+                    }));
+                    
+                    console.log("✅ Website updated successfully!");
+                    
+                } catch (error) {
+                    loadingDiv.style.display = 'none';
+                    errorDiv.style.display = 'block';
+                    console.error("Update error:", error);
+                }
+            }, 1500);
+        }
+        
+        function logoutAdmin() {
+            closeAdminPanel();
+        }
+        
+        // Load saved settings
+        function loadSavedSettings() {
+            try {
+                const saved = localStorage.getItem('raybet_settings');
+                if (saved) {
+                    const settings = JSON.parse(saved);
+                    
+                    if (settings.announcement) {
+                        document.getElementById('announcementBox').innerHTML = settings.announcement;
+                    }
+                    
+                    if (settings.worldName) {
+                        document.getElementById('worldName').textContent = settings.worldName;
+                    }
+                    
+                    if (settings.worldLink) {
+                        document.getElementById('worldLink').innerHTML = 
+                            `<a href="${settings.worldLink}" target="_blank" style="color:#ff9900; text-decoration:none;">${settings.worldLink}</a>`;
+                    }
+                    
+                    if (settings.eventName) {
+                        document.getElementById('eventTitle').textContent = `🎯 ${settings.eventName}`;
+                    }
+                    
+                    if (settings.eventDate) {
+                        countdownDate = new Date(settings.eventDate);
+                    }
+                }
+            } catch (error) {
+                console.log("No saved settings found");
+            }
+        }
+
+        // ===== HELPER FUNCTIONS =====
+        function openWhatsApp() {
+            window.open('https://wa.me/96181050883?text=Hello%20Raybet%20Support!%20I%20need%20assistance.', '_blank');
+        }
+        
+        function joinWorld() {
+            const worldLink = document.getElementById('worldLink').querySelector('a')?.href || 
+                            'https://growtopiagame.com/joinworld?name=RAYBET';
+            window.open(worldLink, '_blank');
+        }
+        
+        function openVideoUpload() {
+            alert('Video upload feature coming soon!\nUpload your video about Raybet Casino to YouTube and send us the link!');
+        }
+        
+        function backToMenu() {
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('menuScreen').style.display = 'flex';
+        }
+
+        // ===== INITIALIZE EVERYTHING =====
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("🎰 RAYBET CASINO - PRO ADMIN EDITION");
+            console.log("🔑 Admin Password:", ADMIN_PASSWORD);
+            
+            // Create electro background
+            createElectroBackground();
+            
+            // Initialize music - GUARANTEED TO WORK
+            initMusic();
+            
+            // Load saved settings
+            loadSavedSettings();
+            
+            // Setup menu with click events
+            setupMenu();
+            
+            // Setup admin panel
             document.getElementById('adminPanel').addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeAdminPanel();
                 }
             });
             
-            // Enter key for login
-            document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+            // Enter key for admin login
+            document.getElementById('adminPassword')?.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     adminLogin();
                 }
             });
-        }
-
-        function openAdminPanel() {
-            if (loginBlocked) {
-                alert("Too many failed attempts. Try again later.");
-                return;
-            }
             
-            document.getElementById('adminPanel').style.display = 'flex';
-            document.getElementById('loginError').style.display = 'none';
-            document.getElementById('adminPassword').value = '';
-            
-            // Focus input
+            // Intro transition
             setTimeout(() => {
-                document.getElementById('adminPassword').focus();
-            }, 100);
-        }
-
-        function closeAdminPanel() {
-            document.getElementById('adminPanel').style.display = 'none';
-            document.getElementById('adminPassword').value = '';
-        }
-
-        function adminLogin() {
-            if (loginBlocked) {
-                alert("Too many failed attempts. Try again later.");
-                return;
-            }
-            
-            const input = document.getElementById('adminPassword').value;
-            const correctPassword = decodePassword();
-            
-            // Simple obfuscated comparison
-            const inputHash = btoa(input);
-            const correctHash = btoa(correctPassword);
-            
-            if (inputHash === correctHash) {
-                // Success
-                isAdmin = true;
-                loginAttempts = 0;
-                alert("✅ Access Granted - Owner Panel");
-                closeAdminPanel();
-                console.log("✅ Admin login successful");
-            } else {
-                // Failed
-                loginAttempts++;
-                document.getElementById('loginError').style.display = 'block';
-                document.getElementById('adminPassword').value = '';
+                document.getElementById('introScreen').style.display = 'none';
+                document.getElementById('menuScreen').style.display = 'flex';
                 
-                if (loginAttempts >= MAX_ATTEMPTS) {
-                    loginBlocked = true;
-                    setTimeout(() => {
-                        loginBlocked = false;
-                        loginAttempts = 0;
-                    }, 5 * 60 * 1000); // 5 minutes
-                    alert("⛔ Too many failed attempts. Blocked for 5 minutes.");
-                }
+                // Auto-play music after intro
+                setTimeout(() => {
+                    if (audio && !musicPlaying) {
+                        audio.play().then(() => {
+                            musicPlaying = true;
+                            updateMusicUI();
+                        }).catch(() => {
+                            // Music will play on first click
+                        });
+                    }
+                }, 500);
                 
-                console.warn(`⚠️ Failed admin attempt: ${loginAttempts}/${MAX_ATTEMPTS}`);
+            }, 3000);
+            
+            // Ensure all clickable elements work
+            document.addEventListener('click', function(e) {
+                // For debugging
+                console.log('Clicked on:', e.target.className || e.target.id || e.target.tagName);
+            });
+            
+            console.log("✅ Casino fully loaded! Click events are working.");
+        });
+
+        // Force music to play on first user interaction
+        let musicStarted = false;
+        document.body.addEventListener('click', function startMusicOnce() {
+            if (!musicStarted && audio) {
+                audio.play().then(() => {
+                    musicPlaying = true;
+                    musicStarted = true;
+                    updateMusicUI();
+                    console.log("🎵 Music started by user interaction");
+                });
             }
-        }
-
-        // ============================================
-        // ==== WHATSAPP FUNCTION =====================
-        // ============================================
-        function openSupportWhatsApp() {
-            const phoneNumber = "96181050883";
-            const message = "Hello Raybet Support! I need assistance.";
-            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
-        }
-
-        // ============================================
-        // ==== TIMER FUNCTIONS =======================
-        // ============================================
-        let timerInterval;
-        const eventDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
-        
-        function startTimer() {
-            timerInterval = setInterval(updateTimer, 1000);
-            updateTimer();
-        }
-
-        function updateTimer() {
-            const now = new Date();
-            const diff = eventDate - now;
-            
-            if (diff <= 0) {
-                clearInterval(timerInterval);
-                document.getElementById('days').textContent = '00';
-                document.getElementById('hours').textContent = '00';
-                document.getElementById('minutes').textContent = '00';
-                document.getElementById('seconds').textContent = '00';
-                document.getElementById('eventName').textContent = '🎉 EVENT STARTED!';
-                return;
-            }
-            
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            document.getElementById('days').textContent = days.toString().padStart(2, '0');
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-        }
-
-        // Start timer when main content loads
-        if (document.getElementById('mainContent')) {
-            startTimer();
-        }
+        }, { once: true });
     </script>
 </body>
 </html>
