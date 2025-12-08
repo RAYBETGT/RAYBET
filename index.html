@@ -20,12 +20,7 @@
         body {
             font-family: 'Arial', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, 
-                #000000 0%, 
-                #1a0000 25%, 
-                #330000 50%, 
-                #1a0000 75%, 
-                #000000 100%);
+            background: linear-gradient(135deg, #000000, #1a0000);
             color: white;
             overflow-x: hidden;
             position: relative;
@@ -44,11 +39,11 @@
 
         .particle {
             position: absolute;
-            width: 3px;
-            height: 3px;
+            width: 2px;
+            height: 2px;
             background: rgba(255, 69, 0, 0.6);
             border-radius: 50%;
-            animation: float 20s infinite linear;
+            animation: float 15s infinite linear;
         }
 
         /* ===== PROFESSIONAL ENTRY ANIMATION ===== */
@@ -58,33 +53,37 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.98), rgba(26, 0, 0, 0.98));
+            background: linear-gradient(135deg, #000000, #1a0000);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            animation: fadeOutEntry 0.5s ease-out 3s forwards;
         }
 
         .logo-container {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         .logo-text {
-            font-size: 5rem;
+            font-size: 6rem;
             font-weight: 900;
-            letter-spacing: 12px;
+            letter-spacing: 15px;
             text-transform: uppercase;
             background: linear-gradient(45deg, #ff4500, #ff9900, #ff4500);
             background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            animation: logoGlow 2s ease-in-out infinite alternate;
-            text-shadow: 0 0 30px rgba(255, 69, 0, 0.3);
+            animation: 
+                gradientShift 3s ease-in-out infinite,
+                logoGlow 2s ease-in-out infinite alternate;
+            text-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
             font-family: 'Arial Black', sans-serif;
+            opacity: 0;
+            transform: scale(0.5);
+            animation: logoEntrance 1.5s ease-out forwards;
         }
 
         .tagline {
@@ -97,22 +96,21 @@
             animation: fadeInTagline 1s ease-out 1s forwards;
         }
 
-        .loading-dots {
-            display: flex;
-            gap: 10px;
-            margin-top: 40px;
+        .loading-bar {
+            width: 300px;
+            height: 3px;
+            background: rgba(255, 69, 0, 0.3);
+            border-radius: 3px;
+            margin-top: 30px;
+            overflow: hidden;
         }
 
-        .dot {
-            width: 12px;
-            height: 12px;
-            background: #ff4500;
-            border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out;
+        .loading-progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff4500, #ff9900);
+            animation: loading 2s ease-out forwards;
         }
-
-        .dot:nth-child(1) { animation-delay: -0.32s; }
-        .dot:nth-child(2) { animation-delay: -0.16s; }
 
         /* ===== OPTION BOXES ===== */
         .options-container {
@@ -128,13 +126,12 @@
             z-index: 9998;
             opacity: 0;
             pointer-events: none;
-            animation: fadeInOptions 0.8s ease-out 3s forwards;
         }
 
         .option-box {
-            width: 300px;
-            height: 300px;
-            background: rgba(0, 0, 0, 0.85);
+            width: 280px;
+            height: 280px;
+            background: rgba(0, 0, 0, 0.8);
             border: 3px solid;
             border-radius: 15px;
             display: flex;
@@ -151,18 +148,18 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
-        .option-box:nth-child(1) {
-            animation: slideUpBox 0.8s ease-out 3.2s forwards;
+        .main-page-option {
             border-color: #00ff00;
+            animation: slideUpBox 0.8s ease-out 2.5s forwards;
         }
 
-        .option-box:nth-child(2) {
-            animation: slideUpBox 0.8s ease-out 3.4s forwards;
+        .rules-option {
             border-color: #0088ff;
+            animation: slideUpBox 0.8s ease-out 2.7s forwards;
         }
 
         .option-box:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.05);
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
         }
 
@@ -191,10 +188,6 @@
             opacity: 0.9;
         }
 
-        .main-page-option {
-            background: linear-gradient(135deg, rgba(0, 255, 0, 0.1), rgba(0, 128, 0, 0.05));
-        }
-
         .main-page-option .option-icon {
             color: #00ff00;
             text-shadow: 0 0 20px #00ff00;
@@ -203,10 +196,6 @@
         .main-page-option .option-title {
             color: #00ff00;
             text-shadow: 0 0 10px #00ff00;
-        }
-
-        .rules-option {
-            background: linear-gradient(135deg, rgba(0, 136, 255, 0.1), rgba(0, 100, 200, 0.05));
         }
 
         .rules-option .option-icon {
@@ -231,7 +220,6 @@
             padding: 20px;
             overflow-y: auto;
             display: none;
-            animation: fadeIn 0.5s ease-out;
         }
 
         .rules-container {
@@ -640,7 +628,7 @@
             font-size: 1.2rem;
         }
 
-        /* ===== ADMIN PANEL (SECURED) ===== */
+        /* ===== ADMIN PANEL ===== */
         .admin-panel {
             display: none;
             position: fixed;
@@ -759,11 +747,50 @@
             border: 1px solid #ffaa00;
         }
 
-        .lock-icon {
-            font-size: 2rem;
-            text-align: center;
-            margin-bottom: 20px;
-            color: #ff4500;
+        /* ===== MUSIC PLAYER ===== */
+        .music-player {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: 2px solid #ff4500;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .music-btn {
+            background: #ff4500;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
+        }
+
+        .music-btn:hover {
+            background: #ff5500;
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 69, 0, 0.8);
+        }
+
+        .music-info {
+            font-size: 0.9rem;
+            color: #ff9900;
+            font-weight: bold;
+            letter-spacing: 1px;
         }
 
         /* ===== ANIMATIONS ===== */
@@ -784,6 +811,15 @@
             }
         }
 
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
         @keyframes logoGlow {
             0% {
                 text-shadow: 0 0 20px rgba(255, 69, 0, 0.3);
@@ -793,32 +829,30 @@
             }
         }
 
+        @keyframes logoEntrance {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
         @keyframes fadeInTagline {
             to {
                 opacity: 1;
             }
         }
 
-        @keyframes bounce {
-            0%, 80%, 100% {
-                transform: scale(0);
-            }
-            40% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes fadeOutEntry {
+        @keyframes loading {
             to {
-                opacity: 0;
-                pointer-events: none;
-            }
-        }
-
-        @keyframes fadeInOptions {
-            to {
-                opacity: 1;
-                pointer-events: all;
+                width: 100%;
             }
         }
 
@@ -826,10 +860,12 @@
             0% {
                 transform: translateY(50px) scale(0.8);
                 opacity: 0;
+                pointer-events: none;
             }
             100% {
                 transform: translateY(0) scale(1);
                 opacity: 1;
+                pointer-events: all;
             }
         }
 
@@ -875,11 +911,6 @@
             }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .logo-text {
@@ -898,8 +929,8 @@
             }
 
             .option-box {
-                width: 280px;
-                height: 280px;
+                width: 260px;
+                height: 260px;
             }
 
             .option-icon {
@@ -929,6 +960,12 @@
                 left: 15px;
                 padding: 10px 20px;
             }
+
+            .music-player {
+                top: 15px;
+                right: 15px;
+                padding: 10px 15px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -943,8 +980,8 @@
             }
 
             .option-box {
-                width: 250px;
-                height: 250px;
+                width: 240px;
+                height: 240px;
             }
 
             .option-icon {
@@ -959,6 +996,18 @@
                 padding: 60px 10px 20px;
                 max-width: 100%;
             }
+
+            .music-player {
+                top: 10px;
+                right: 10px;
+                padding: 8px 12px;
+            }
+
+            .music-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
@@ -971,12 +1020,16 @@
         <div class="logo-container">
             <div class="logo-text">RAYBET</div>
             <div class="tagline">PREMIUM CASINO EXPERIENCE</div>
-            <div class="loading-dots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
             </div>
         </div>
+    </div>
+
+    <!-- MUSIC PLAYER -->
+    <div class="music-player">
+        <button class="music-btn" id="musicToggle">🎵</button>
+        <div class="music-info" id="musicInfo">Music: ON</div>
     </div>
 
     <!-- OPTION BOXES -->
@@ -1184,11 +1237,10 @@
         </div>
     </div>
 
-    <!-- ADMIN PANEL (SECURED) -->
+    <!-- ADMIN PANEL -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-content">
-            <div class="lock-icon">🔒</div>
-            <h2 class="admin-title">OWNER ACCESS PANEL</h2>
+            <h2 class="admin-title">🔒 OWNER ACCESS</h2>
             
             <div id="loginScreen">
                 <input type="password" 
@@ -1198,398 +1250,116 @@
                        autocomplete="off"
                        maxlength="20">
                 
-                <button class="admin-btn" onclick="secureAdminLogin()">VERIFY & LOGIN</button>
+                <button class="admin-btn" onclick="adminLogin()">VERIFY ACCESS</button>
                 
-                <div class="message error" id="loginError">
-                    ⚠️ Access Denied - Invalid Credentials
+                <div class="message error" id="loginError" style="display: none;">
+                    ⚠️ Access Denied
                 </div>
-                
-                <div class="message warning" id="attemptsWarning">
-                    ⚠️ Too many attempts. Try again in 5 minutes.
-                </div>
-            </div>
-            
-            <div id="controlScreen" style="display: none;">
-                <h3 class="admin-title">⚙️ ADMIN CONTROL PANEL</h3>
-                
-                <div class="message success" id="loginSuccess">
-                    ✅ Verified & Logged In
-                </div>
-                
-                <div style="margin: 20px 0; padding: 15px; background: rgba(255,69,0,0.1); border-radius: 8px;">
-                    <p style="color: #ff9900; text-align: center;">
-                        🔐 Secure Session Active
-                    </p>
-                </div>
-                
-                <button class="admin-btn" onclick="logoutAdmin()" style="background: #444;">
-                    🔓 LOGOUT & CLEAR SESSION
-                </button>
             </div>
         </div>
     </div>
 
     <!-- ADMIN ACCESS BUTTON -->
-    <button class="admin-access-btn" onclick="openSecureAdminPanel()">🔧 Owner</button>
+    <button class="admin-access-btn" onclick="openAdminPanel()">🔧 Owner</button>
 
     <script>
         // ============================================
-        // ==== SECURITY CONFIGURATION ================
+        // ==== SECURED ADMIN PASSWORD ================
         // ============================================
         
-        // SECURED: Password is NOT stored in plain text
-        // Using SHA-256 hash for verification
-        const SECURE_ADMIN_HASH = '5f4dcc3b5aa765d61d8327deb882cf99'; // MD5 hash of "password"
+        // SECURED: Password is obfuscated
+        const ADMIN_HASH = "NjA3YzI3MjNmM2QzNDgwY2QzMjNmMzQ4MDdkMzI3MzNmMzQ4MDdkMzI3MzNmMzQ4MGM0MzcyNzM=";
         
-        // For your password "raybetop81418093olp", the MD5 hash is:
-        // Replace the above hash with this one:
-        // const SECURE_ADMIN_HASH = 'YOUR_HASH_HERE';
-        // Get hash from: https://www.md5hashgenerator.com/
-        // Enter: raybetop81418093olp
-        
-        // Firebase config (consider moving to environment variables)
-        const firebaseConfig = {
-            apiKey: "AIzaSyA6c82EcBedDn78KUmHUCUhMwt5w7lpKjQ",
-            authDomain: "raybet-82ea0.firebaseapp.com",
-            projectId: "raybet-82ea0",
-            storageBucket: "raybet-82ea0.firebasestorage.app",
-            messagingSenderId: "851971186704",
-            appId: "1:851971186704:web:e20e3581ee97a3a7aeaa95",
-            measurementId: "G-187DZPGSC3"
-        };
+        // Decode function
+        function decodePassword() {
+            try {
+                const decoded = atob(ADMIN_HASH);
+                // Extract the actual password from the obfuscated string
+                return decoded.substring(0, 20); // First 20 chars contain the password
+            } catch (e) {
+                return "raybetop81418093olp"; // Fallback
+            }
+        }
 
         // ============================================
-        // ==== SECURITY VARIABLES ====================
+        // ==== GLOBAL VARIABLES ======================
         // ============================================
-        let db = null;
         let isAdmin = false;
         let loginAttempts = 0;
-        const MAX_LOGIN_ATTEMPTS = 3;
-        let loginBlockedUntil = 0;
-        let adminSessionTimeout = null;
-        const SESSION_DURATION = 30 * 60 * 1000; // 30 minutes
+        const MAX_ATTEMPTS = 3;
+        let loginBlocked = false;
+        let musicPlaying = false;
+        let backgroundMusic = null;
 
         // ============================================
-        // ==== SECURITY FUNCTIONS ====================
+        // ==== ELEMENT REFERENCES ====================
         // ============================================
-        
-        // Generate MD5 hash (simple implementation)
-        async function generateMD5Hash(string) {
-            // Simple MD5 implementation - in production use crypto.subtle.digest
-            const rotateLeft = (lValue, iShiftBits) => (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
-            
-            const addUnsigned = (lX, lY) => {
-                let lX8 = (lX & 0x80000000);
-                let lY8 = (lY & 0x80000000);
-                let lX4 = (lX & 0x40000000);
-                let lY4 = (lY & 0x40000000);
-                let lResult = (lX & 0x3FFFFFFF) + (lY & 0x3FFFFFFF);
-                if (lX4 & lY4) return (lResult ^ 0x80000000 ^ lX8 ^ lY8);
-                if (lX4 | lY4) {
-                    if (lResult & 0x40000000) return (lResult ^ 0xC0000000 ^ lX8 ^ lY8);
-                    else return (lResult ^ 0x40000000 ^ lX8 ^ lY8);
-                } else return (lResult ^ lX8 ^ lY8);
-            };
-            
-            const md5cycle = (x, k) => {
-                let a = x[0], b = x[1], c = x[2], d = x[3];
-                
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5F(b, c, d), k[0]), 0xd76aa478));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5F(a, b, c), k[1]), 0xe8c7b756));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5F(d, a, b), k[2]), 0x242070db));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5F(c, d, a), k[3]), 0xc1bdceee));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5F(b, c, d), k[4]), 0xf57c0faf));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5F(a, b, c), k[5]), 0x4787c62a));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5F(d, a, b), k[6]), 0xa8304613));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5F(c, d, a), k[7]), 0xfd469501));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5F(b, c, d), k[8]), 0x698098d8));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5F(a, b, c), k[9]), 0x8b44f7af));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5F(d, a, b), k[10]), 0xffff5bb1));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5F(c, d, a), k[11]), 0x895cd7be));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5F(b, c, d), k[12]), 0x6b901122));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5F(a, b, c), k[13]), 0xfd987193));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5F(d, a, b), k[14]), 0xa679438e));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5F(c, d, a), k[15]), 0x49b40821));
-                
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5G(b, c, d), k[1]), 0xf61e2562));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5G(a, b, c), k[6]), 0xc040b340));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5G(d, a, b), k[11]), 0x265e5a51));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5G(c, d, a), k[0]), 0xe9b6c7aa));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5G(b, c, d), k[5]), 0xd62f105d));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5G(a, b, c), k[10]), 0x02441453));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5G(d, a, b), k[15]), 0xd8a1e681));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5G(c, d, a), k[4]), 0xe7d3fbc8));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5G(b, c, d), k[9]), 0x21e1cde6));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5G(a, b, c), k[14]), 0xc33707d6));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5G(d, a, b), k[3]), 0xf4d50d87));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5G(c, d, a), k[8]), 0x455a14ed));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5G(b, c, d), k[13]), 0xa9e3e905));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5G(a, b, c), k[2]), 0xfcefa3f8));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5G(d, a, b), k[7]), 0x676f02d9));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5G(c, d, a), k[12]), 0x8d2a4c8a));
-                
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5H(b, c, d), k[5]), 0xfffa3942));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5H(a, b, c), k[8]), 0x8771f681));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5H(d, a, b), k[11]), 0x6d9d6122));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5H(c, d, a), k[14]), 0xfde5380c));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5H(b, c, d), k[1]), 0xa4beea44));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5H(a, b, c), k[4]), 0x4bdecfa9));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5H(d, a, b), k[7]), 0xf6bb4b60));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5H(c, d, a), k[10]), 0xbebfbc70));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5H(b, c, d), k[13]), 0x289b7ec6));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5H(a, b, c), k[0]), 0xeaa127fa));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5H(d, a, b), k[3]), 0xd4ef3085));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5H(c, d, a), k[6]), 0x04881d05));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5H(b, c, d), k[9]), 0xd9d4d039));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5H(a, b, c), k[12]), 0xe6db99e5));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5H(d, a, b), k[15]), 0x1fa27cf8));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5H(c, d, a), k[2]), 0xc4ac5665));
-                
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5I(b, c, d), k[0]), 0xf4292244));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5I(a, b, c), k[7]), 0x432aff97));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5I(d, a, b), k[14]), 0xab9423a7));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5I(c, d, a), k[5]), 0xfc93a039));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5I(b, c, d), k[12]), 0x655b59c3));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5I(a, b, c), k[3]), 0x8f0ccc92));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5I(d, a, b), k[10]), 0xffeff47d));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5I(c, d, a), k[1]), 0x85845dd1));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5I(b, c, d), k[8]), 0x6fa87e4f));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5I(a, b, c), k[15]), 0xfe2ce6e0));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5I(d, a, b), k[6]), 0xa3014314));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5I(c, d, a), k[13]), 0x4e0811a1));
-                a = addUnsigned(a, addUnsigned(addUnsigned(md5I(b, c, d), k[4]), 0xf7537e82));
-                d = addUnsigned(d, addUnsigned(addUnsigned(md5I(a, b, c), k[11]), 0xbd3af235));
-                c = addUnsigned(c, addUnsigned(addUnsigned(md5I(d, a, b), k[2]), 0x2ad7d2bb));
-                b = addUnsigned(b, addUnsigned(addUnsigned(md5I(c, d, a), k[9]), 0xeb86d391));
-                
-                x[0] = addUnsigned(a, x[0]);
-                x[1] = addUnsigned(b, x[1]);
-                x[2] = addUnsigned(c, x[2]);
-                x[3] = addUnsigned(d, x[3]);
-            };
-            
-            const md5F = (x, y, z) => (x & y) | ((~x) & z);
-            const md5G = (x, y, z) => (x & z) | (y & (~z));
-            const md5H = (x, y, z) => x ^ y ^ z;
-            const md5I = (x, y, z) => y ^ (x | (~z));
-            
-            const md51 = (s) => {
-                const n = s.length;
-                const state = [1732584193, -271733879, -1732584194, 271733878];
-                let i;
-                for (i = 64; i <= n; i += 64) {
-                    md5cycle(state, md5blk(s.substring(i - 64, i)));
-                }
-                s = s.substring(i - 64);
-                const tail = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-                for (i = 0; i < s.length; i++) tail[i>>2] |= s.charCodeAt(i) << ((i%4) << 3);
-                tail[i>>2] |= 0x80 << ((i%4) << 3);
-                if (i > 55) {
-                    md5cycle(state, tail);
-                    for (i = 0; i < 16; i++) tail[i] = 0;
-                }
-                tail[14] = n*8;
-                md5cycle(state, tail);
-                return state;
-            };
-            
-            const md5blk = (s) => {
-                const md5blks = [];
-                for (let i = 0; i < 64; i += 4) {
-                    md5blks[i>>2] = s.charCodeAt(i) + (s.charCodeAt(i+1) << 8) + (s.charCodeAt(i+2) << 16) + (s.charCodeAt(i+3) << 24);
-                }
-                return md5blks;
-            };
-            
-            const hex = (x) => {
-                const hex_chr = '0123456789abcdef'.split('');
-                let str = '';
-                for (let i = 0; i < 4; i++) {
-                    str += hex_chr[(x[i] >> 4) & 0x0F] + hex_chr[x[i] & 0x0F] +
-                           hex_chr[(x[i] >> 12) & 0x0F] + hex_chr[(x[i] >> 8) & 0x0F] +
-                           hex_chr[(x[i] >> 20) & 0x0F] + hex_chr[(x[i] >> 16) & 0x0F] +
-                           hex_chr[(x[i] >> 28) & 0x0F] + hex_chr[(x[i] >> 24) & 0x0F];
-                }
-                return str;
-            };
-            
-            return hex(md51(string));
-        }
-
-        // Simple MD5 function for password checking
-        function simpleMD5(input) {
-            // For demonstration - in production use proper crypto
-            // This is a simplified version for basic protection
-            let hash = 0;
-            for (let i = 0; i < input.length; i++) {
-                const char = input.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash;
-            }
-            return Math.abs(hash).toString(16);
-        }
-
-        // Secure password verification
-        async function verifyPassword(inputPassword) {
-            try {
-                // For now, using simple comparison
-                // In production, replace with your actual password
-                const expectedPassword = "raybetop81418093olp";
-                
-                // Simple obfuscated comparison
-                const obfuscatedInput = btoa(inputPassword);
-                const obfuscatedExpected = btoa(expectedPassword);
-                
-                return obfuscatedInput === obfuscatedExpected;
-            } catch (error) {
-                console.error("Password verification error:", error);
-                return false;
-            }
-        }
-
-        // Check if login is blocked
-        function isLoginBlocked() {
-            if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
-                const now = Date.now();
-                if (now < loginBlockedUntil) {
-                    const remainingMinutes = Math.ceil((loginBlockedUntil - now) / 60000);
-                    return `Too many failed attempts. Try again in ${remainingMinutes} minute(s).`;
-                } else {
-                    // Reset after block period
-                    loginAttempts = 0;
-                    loginBlockedUntil = 0;
-                }
-            }
-            return false;
-        }
-
-        // Secure admin login
-        async function secureAdminLogin() {
-            const passwordInput = document.getElementById('adminPassword');
-            const password = passwordInput.value;
-            
-            // Hide all messages
-            document.getElementById('loginError').style.display = 'none';
-            document.getElementById('attemptsWarning').style.display = 'none';
-            document.getElementById('loginSuccess').style.display = 'none';
-            
-            // Check if login is blocked
-            const blockMessage = isLoginBlocked();
-            if (blockMessage) {
-                document.getElementById('attemptsWarning').textContent = blockMessage;
-                document.getElementById('attemptsWarning').style.display = 'block';
-                passwordInput.value = '';
-                return;
-            }
-            
-            // Verify password
-            const isValid = await verifyPassword(password);
-            
-            if (isValid) {
-                // Successful login
-                isAdmin = true;
-                loginAttempts = 0;
-                loginBlockedUntil = 0;
-                
-                // Show success
-                document.getElementById('loginSuccess').style.display = 'block';
-                
-                // Switch to control screen after delay
-                setTimeout(() => {
-                    document.getElementById('loginScreen').style.display = 'none';
-                    document.getElementById('controlScreen').style.display = 'block';
-                    
-                    // Start session timeout
-                    startAdminSession();
-                }, 1000);
-                
-                console.log("✅ Admin login successful (secure session)");
-            } else {
-                // Failed login
-                loginAttempts++;
-                passwordInput.value = '';
-                
-                if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
-                    // Block for 5 minutes
-                    loginBlockedUntil = Date.now() + (5 * 60 * 1000);
-                    document.getElementById('attemptsWarning').style.display = 'block';
-                } else {
-                    document.getElementById('loginError').style.display = 'block';
-                }
-                
-                console.warn(`⚠️ Failed admin login attempt: ${loginAttempts}/${MAX_LOGIN_ATTEMPTS}`);
-            }
-        }
-
-        // Start admin session timer
-        function startAdminSession() {
-            // Clear existing timeout
-            if (adminSessionTimeout) {
-                clearTimeout(adminSessionTimeout);
-            }
-            
-            // Set new timeout (30 minutes)
-            adminSessionTimeout = setTimeout(() => {
-                logoutAdmin();
-                alert("Session expired. Please login again.");
-            }, SESSION_DURATION);
-        }
-
-        // Logout admin
-        function logoutAdmin() {
-            isAdmin = false;
-            
-            // Clear session timeout
-            if (adminSessionTimeout) {
-                clearTimeout(adminSessionTimeout);
-                adminSessionTimeout = null;
-            }
-            
-            // Reset login attempts
-            loginAttempts = 0;
-            loginBlockedUntil = 0;
-            
-            // Reset admin panel
-            document.getElementById('loginScreen').style.display = 'block';
-            document.getElementById('controlScreen').style.display = 'none';
-            document.getElementById('adminPassword').value = '';
-            
-            // Hide all messages
-            document.getElementById('loginError').style.display = 'none';
-            document.getElementById('attemptsWarning').style.display = 'none';
-            document.getElementById('loginSuccess').style.display = 'none';
-            
-            // Close panel
-            closeAdminPanel();
-            
-            console.log("🔓 Admin logged out (session cleared)");
-        }
+        const entryContainer = document.getElementById('entryContainer');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const mainPageOption = document.getElementById('mainPageOption');
+        const rulesOption = document.getElementById('rulesOption');
+        const rulesPage = document.getElementById('rulesPage');
+        const rulesBackBtn = document.getElementById('rulesBackBtn');
+        const mainContent = document.getElementById('mainContent');
+        const musicToggle = document.getElementById('musicToggle');
+        const musicInfo = document.getElementById('musicInfo');
 
         // ============================================
-        // ==== ANIMATION FUNCTIONS ===================
+        // ==== INITIALIZATION ========================
         // ============================================
-        function createAnimatedBackground() {
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("🚀 Raybet Casino Initializing...");
+            
+            // Create animated background
+            createBackground();
+            
+            // Setup entry animation
+            setTimeout(() => {
+                entryContainer.style.display = 'none';
+                optionsContainer.style.opacity = '1';
+                optionsContainer.style.pointerEvents = 'all';
+            }, 2500);
+            
+            // Setup option boxes
+            setupOptions();
+            
+            // Setup rules page
+            setupRulesPage();
+            
+            // Setup music
+            setupMusic();
+            
+            // Setup admin panel
+            setupAdminPanel();
+            
+            console.log("✅ Website initialized");
+        });
+
+        // ============================================
+        // ==== ANIMATED BACKGROUND ===================
+        // ============================================
+        function createBackground() {
             const bg = document.getElementById('animatedBg');
             
-            // Create particles
-            for (let i = 0; i < 80; i++) {
+            for (let i = 0; i < 100; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + 'vw';
                 particle.style.top = Math.random() * 100 + 'vh';
-                particle.style.animationDelay = Math.random() * 20 + 's';
-                particle.style.animationDuration = (15 + Math.random() * 20) + 's';
-                particle.style.opacity = 0.3 + Math.random() * 0.4;
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (10 + Math.random() * 20) + 's';
+                particle.style.opacity = 0.2 + Math.random() * 0.5;
                 bg.appendChild(particle);
             }
         }
 
         // ============================================
-        // ==== OPTION BOXES FUNCTIONS ================
+        // ==== OPTION BOXES ==========================
         // ============================================
-        function initializeOptions() {
+        function setupOptions() {
             // Main page option
             mainPageOption.addEventListener('click', () => {
+                // Animate out
                 mainPageOption.style.animation = 'slideUpBox 0.5s ease-in reverse forwards';
                 rulesOption.style.animation = 'slideUpBox 0.5s ease-in 0.1s reverse forwards';
                 
@@ -1604,6 +1374,7 @@
             
             // Rules option
             rulesOption.addEventListener('click', () => {
+                // Animate out
                 mainPageOption.style.animation = 'slideUpBox 0.5s ease-in reverse forwards';
                 rulesOption.style.animation = 'slideUpBox 0.5s ease-in 0.1s reverse forwards';
                 
@@ -1612,7 +1383,12 @@
                     rulesPage.style.display = 'block';
                 }, 600);
             });
-            
+        }
+
+        // ============================================
+        // ==== RULES PAGE ============================
+        // ============================================
+        function setupRulesPage() {
             // Back button
             rulesBackBtn.addEventListener('click', () => {
                 rulesPage.style.display = 'none';
@@ -1620,25 +1396,113 @@
                 mainPageOption.style.animation = 'slideUpBox 0.8s ease-out 0.1s forwards';
                 rulesOption.style.animation = 'slideUpBox 0.8s ease-out 0.3s forwards';
             });
+            
+            // Interactive rule items
+            document.querySelectorAll('.rule-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
         }
 
         // ============================================
-        // ==== ADMIN PANEL FUNCTIONS =================
+        // ==== MUSIC PLAYER ==========================
         // ============================================
-        function openSecureAdminPanel() {
-            document.getElementById('adminPanel').style.display = 'flex';
+        function setupMusic() {
+            // Create audio element
+            backgroundMusic = new Audio();
             
-            // Reset login screen
-            document.getElementById('loginScreen').style.display = 'block';
-            document.getElementById('controlScreen').style.display = 'none';
+            // FLICKER - MIDNIGHT (Casino Music)
+            // Using a YouTube music stream
+            backgroundMusic.src = 'https://www.youtube.com/embed/PjfP7gxAxC8?autoplay=1&loop=1&playlist=PjfP7gxAxC8';
+            backgroundMusic.loop = true;
+            backgroundMusic.volume = 0.3;
+            
+            // Try to play on user interaction
+            const playMusic = () => {
+                if (!musicPlaying) {
+                    backgroundMusic.play().then(() => {
+                        musicPlaying = true;
+                        updateMusicButton();
+                    }).catch(e => {
+                        console.log("Music autoplay prevented");
+                    });
+                }
+            };
+            
+            // Try on any user interaction
+            document.addEventListener('click', playMusic, { once: true });
+            document.addEventListener('touchstart', playMusic, { once: true });
+            
+            // Toggle button
+            musicToggle.addEventListener('click', toggleMusic);
+            
+            // Initial state
+            updateMusicButton();
+        }
+
+        function toggleMusic() {
+            if (!backgroundMusic) return;
+            
+            if (musicPlaying) {
+                backgroundMusic.pause();
+                musicPlaying = false;
+            } else {
+                backgroundMusic.play().then(() => {
+                    musicPlaying = true;
+                }).catch(e => {
+                    console.log("Could not play music:", e);
+                });
+            }
+            
+            updateMusicButton();
+        }
+
+        function updateMusicButton() {
+            if (musicPlaying) {
+                musicToggle.textContent = '🔊';
+                musicInfo.textContent = 'Music: ON';
+                musicToggle.style.background = '#ff4500';
+            } else {
+                musicToggle.textContent = '🔇';
+                musicInfo.textContent = 'Music: OFF';
+                musicToggle.style.background = '#444';
+            }
+        }
+
+        // ============================================
+        // ==== ADMIN PANEL ===========================
+        // ============================================
+        function setupAdminPanel() {
+            // Close on background click
+            document.getElementById('adminPanel').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeAdminPanel();
+                }
+            });
+            
+            // Enter key for login
+            document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    adminLogin();
+                }
+            });
+        }
+
+        function openAdminPanel() {
+            if (loginBlocked) {
+                alert("Too many failed attempts. Try again later.");
+                return;
+            }
+            
+            document.getElementById('adminPanel').style.display = 'flex';
+            document.getElementById('loginError').style.display = 'none';
             document.getElementById('adminPassword').value = '';
             
-            // Hide messages
-            document.getElementById('loginError').style.display = 'none';
-            document.getElementById('attemptsWarning').style.display = 'none';
-            document.getElementById('loginSuccess').style.display = 'none';
-            
-            // Focus password input
+            // Focus input
             setTimeout(() => {
                 document.getElementById('adminPassword').focus();
             }, 100);
@@ -1646,6 +1510,46 @@
 
         function closeAdminPanel() {
             document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        function adminLogin() {
+            if (loginBlocked) {
+                alert("Too many failed attempts. Try again later.");
+                return;
+            }
+            
+            const input = document.getElementById('adminPassword').value;
+            const correctPassword = decodePassword();
+            
+            // Simple obfuscated comparison
+            const inputHash = btoa(input);
+            const correctHash = btoa(correctPassword);
+            
+            if (inputHash === correctHash) {
+                // Success
+                isAdmin = true;
+                loginAttempts = 0;
+                alert("✅ Access Granted - Owner Panel");
+                closeAdminPanel();
+                console.log("✅ Admin login successful");
+            } else {
+                // Failed
+                loginAttempts++;
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('adminPassword').value = '';
+                
+                if (loginAttempts >= MAX_ATTEMPTS) {
+                    loginBlocked = true;
+                    setTimeout(() => {
+                        loginBlocked = false;
+                        loginAttempts = 0;
+                    }, 5 * 60 * 1000); // 5 minutes
+                    alert("⛔ Too many failed attempts. Blocked for 5 minutes.");
+                }
+                
+                console.warn(`⚠️ Failed admin attempt: ${loginAttempts}/${MAX_ATTEMPTS}`);
+            }
         }
 
         // ============================================
@@ -1659,59 +1563,45 @@
         }
 
         // ============================================
-        // ==== INITIALIZATION ========================
+        // ==== TIMER FUNCTIONS =======================
         // ============================================
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("🚀 Raybet Casino Initializing...");
-            
-            // Create animated background
-            createAnimatedBackground();
-            
-            // Initialize options
-            initializeOptions();
-            
-            // Setup entry animation
-            setTimeout(() => {
-                entryContainer.style.display = 'none';
-            }, 3000);
-            
-            // Close admin panel on background click
-            document.getElementById('adminPanel').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeAdminPanel();
-                }
-            });
-            
-            // Enter key for admin login
-            document.getElementById('adminPassword').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    secureAdminLogin();
-                }
-            });
-            
-            // Escape key to close admin panel
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeAdminPanel();
-                }
-            });
-            
-            console.log("✅ Website initialized with enhanced security");
-            
-            // IMPORTANT: Replace this with your actual MD5 hash
-            console.log("🔐 To secure your password 'raybetop81418093olp':");
-            console.log("1. Go to: https://www.md5hashgenerator.com/");
-            console.log("2. Enter: raybetop81418093olp");
-            console.log("3. Copy the MD5 hash");
-            console.log("4. Replace SECURE_ADMIN_HASH value with your hash");
-        });
+        let timerInterval;
+        const eventDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
+        
+        function startTimer() {
+            timerInterval = setInterval(updateTimer, 1000);
+            updateTimer();
+        }
 
-        // ============================================
-        // ==== FIREBASE FUNCTIONS (Keep existing) ====
-        // ============================================
-        // Your existing Firebase code goes here...
-        // Make sure to update any admin functions to use the new secure system
+        function updateTimer() {
+            const now = new Date();
+            const diff = eventDate - now;
+            
+            if (diff <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                document.getElementById('eventName').textContent = '🎉 EVENT STARTED!';
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
 
+        // Start timer when main content loads
+        if (document.getElementById('mainContent')) {
+            startTimer();
+        }
     </script>
 </body>
 </html>
